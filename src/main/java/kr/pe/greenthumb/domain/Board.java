@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Entity
-@SequenceGenerator(name = "")
 public class Board {
     @Id
     @Column(name = "board_idx")
