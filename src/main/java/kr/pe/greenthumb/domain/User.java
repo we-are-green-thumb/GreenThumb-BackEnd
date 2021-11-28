@@ -1,49 +1,46 @@
 package kr.pe.greenthumb.domain;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
+import java.util.Date;
 
-@Getter
-@NoArgsConstructor
 @Entity
-public class User extends kr.pe.greenthumb.domain.BaseTimeEntity {
-
+@NoArgsConstructor
+@AllArgsConstructor
+public class User {
     @Id
+    @Column(name = "user_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userIdx;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(name = "user_email")
+    @NonNull
+    private String userEmail;
 
-    @Column(nullable = false)
-    private String email;
+    @Column(name = "user_password")
+    @NonNull
+    private String userPassword;
 
-    @Column
-    private String picture;
+    @Column(name = "user_nickname")
+    @NonNull
+    private String userNickname;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private kr.pe.greenthumb.domain.Role role;
+    @Column(name = "user_rights")
+    @NonNull
+    private String userRights;
 
-    @Builder
-    public User(String name, String email, String picture, kr.pe.greenthumb.domain.Role role) {
-        this.name = name;
-        this.email = email;
-        this.picture = picture;
-        this.role = role;
-    }
+    @Column(name = "assign_date")
+    @NonNull
+    private Date assignDate; // Date로 할 지, String으로 할 지
 
-    public User update(String name, String picture) {
-        this.name = name;
-        this.picture = picture;
+    @Column(name = "user_out")
+    @NonNull
+    private String userOut;
 
-        return this;
-    }
-
-    public String getRoleKey() {
-        return this.role.getKey();
-    }
+    @Column(name = "user_outdate")
+    @NonNull
+    private Date userOutdate;
 }
