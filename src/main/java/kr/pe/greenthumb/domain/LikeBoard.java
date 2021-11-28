@@ -1,8 +1,6 @@
 package kr.pe.greenthumb.domain;
 
-import com.sun.istack.NotNull;
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
@@ -10,7 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-//@SequenceGenerator(name="likeBoard_seq", sequenceName="likeBoard_seq", initialValue=1, allocationSize=1)
+@Builder
 public class LikeBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
