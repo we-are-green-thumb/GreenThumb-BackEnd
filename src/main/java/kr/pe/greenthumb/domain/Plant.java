@@ -1,14 +1,16 @@
 package kr.pe.greenthumb.domain;
 
-import lombok.NonNull;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-public class plant {
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
+public class Plant {
     @Id
     @Column(name = "plant_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
