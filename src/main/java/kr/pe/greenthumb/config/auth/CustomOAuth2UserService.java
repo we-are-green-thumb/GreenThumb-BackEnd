@@ -2,7 +2,7 @@ package kr.pe.greenthumb.config.auth;
 
 import kr.pe.greenthumb.config.auth.dto.OAuthAttributes;
 import kr.pe.greenthumb.config.auth.dto.SessionUser;
-import kr.pe.greenthumb.domain.User;
+import kr.pe.greenthumb.domain.UserTest;
 import kr.pe.greenthumb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,7 +34,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        User user = saveOrUpdate(attributes);
+        UserTest user = saveOrUpdate(attributes);
         httpSession.setAttribute("user", new SessionUser(user));
 
         return new DefaultOAuth2User(
@@ -44,8 +44,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
 
-    private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByEmail(attributes.getEmail())
+    private UserTest saveOrUpdate(OAuthAttributes attributes) {
+        UserTest user = userRepository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
                 .orElse(attributes.toEntity());
 
