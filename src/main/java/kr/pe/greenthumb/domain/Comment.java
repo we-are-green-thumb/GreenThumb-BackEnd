@@ -1,10 +1,7 @@
 package kr.pe.greenthumb.domain;
 
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -22,22 +19,22 @@ public class Comment {
     private Long commentIdx;
 
     @JoinColumn(name = "board_idx")
-    @NotNull
+    @NonNull
     private Long boardIdx;
 
     @JoinColumn(name = "user_idx")
-    @NotNull
+    @NonNull
     private Long userIdx;
 
     @JoinColumn(name = "comment_content")
-    @NotNull
+    @NonNull
     private String commentContent;
 
     @JoinColumn(name = "comment_date")
-    @NotNull
+    @NonNull
     private LocalDate commentDate;
 
     @JoinColumn(name = "comment_delete")
-    @NotNull
+    @NonNull
     private String commentDelete;
 }

@@ -1,10 +1,7 @@
 package kr.pe.greenthumb.domain;
 
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -20,9 +17,9 @@ public class Follow {
     @JoinColumn(name = "follow_idx")
     private Long followIdx;
 
-    @NotNull
+    @NonNull
     private Long follower;
 
-    @NotNull
+    @NonNull
     private Long following;
 }
