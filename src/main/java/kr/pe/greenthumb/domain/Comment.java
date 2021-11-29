@@ -1,8 +1,6 @@
 package kr.pe.greenthumb.domain;
 
-import com.sun.istack.NotNull;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -11,7 +9,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-//@SequenceGenerator(name="comment_seq", sequenceName="comment_seq", initialValue=1, allocationSize=1)
+//@Builder
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

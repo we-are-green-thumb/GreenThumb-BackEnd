@@ -1,8 +1,6 @@
 package kr.pe.greenthumb.domain;
 
-import com.sun.istack.NotNull;
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
@@ -10,7 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-//@SequenceGenerator(name="follow_seq", sequenceName="follow_seq", initialValue=1, allocationSize=1)
+//@Builder
 public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

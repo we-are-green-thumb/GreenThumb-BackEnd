@@ -1,16 +1,15 @@
 package kr.pe.greenthumb.domain;
 
-import com.sun.istack.NotNull;
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
 @RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-//@SequenceGenerator(name="likeBoard_seq", sequenceName="likeBoard_seq", initialValue=1, allocationSize=1)
+//@Builder
 public class BlackList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
