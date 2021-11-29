@@ -8,7 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+//@Builder
 public class LikeComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

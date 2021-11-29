@@ -5,10 +5,11 @@ import javax.persistence.*;
 
 @Entity
 @RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+//@Builder
 public class BlackList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

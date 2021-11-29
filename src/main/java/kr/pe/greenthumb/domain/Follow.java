@@ -8,7 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+//@Builder
 public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
