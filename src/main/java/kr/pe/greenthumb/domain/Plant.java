@@ -35,4 +35,8 @@ public class Plant {
     @NonNull
     private long water;
 
+    @Column(name = "temp")
+    @NonNull
+    private long temp;
+
 }
