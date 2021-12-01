@@ -3,11 +3,12 @@ package kr.pe.greenthumb.domain;
 import lombok.*;
 import javax.persistence.*;
 
-@Entity
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@Entity
 //@Builder
 public class LikeComment {
     @Id
