@@ -19,7 +19,7 @@ public class Board {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name="user_idx")
+    @JoinColumn(name = "user_idx")
     @NonNull
     private User userIdx;
 

@@ -13,13 +13,13 @@ import javax.persistence.*;
 
 public class File {
     @Id
-    @Column(name="file_idx")
+    @Column(name = "file_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long fileIdx;
 
-    @Column(name="board_idx")
+    @Column(name = "board_idx")
     @NonNull
-    private long boardIdx;
+    private Board boardIdx;
 
     @Column(name = "file_url")
     @NonNull
