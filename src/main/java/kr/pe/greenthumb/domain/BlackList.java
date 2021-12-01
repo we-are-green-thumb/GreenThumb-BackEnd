@@ -1,5 +1,6 @@
 package kr.pe.greenthumb.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import javax.persistence.*;
 
@@ -16,9 +17,11 @@ public class BlackList {
     @JoinColumn(name = "black_idx")
     private Long blackIdx;
 
+    @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "user_idx")
     @NonNull
-    private Long userIdx;
+    private User userIdx;
 
     @JoinColumn(name = "black_reason")
     @NonNull

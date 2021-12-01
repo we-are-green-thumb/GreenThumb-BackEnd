@@ -1,5 +1,6 @@
 package kr.pe.greenthumb.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,9 +17,11 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long boardIdx;
 
-    @Column(name = "uesr_idx")
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name = "user_idx")
     @NonNull
-    private long userIdx;
+    private User userIdx;
 
     @Column(name = "board_title")
     @NonNull

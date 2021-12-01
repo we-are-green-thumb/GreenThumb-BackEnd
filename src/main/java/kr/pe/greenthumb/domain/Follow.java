@@ -1,5 +1,6 @@
 package kr.pe.greenthumb.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import javax.persistence.*;
 
@@ -15,9 +16,15 @@ public class Follow {
     @JoinColumn(name = "follow_idx")
     private Long followIdx;
 
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name = "follower_user_idx")
     @NonNull
-    private Long follower;
+    private User follower;
 
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name = "following_user_idx")
     @NonNull
-    private Long following;
+    private User following;
 }

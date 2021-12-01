@@ -1,5 +1,6 @@
 package kr.pe.greenthumb.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,15 +17,17 @@ public class Plant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long plantIdx;
 
-    @Column(name="user_idx")
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name = "user_idx")
     @NonNull
-    private long userIdx;
+    private User userIdx;
 
-    @Column(name="plant_name")
+    @Column(name = "plant_name")
     @NonNull
     private String plantName;
 
-    @Column(name="plant_nickname")
+    @Column(name = "plant_nickname")
     @NonNull
     private String plantNickname;
 

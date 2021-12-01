@@ -16,9 +16,9 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long imageIdx;
 
-    @Column(name = "plant_idx")
+    @JoinColumn(name = "plant_idx")
     @NonNull
-    private long plantIdx;
+    private Plant plantIdx;
 
     @Column(name = "image_url")
     @NonNull
