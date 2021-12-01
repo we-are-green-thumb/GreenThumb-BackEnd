@@ -1,11 +1,14 @@
 package kr.pe.greenthumb.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -43,4 +46,21 @@ public class User {
     @Column(name = "user_outdate")
     @NonNull
     private Date userOutdate;
+
+    @OneToMany(mappedBy = "user_idx", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Plant> plantList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user_idx", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Board> boardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user_idx", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user_idx", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Follow> followList = new ArrayList<>();
+
 }
