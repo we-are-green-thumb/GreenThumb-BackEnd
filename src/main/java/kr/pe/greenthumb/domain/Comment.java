@@ -1,5 +1,6 @@
 package kr.pe.greenthumb.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -20,9 +21,11 @@ public class Comment {
     @NonNull
     private Long boardIdx;
 
-    @JoinColumn(name = "user_idx")
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name="user_idx")
     @NonNull
-    private Long userIdx;
+    private User userIdx;
 
     @JoinColumn(name = "comment_content")
     @NonNull
