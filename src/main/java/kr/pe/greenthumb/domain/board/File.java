@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import javax.persistence.*;
 
+@Entity
+@RequiredArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
-@Entity
 public class File {
     @Id
     @Column(name = "file_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long fileIdx;
+    private Long fileIdx;
 
     @ManyToOne
     @JsonManagedReference

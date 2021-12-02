@@ -5,17 +5,18 @@ import kr.pe.greenthumb.domain.board.Board;
 import kr.pe.greenthumb.domain.board.Comment;
 import kr.pe.greenthumb.domain.plant.Plant;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-@AllArgsConstructor
+@Entity
+@RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@Entity
 public class User {
     @Id
     @Column(name = "user_idx")
@@ -34,27 +35,31 @@ public class User {
     @NonNull
     private String userNickname;
 
-    @Column(name = "user_rights")
+    @Column(name = "user_role")
     @NonNull
-    private String userRights;
+    private String userRole;
 
     @Column(name = "assign_date")
     @NonNull
-    private Date assignDate; // Date로 할 지, String으로 할 지
+    private LocalDateTime assignDate; // Date로 할 지, String으로 할 지
 
-    @Column(name = "user_out")
+    @Column(name = "user_delete")
     @NonNull
-    private String userOut;
+    private String userDeleteCheck;
 
-    @Column(name = "user_outdate")
-    @NonNull
-    private Date userOutdate;
+    @CreatedDate
+    @Column(name = "user_delete_date")
+    private LocalDateTime userDeleteDate;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Plant> plantList = new ArrayList<>();
 
+<<<<<<< HEAD:src/main/java/kr/pe/greenthumb/domain/user/User.java
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, targetEntity= Board.class)
+=======
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+>>>>>>> 2d45f11e57c871dd879bb517dd521c9d8b6b0b54:src/main/java/kr/pe/greenthumb/domain/User.java
     @JsonBackReference
     private List<Board> boardList = new ArrayList<>();
 
@@ -69,5 +74,4 @@ public class User {
     @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Follow> followingList = new ArrayList<>();
-
 }

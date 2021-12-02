@@ -1,29 +1,27 @@
 package kr.pe.greenthumb.domain.board;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
+@Entity
+@RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@Entity
 public class Board extends BaseTimeEntity {
     @Id
     @Column(name = "board_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long boardIdx;
+    private Long boardIdx;
 
     @ManyToOne
     @JsonManagedReference
@@ -59,10 +57,11 @@ public class Board extends BaseTimeEntity {
 
     @Column(name = "board_hits")
     @NonNull
-    private long boardHits;
+    private Long boardHits;
 
-    @Column(name = "board_complete")
-    private long boardComplete;
+    // 자유게시판을 제외한 질문, 거래 게시판 완료 여부 체크
+    @Column(name = "board_check")
+    private String boardCheck;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @JsonBackReference

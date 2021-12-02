@@ -1,7 +1,6 @@
 package kr.pe.greenthumb.domain.plant;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @AllArgsConstructor

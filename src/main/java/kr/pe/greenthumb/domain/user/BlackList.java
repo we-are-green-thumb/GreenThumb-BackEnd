@@ -1,7 +1,6 @@
 package kr.pe.greenthumb.domain.user;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
@@ -14,7 +13,7 @@ import javax.persistence.*;
 public class BlackList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "black_idx")
+    @Column(name = "black_idx")
     private Long blackIdx;
 
     @OneToOne
@@ -22,12 +21,11 @@ public class BlackList {
     @NonNull
     private User user;
 
-    @JoinColumn(name = "black_reason")
+    @Column(name = "black_reason")
     @NonNull
     private String blackReason;
 
-    @JoinColumn(name = "black_status")
+    @Column(name = "black_status")
     @NonNull
     private Long blackStatus;
-
 }

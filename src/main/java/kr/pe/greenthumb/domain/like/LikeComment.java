@@ -6,31 +6,21 @@ import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
 import javax.persistence.*;
 
-@AllArgsConstructor
+@Entity
+@RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@Entity
 //@Builder
 public class LikeComment {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @JoinColumn(name = "comment_idx")
-//    private Long commentIdx;
-//
-//    @JoinColumn(name = "user_idx")
-//    @NonNull
-//    private Long userIdx;
-//
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long likeCommentIdx;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name="comment_idx")
+    @JoinColumn(name = "comment_idx")
     @NonNull
     private Comment comment;
 
