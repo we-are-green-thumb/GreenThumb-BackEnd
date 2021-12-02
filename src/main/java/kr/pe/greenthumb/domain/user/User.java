@@ -1,18 +1,24 @@
-package kr.pe.greenthumb.domain;
+package kr.pe.greenthumb.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-
+import kr.pe.greenthumb.domain.board.Board;
+import kr.pe.greenthumb.domain.board.Comment;
+import kr.pe.greenthumb.domain.plant.Plant;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
+@RequiredArgsConstructor
 @NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class User {
     @Id
     @Column(name = "user_idx")
@@ -31,21 +37,21 @@ public class User {
     @NonNull
     private String userNickname;
 
-    @Column(name = "user_rights")
+    @Column(name = "user_role")
     @NonNull
-    private String userRights;
+    private String userRole;
 
     @Column(name = "assign_date")
     @NonNull
-    private Date assignDate; // Date로 할 지, String으로 할 지
+    private LocalDateTime assignDate; // Date로 할 지, String으로 할 지
 
-    @Column(name = "user_out")
+    @Column(name = "user_delete")
     @NonNull
-    private String userOut;
+    private String userDeleteCheck;
 
-    @Column(name = "user_outdate")
-    @NonNull
-    private Date userOutdate;
+    @CreatedDate
+    @Column(name = "user_delete_date")
+    private LocalDateTime userDeleteDate;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
@@ -59,9 +65,14 @@ public class User {
     @JsonBackReference
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "followIdx", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
     @JsonBackReference
-    private List<Follow> followList = new ArrayList<>();
+    private Set<Follow> followerList = new HashSet<>();
 
+    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Set<Follow> followingList = new HashSet<>();
 
+    @OneToOne(mappedBy = "user")
+    private BlackList blackList;
 }

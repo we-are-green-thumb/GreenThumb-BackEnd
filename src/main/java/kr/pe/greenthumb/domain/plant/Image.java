@@ -1,7 +1,6 @@
-package kr.pe.greenthumb.domain;
+package kr.pe.greenthumb.domain.plant;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @AllArgsConstructor
@@ -14,15 +13,15 @@ public class Image {
     @Id
     @Column(name = "image_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long imageIdx;
+    private Long imageIdx;
 
-    @Column(name = "plant_idx")
+    @OneToOne
+    @JoinColumn(name = "plant_idx")
     @NonNull
-    private long plantIdx;
+    private Plant plant;
 
     @Column(name = "image_url")
     @NonNull
-    private long imageUrl;
-
+    private String imageUrl;
 
 }

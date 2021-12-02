@@ -1,6 +1,8 @@
-package kr.pe.greenthumb.domain;
+package kr.pe.greenthumb.domain.like;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import kr.pe.greenthumb.domain.board.Board;
+import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
 import javax.persistence.*;
 
@@ -9,27 +11,18 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 //@Builder
-public class LikeComment {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @JoinColumn(name = "comment_idx")
-//    private Long commentIdx;
-//
-//    @JoinColumn(name = "user_idx")
-//    @NonNull
-//    private Long userIdx;
-//
-
+public class LikeBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeCommentIdx;
+    private Long likeBoardIdx;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name="comment_idx")
+    @JoinColumn(name = "board_idx")
     @NonNull
-    private Comment comment;
+    private Board board;
 
     @OneToOne
     @JoinColumn(name = "user_Idx")

@@ -1,42 +1,45 @@
-package kr.pe.greenthumb.domain;
+package kr.pe.greenthumb.domain.plant;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
-
 import javax.persistence.*;
 
-@AllArgsConstructor
+@Entity
+@RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@Entity
 public class Plant {
     @Id
     @Column(name = "plant_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long plantIdx;
+    private Long plantIdx;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name="user_idx")
+    @JoinColumn(name = "user_idx")
     @NonNull
     private User user;
 
-    @Column(name="plant_name")
+    @Column(name = "plant_name")
     @NonNull
     private String plantName;
 
-    @Column(name="plant_nickname")
+    @Column(name = "plant_nickname")
     @NonNull
     private String plantNickname;
 
     @Column(name = "water")
     @NonNull
-    private long water;
+    private Long water;
 
     @Column(name = "temp")
     @NonNull
-    private long temp;
+    private Long temp;
 
+    @Column(name = "image_url")
+    @NonNull
+    private String imageUrl;
 }
