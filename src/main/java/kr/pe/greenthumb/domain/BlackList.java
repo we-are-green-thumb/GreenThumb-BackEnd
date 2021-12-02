@@ -17,11 +17,10 @@ public class BlackList {
     @JoinColumn(name = "black_idx")
     private Long blackIdx;
 
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "user_idx")
+    @OneToOne
+    @JoinColumn(name = "user_Idx")
     @NonNull
-    private User userIdx;
+    private User user;
 
     @JoinColumn(name = "black_reason")
     @NonNull
@@ -30,4 +29,5 @@ public class BlackList {
     @JoinColumn(name = "black_status")
     @NonNull
     private Long blackStatus;
+
 }

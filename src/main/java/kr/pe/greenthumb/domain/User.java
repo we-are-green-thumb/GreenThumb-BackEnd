@@ -2,7 +2,6 @@ package kr.pe.greenthumb.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,15 +47,15 @@ public class User {
     @NonNull
     private Date userOutdate;
 
-    @OneToMany(mappedBy = "userIdx", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Plant> plantList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userIdx", cascade = CascadeType.ALL, targetEntity=Board.class)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, targetEntity=Board.class)
     @JsonBackReference
     private List<Board> boardList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userIdx", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Comment> commentList = new ArrayList<>();
 
