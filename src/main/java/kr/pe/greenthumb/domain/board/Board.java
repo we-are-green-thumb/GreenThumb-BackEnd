@@ -1,11 +1,15 @@
-package kr.pe.greenthumb.domain;
+package kr.pe.greenthumb.domain.board;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +19,7 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-public class Board {
+public class Board extends BaseTimeEntity {
     @Id
     @Column(name = "board_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +43,16 @@ public class Board {
     @NonNull
     private String boardCategory;
 
+    @CreatedDate
+    @JoinColumn(name = "board_create")
+    @NonNull
+    private LocalDateTime boardCreateDate;
+
+    @LastModifiedDate
+    @JoinColumn(name = "board_update")
+    @NonNull
+    private LocalDateTime boardUpdateDate;
+
     @Column(name = "board_delete")
     @NonNull
     private String boardDelete;
@@ -54,4 +68,7 @@ public class Board {
     @JsonBackReference
     private List<Comment> commentList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<File> fileList = new ArrayList<>();
 }

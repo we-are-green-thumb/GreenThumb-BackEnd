@@ -1,7 +1,8 @@
-package kr.pe.greenthumb.domain;
+package kr.pe.greenthumb.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity

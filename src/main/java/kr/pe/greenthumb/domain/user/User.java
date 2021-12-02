@@ -1,6 +1,9 @@
-package kr.pe.greenthumb.domain;
+package kr.pe.greenthumb.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import kr.pe.greenthumb.domain.board.Board;
+import kr.pe.greenthumb.domain.board.Comment;
+import kr.pe.greenthumb.domain.plant.Plant;
 import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -51,7 +54,7 @@ public class User {
     @JsonBackReference
     private List<Plant> plantList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, targetEntity=Board.class)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, targetEntity= Board.class)
     @JsonBackReference
     private List<Board> boardList = new ArrayList<>();
 

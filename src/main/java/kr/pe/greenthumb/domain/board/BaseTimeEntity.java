@@ -1,4 +1,4 @@
-package kr.pe.greenthumb.domain;
+package kr.pe.greenthumb.domain.board;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,11 +13,9 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseTimeEntity {
-
     @CreatedDate
     private LocalDateTime createdDate;
 
     @LastModifiedDate
     private LocalDateTime modifiedDate;
-
 }

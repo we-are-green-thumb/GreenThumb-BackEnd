@@ -1,4 +1,4 @@
-package kr.pe.greenthumb.domain;
+package kr.pe.greenthumb.domain.login;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
