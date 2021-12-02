@@ -19,20 +19,24 @@ public class Plant {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name="user_idx")
+    @JoinColumn(name = "user_idx")
     @NonNull
-    private User userIdx;
+    private User user;
 
-    @Column(name="plant_name")
+    @Column(name = "plant_name")
     @NonNull
     private String plantName;
 
-    @Column(name="plant_nickname")
+    @Column(name = "plant_nickname")
     @NonNull
     private String plantNickname;
 
     @Column(name = "water")
     @NonNull
     private long water;
+
+    @Column(name = "temp")
+    @NonNull
+    private long temp;
 
 }

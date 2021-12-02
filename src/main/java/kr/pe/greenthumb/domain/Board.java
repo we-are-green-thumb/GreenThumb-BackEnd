@@ -1,9 +1,13 @@
 package kr.pe.greenthumb.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,7 +25,7 @@ public class Board {
     @JsonManagedReference
     @JoinColumn(name = "user_idx")
     @NonNull
-    private User userIdx;
+    private User user;
 
     @Column(name = "board_title")
     @NonNull
@@ -35,6 +39,10 @@ public class Board {
     @NonNull
     private String boardCategory;
 
+    @Column(name = "board_create")
+    @NonNull
+    private String boardCreate;
+
     @Column(name = "board_delete")
     @NonNull
     private String boardDelete;
@@ -45,4 +53,13 @@ public class Board {
 
     @Column(name = "board_complete")
     private long boardComplete;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<File> fileList = new ArrayList<>();
+
 }

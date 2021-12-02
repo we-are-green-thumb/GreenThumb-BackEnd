@@ -18,12 +18,13 @@ public class Follow {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "user_idx")
+    @JoinColumn(name = "user_follow")
     @NonNull
     private User follower;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "user_idx")
+    @JoinColumn(name = "user_following")
+    @NonNull
     private User following;
 }
