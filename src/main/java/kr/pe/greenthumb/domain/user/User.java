@@ -55,11 +55,7 @@ public class User {
     @JsonBackReference
     private List<Plant> plantList = new ArrayList<>();
 
-<<<<<<< HEAD:src/main/java/kr/pe/greenthumb/domain/user/User.java
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, targetEntity= Board.class)
-=======
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
->>>>>>> 2d45f11e57c871dd879bb517dd521c9d8b6b0b54:src/main/java/kr/pe/greenthumb/domain/User.java
     @JsonBackReference
     private List<Board> boardList = new ArrayList<>();
 
