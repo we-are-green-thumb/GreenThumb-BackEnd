@@ -47,15 +47,15 @@ public class User {
     @NonNull
     private Date userOutdate;
 
-    @OneToMany(mappedBy = "plantIdx", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Plant> plantList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "boardIdx", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Board> boardList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "commentIdx", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Comment> commentList = new ArrayList<>();
 

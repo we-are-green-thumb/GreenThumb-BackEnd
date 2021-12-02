@@ -21,7 +21,7 @@ public class Plant {
     @JsonManagedReference
     @JoinColumn(name="user_idx")
     @NonNull
-    private User userIdx;
+    private User user;
 
     @Column(name="plant_name")
     @NonNull

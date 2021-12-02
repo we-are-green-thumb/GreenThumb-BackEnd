@@ -49,7 +49,6 @@ public class Board {
     @Column(name = "board_complete")
     private long boardComplete;
 
-
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Comment> commentList = new ArrayList<>();
