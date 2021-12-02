@@ -1,23 +1,23 @@
-package kr.pe.greenthumb.domain;
+package kr.pe.greenthumb.domain.board;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-
 import javax.persistence.*;
 
+@Entity
+@RequiredArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
-@Entity
-
 public class File {
     @Id
     @Column(name = "file_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long fileIdx;
+    private Long fileIdx;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "board_idx")
     @NonNull
     private Board board;
@@ -25,5 +25,4 @@ public class File {
     @Column(name = "file_url")
     @NonNull
     private String fileUrl;
-
 }

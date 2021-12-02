@@ -2,7 +2,7 @@ package kr.pe.greenthumb.config.auth;
 
 import kr.pe.greenthumb.config.auth.dto.OAuthAttributes;
 import kr.pe.greenthumb.config.auth.dto.SessionUser;
-import kr.pe.greenthumb.domain.UserTest;
+import kr.pe.greenthumb.domain.login.UserTest;
 import kr.pe.greenthumb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
