@@ -1,6 +1,6 @@
 package kr.pe.greenthumb.repository;
 
-import kr.pe.greenthumb.domain.UserTest;
+import kr.pe.greenthumb.domain.login.UserTest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

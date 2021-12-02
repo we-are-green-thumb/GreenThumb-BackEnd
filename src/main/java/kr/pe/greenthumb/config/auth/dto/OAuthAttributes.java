@@ -1,7 +1,7 @@
 package kr.pe.greenthumb.config.auth.dto;
 
-import kr.pe.greenthumb.domain.Role;
-import kr.pe.greenthumb.domain.UserTest;
+import kr.pe.greenthumb.domain.login.Role;
+import kr.pe.greenthumb.domain.login.UserTest;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
 package kr.pe.greenthumb.config.auth.dto;
 
-import kr.pe.greenthumb.domain.UserTest;
+import kr.pe.greenthumb.domain.login.UserTest;
 import lombok.Getter;
 
 import java.io.Serializable;

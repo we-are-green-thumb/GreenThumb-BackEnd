@@ -1,4 +1,4 @@
-package kr.pe.greenthumb.domain;
+package kr.pe.greenthumb.domain.login;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class UserTest extends kr.pe.greenthumb.domain.BaseTimeEntity {
+public class UserTest extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +26,10 @@ public class UserTest extends kr.pe.greenthumb.domain.BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private kr.pe.greenthumb.domain.Role role;
+    private Role role;
 
     @Builder
-    public UserTest(String name, String email, String picture, kr.pe.greenthumb.domain.Role role) {
+    public UserTest(String name, String email, String picture, Role role) {
         this.name = name;
         this.email = email;
         this.picture = picture;

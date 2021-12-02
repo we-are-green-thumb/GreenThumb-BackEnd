@@ -1,16 +1,17 @@
-package kr.pe.greenthumb.domain;
+package kr.pe.greenthumb.domain.plant;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
+@Entity
+@RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@Entity
 public class Plant {
     @Id
     @Column(name = "plant_idx")
@@ -33,10 +34,13 @@ public class Plant {
 
     @Column(name = "water")
     @NonNull
-    private long water;
+    private Long water;
 
     @Column(name = "temp")
     @NonNull
-    private long temp;
+    private Long temp;
 
+    @Column(name = "image_url")
+    @NonNull
+    private String imageUrl;
 }
