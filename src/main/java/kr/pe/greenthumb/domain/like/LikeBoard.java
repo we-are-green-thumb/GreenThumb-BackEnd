@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class LikeBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long boardLikeIdx;
+    private Long likeBoardIdx;
 
     @ManyToOne
     @JsonManagedReference
