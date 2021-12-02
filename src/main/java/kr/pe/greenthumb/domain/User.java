@@ -1,18 +1,18 @@
 package kr.pe.greenthumb.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-
+import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
 public class User {
     @Id
     @Column(name = "user_idx")
@@ -47,21 +47,24 @@ public class User {
     @NonNull
     private Date userOutdate;
 
-    @OneToMany(mappedBy = "plantIdx", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Plant> plantList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "boardIdx", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, targetEntity=Board.class)
     @JsonBackReference
     private List<Board> boardList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "commentIdx", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "followIdx", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
     @JsonBackReference
-    private List<Follow> followList = new ArrayList<>();
+    private List<Follow> followerList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Follow> followingList = new ArrayList<>();
 
 }

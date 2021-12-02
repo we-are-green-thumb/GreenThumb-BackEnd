@@ -30,5 +30,4 @@ public class BlackList {
     @NonNull
     private Long blackStatus;
 
-
 }

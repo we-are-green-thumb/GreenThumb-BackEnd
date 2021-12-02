@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import javax.persistence.*;
 
-@Entity
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@Entity
 //@Builder
 public class LikeBoard {
 //    @Id

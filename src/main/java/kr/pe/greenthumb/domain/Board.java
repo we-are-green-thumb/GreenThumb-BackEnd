@@ -1,5 +1,6 @@
 package kr.pe.greenthumb.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
@@ -48,7 +49,6 @@ public class Board {
 
     @Column(name = "board_complete")
     private long boardComplete;
-
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @JsonBackReference

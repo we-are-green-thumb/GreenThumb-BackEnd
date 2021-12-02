@@ -48,5 +48,4 @@ public class Comment {
     @JsonBackReference
     private List<LikeComment> likeCommentList = new ArrayList<>();
 
-
 }
