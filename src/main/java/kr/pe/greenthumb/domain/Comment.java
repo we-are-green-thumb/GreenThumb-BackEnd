@@ -1,9 +1,12 @@
 package kr.pe.greenthumb.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @RequiredArgsConstructor
@@ -17,15 +20,17 @@ public class Comment {
     @JoinColumn(name = "comment_idx")
     private Long commentIdx;
 
-    @JoinColumn(name = "board_idx")
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name="board_idx")
     @NonNull
-    private Long boardIdx;
+    private Board board;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "user_idx")
+    @JoinColumn(name="user_idx")
     @NonNull
-    private User userIdx;
+    private User user;
 
     @JoinColumn(name = "comment_content")
     @NonNull
@@ -38,4 +43,9 @@ public class Comment {
     @JoinColumn(name = "comment_delete")
     @NonNull
     private String commentDelete;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<LikeComment> likeCommentList = new ArrayList<>();
+
 }
