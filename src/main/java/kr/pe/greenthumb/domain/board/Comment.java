@@ -3,12 +3,10 @@ package kr.pe.greenthumb.domain.board;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.domain.like.LikeComment;
-import kr.pe.greenthumb.domain.login.BaseTimeEntity;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,13 +27,13 @@ public class Comment extends BaseTimeEntity {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name="board_idx")
+    @JoinColumn(name = "board_idx")
     @NonNull
     private Board board;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name="user_idx")
+    @JoinColumn(name = "user_idx")
     @NonNull
     private User user;
 
@@ -48,8 +46,8 @@ public class Comment extends BaseTimeEntity {
     @NonNull
     private LocalDateTime commentCreateDate;
 
-    @LastModifiedDate // update시에 자동으로 들어갈 것으로 추측
-    @Column(name = "comment_update")
+    @LastModifiedDate
+    @JoinColumn(name = "comment_update")
     private LocalDateTime commentUpdateDate;
 
     @JoinColumn(name = "comment_delete")

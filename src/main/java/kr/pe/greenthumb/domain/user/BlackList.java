@@ -1,7 +1,6 @@
 package kr.pe.greenthumb.domain.user;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
@@ -17,7 +16,7 @@ public class BlackList {
     @Column(name = "black_idx")
     private Long blackIdx;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_Idx")
     @NonNull
     private User user;

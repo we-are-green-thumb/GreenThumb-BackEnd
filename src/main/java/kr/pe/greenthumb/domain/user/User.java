@@ -6,11 +6,12 @@ import kr.pe.greenthumb.domain.board.Comment;
 import kr.pe.greenthumb.domain.plant.Plant;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @RequiredArgsConstructor
@@ -66,9 +67,12 @@ public class User {
 
     @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
     @JsonBackReference
-    private List<Follow> followerList = new ArrayList<>();
+    private Set<Follow> followerList = new HashSet<>();
 
     @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
     @JsonBackReference
-    private List<Follow> followingList = new ArrayList<>();
+    private Set<Follow> followingList = new HashSet<>();
+
+    @OneToOne(mappedBy = "user")
+    private BlackList blackList;
 }
