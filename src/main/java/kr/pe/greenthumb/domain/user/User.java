@@ -1,12 +1,13 @@
 package kr.pe.greenthumb.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import kr.pe.greenthumb.domain.board.Board;
+import kr.pe.greenthumb.domain.board.Post;
 import kr.pe.greenthumb.domain.board.Comment;
 import kr.pe.greenthumb.domain.plant.Plant;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,6 +28,7 @@ public class User {
 
     @Column(name = "user_email")
     @NonNull
+    @Email
     private String userEmail;
 
     @Column(name = "user_password")
@@ -59,7 +61,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
-    private List<Board> boardList = new ArrayList<>();
+    private List<Post> postList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
