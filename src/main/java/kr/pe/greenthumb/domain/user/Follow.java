@@ -20,6 +20,7 @@ public class Follow {
     @JsonManagedReference
     @JoinColumn(name = "user_follow")
     @NonNull
+//    @NotNull
     private User follower;
 
     @ManyToOne
