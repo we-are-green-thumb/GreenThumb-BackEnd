@@ -1,7 +1,7 @@
 package kr.pe.greenthumb.config.auth.dto;
 
 import kr.pe.greenthumb.domain.login.Role;
-import kr.pe.greenthumb.domain.login.UserTest;
+import kr.pe.greenthumb.domain.login.OAuth2User;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -66,8 +66,8 @@ public class OAuthAttributes {
                 .build();
     }
 
-    public UserTest toEntity() {
-        return UserTest.builder()
+    public OAuth2User toEntity() {
+        return OAuth2User.builder()
                 .name(name)
                 .email(email)
                 .picture(picture)

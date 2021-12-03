@@ -1,9 +1,10 @@
-package kr.pe.greenthumb.domain.like;
+package kr.pe.greenthumb.service.like;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 //@Builder
-public class LikePost {
+public class LikePostService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long likePostIdx;

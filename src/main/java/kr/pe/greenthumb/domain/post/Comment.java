@@ -1,7 +1,8 @@
-package kr.pe.greenthumb.domain.board;
+package kr.pe.greenthumb.domain.post;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import kr.pe.greenthumb.domain.BaseTimeEntity;
 import kr.pe.greenthumb.domain.like.LikeComment;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
