@@ -21,7 +21,7 @@ public class BlackList {
     @NonNull
     private User user;
 
-    @Column(name = "black_reason")
+    @Column(name = "black_reason" ,columnDefinition = "varchar(900)")
     @NonNull
     private String blackReason;
 

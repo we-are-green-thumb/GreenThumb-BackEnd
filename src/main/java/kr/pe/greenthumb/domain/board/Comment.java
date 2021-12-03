@@ -27,9 +27,9 @@ public class Comment extends BaseTimeEntity {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "board_idx")
+    @JoinColumn(name = "post_idx")
     @NonNull
-    private Board board;
+    private Post post;
 
     @ManyToOne
     @JsonManagedReference
@@ -37,7 +37,7 @@ public class Comment extends BaseTimeEntity {
     @NonNull
     private User user;
 
-    @JoinColumn(name = "comment_content")
+    @JoinColumn(name = "comment_content" ,columnDefinition = "varchar(1500)")
     @NonNull
     private String commentContent;
 
