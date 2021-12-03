@@ -33,7 +33,7 @@ public class Post extends BaseTimeEntity {
 
     @Column(name = "post_title" , columnDefinition = "varchar(300)")
     @NonNull
-    private String Title;
+    private String title;
 
     @Column(name = "post_content" , columnDefinition = "varchar(1500)")
     @NonNull
@@ -71,4 +71,19 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<File> fileList = new ArrayList<>();
+
+    @Builder
+    public Post(User user, String title, String postContent, String postCategory) {
+        this.user = user;
+        this.title = title;
+        this.postContent = postContent;
+        this.postCategory = postCategory;
+    }
+
+    public Post update(String title, String postContent) {
+        this.title = title;
+        this.postContent = postContent;
+
+        return this;
+    }
 }
