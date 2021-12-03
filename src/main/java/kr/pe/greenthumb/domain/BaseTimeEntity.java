@@ -1,4 +1,4 @@
-package kr.pe.greenthumb.domain.board;
+package kr.pe.greenthumb.domain;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
