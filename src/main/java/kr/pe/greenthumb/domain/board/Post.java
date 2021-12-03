@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+//import javax.validation.constraints.NotNull;
 
 @Entity
 @RequiredArgsConstructor
@@ -17,11 +18,11 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class Board extends BaseTimeEntity {
+public class Post extends BaseTimeEntity {
     @Id
-    @Column(name = "board_idx")
+    @Column(name = "post_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long boardIdx;
+    private Long postIdx;
 
     @ManyToOne
     @JsonManagedReference
@@ -29,45 +30,44 @@ public class Board extends BaseTimeEntity {
     @NonNull
     private User user;
 
-    @Column(name = "board_title")
+    @Column(name = "post_title")
     @NonNull
-    private String boardTitle;
+    private String Title;
 
-    @Column(name = "board_content")
+    @Column(name = "post_content")
     @NonNull
-    private String boardContent;
+    private String postContent;
 
-    @Column(name = "board_category")
+    @Column(name = "post_category")
     @NonNull
-    private String boardCategory;
+    private String postCategory;
 
     @CreatedDate
-    @JoinColumn(name = "board_create")
+    @JoinColumn(name = "post_create")
     @NonNull
-    private LocalDateTime boardCreateDate;
-
+    private LocalDateTime postCreateDate;
     @LastModifiedDate
-    @JoinColumn(name = "board_update")
+    @JoinColumn(name = "post_update")
     @NonNull
-    private LocalDateTime boardUpdateDate;
+    private LocalDateTime postUpdateDate;
 
-    @Column(name = "board_delete")
+    @Column(name = "post_delete")
     @NonNull
-    private String boardDelete;
+    private String postDelete;
 
-    @Column(name = "board_hits")
+    @Column(name = "post_hits")
     @NonNull
-    private Long boardHits;
+    private Long postHits;
 
     // 자유게시판을 제외한 질문, 거래 게시판 완료 여부 체크
-    @Column(name = "board_check")
-    private String boardCheck;
+    @Column(name = "post_check")
+    private String postCheck;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<File> fileList = new ArrayList<>();
 }
