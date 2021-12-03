@@ -55,6 +55,9 @@ public class User {
     @Column(name = "user_delete_date")
     private LocalDateTime userDeleteDate;
 
+    @Column(name = "user_delete_reason" , columnDefinition = "varchar(900)" )
+    private String userDeleteReason;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Plant> plantList = new ArrayList<>();
