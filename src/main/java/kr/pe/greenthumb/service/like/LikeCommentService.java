@@ -1,9 +1,10 @@
-package kr.pe.greenthumb.domain.like;
+package kr.pe.greenthumb.service.like;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import kr.pe.greenthumb.domain.post.Post;
+import kr.pe.greenthumb.domain.post.Comment;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,16 +14,16 @@ import javax.persistence.*;
 @Setter
 @ToString
 //@Builder
-public class LikePost {
+public class LikeCommentService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likePostIdx;
+    private Long likeCommentIdx;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "post_idx")
+    @JoinColumn(name = "comment_idx")
     @NonNull
-    private Post post;
+    private Comment comment;
 
     @OneToOne
     @JoinColumn(name = "user_Idx")

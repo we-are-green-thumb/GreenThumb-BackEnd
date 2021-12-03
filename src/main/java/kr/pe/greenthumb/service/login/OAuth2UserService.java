@@ -1,15 +1,17 @@
-package kr.pe.greenthumb.domain.login;
+package kr.pe.greenthumb.service.login;
 
 import kr.pe.greenthumb.domain.BaseTimeEntity;
+import kr.pe.greenthumb.domain.login.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class UserTest extends BaseTimeEntity {
+public class OAuth2UserService extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,14 +31,14 @@ public class UserTest extends BaseTimeEntity {
     private Role role;
 
     @Builder
-    public UserTest(String name, String email, String picture, Role role) {
+    public OAuth2UserService(String name, String email, String picture, Role role) {
         this.name = name;
         this.email = email;
         this.picture = picture;
         this.role = role;
     }
 
-    public UserTest update(String name, String picture) {
+    public OAuth2UserService update(String name, String picture) {
         this.name = name;
         this.picture = picture;
 

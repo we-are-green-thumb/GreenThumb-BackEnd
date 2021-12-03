@@ -1,11 +1,12 @@
-package kr.pe.greenthumb.domain.user;
+package kr.pe.greenthumb.service.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import kr.pe.greenthumb.domain.post.Post;
-import kr.pe.greenthumb.domain.post.Comment;
 import kr.pe.greenthumb.domain.plant.Plant;
+import kr.pe.greenthumb.domain.post.Comment;
+import kr.pe.greenthumb.domain.post.Post;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class User {
+public class UserService {
     @Id
     @Column(name = "user_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,12 +73,12 @@ public class User {
 
     @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
     @JsonBackReference
-    private Set<Follow> followerList = new HashSet<>();
+    private Set<FollowService> followerList = new HashSet<>();
 
     @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
     @JsonBackReference
-    private Set<Follow> followingList = new HashSet<>();
+    private Set<FollowService> followingList = new HashSet<>();
 
     @OneToOne(mappedBy = "user")
-    private BlackList blackList;
+    private BlackListService blackList;
 }
