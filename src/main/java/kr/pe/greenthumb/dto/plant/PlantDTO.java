@@ -1,4 +1,4 @@
 package kr.pe.greenthumb.dto.plant;
 
-public class Image {
+public class PlantDTO {
 }

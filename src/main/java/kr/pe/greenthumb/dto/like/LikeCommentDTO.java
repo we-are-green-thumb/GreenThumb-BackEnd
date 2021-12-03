@@ -1,4 +1,4 @@
 package kr.pe.greenthumb.dto.like;
 
-public class LikeComment {
+public class LikeCommentDTO {
 }

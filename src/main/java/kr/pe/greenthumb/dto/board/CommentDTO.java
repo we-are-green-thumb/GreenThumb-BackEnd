@@ -1,4 +1,4 @@
 package kr.pe.greenthumb.dto.board;
 
-public class File {
+public class CommentDTO {
 }

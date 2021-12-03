@@ -1,4 +1,4 @@
 package kr.pe.greenthumb.dto.login;
 
-public class UserTest {
+public class UserTestDTO {
 }
