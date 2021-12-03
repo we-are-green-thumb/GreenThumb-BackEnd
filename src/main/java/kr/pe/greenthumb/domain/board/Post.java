@@ -30,11 +30,11 @@ public class Post extends BaseTimeEntity {
     @NonNull
     private User user;
 
-    @Column(name = "post_title")
+    @Column(name = "post_title" , columnDefinition = "varchar(300)")
     @NonNull
     private String Title;
 
-    @Column(name = "post_content")
+    @Column(name = "post_content" , columnDefinition = "varchar(1500)")
     @NonNull
     private String postContent;
 
