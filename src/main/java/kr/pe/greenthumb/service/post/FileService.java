@@ -1,9 +1,8 @@
-package kr.pe.greenthumb.domain.like;
+package kr.pe.greenthumb.service.post;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import kr.pe.greenthumb.domain.post.Post;
-import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,20 +11,19 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-//@Builder
-public class LikePost {
+public class FileService {
     @Id
+    @Column(name = "file_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likePostIdx;
+    private Long fileIdx;
 
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "post_idx")
     @NonNull
-    private Post post;
+    private PostService post;
 
-    @OneToOne
-    @JoinColumn(name = "user_Idx")
+    @Column(name = "file_url")
     @NonNull
-    private User user;
+    private String fileUrl;
 }

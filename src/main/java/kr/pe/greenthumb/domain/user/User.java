@@ -1,8 +1,8 @@
 package kr.pe.greenthumb.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import kr.pe.greenthumb.domain.board.Post;
-import kr.pe.greenthumb.domain.board.Comment;
+import kr.pe.greenthumb.domain.post.Post;
+import kr.pe.greenthumb.domain.post.Comment;
 import kr.pe.greenthumb.domain.plant.Plant;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -26,6 +26,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userIdx;
 
+    // 유저 이메일 아이디로 바꾸자!
     @Column(name = "user_email")
     @NonNull
     @Email
