@@ -18,9 +18,9 @@ public class File {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "board_idx")
+    @JoinColumn(name = "post_idx")
     @NonNull
-    private Board board;
+    private Post post;
 
     @Column(name = "file_url")
     @NonNull
