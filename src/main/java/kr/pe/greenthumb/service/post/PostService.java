@@ -4,14 +4,17 @@ import kr.pe.greenthumb.dao.post.PostRepository;
 import kr.pe.greenthumb.dao.user.UserRepository;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
-import kr.pe.greenthumb.dto.board.PostDTO;
+import kr.pe.greenthumb.dto.post.PostDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-//import javax.validation.constraints.NotNull;
 
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PostService {
     @Autowired
     PostRepository postDao;

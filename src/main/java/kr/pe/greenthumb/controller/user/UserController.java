@@ -16,28 +16,28 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public List<User> getAllUser() {
-        return userService.getAllUser();
+//    @GetMapping
+    public List<User> getAll() {
+        return userService.getAll();
     }
 
-    @GetMapping
-    public User getUser(Long userIdx) {
-        return userService.getUser(userIdx);
+//    @GetMapping
+    public User getOne(Long userIdx) {
+        return userService.get(userIdx);
     }
 
-    @PostMapping
-    public User addUser(User user) {
-        return userService.addUser(user);
+//    @PostMapping
+    public User add(User user) {
+        return userService.add(user);
     }
 
-    @PutMapping
-    public void updateUser(User user) {
-        userService.updateUser(user);
+//    @PutMapping
+    public void update(User user) {
+        userService.update(user);
     }
 
-    @DeleteMapping
-    public void deleteUser(Long userIdx) {
-        userService.deleteUser(userIdx);
+//    @DeleteMapping
+    public void delete(Long userIdx) {
+        userService.delete(userIdx);
     }
 }

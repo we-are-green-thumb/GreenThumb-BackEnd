@@ -1,7 +1,7 @@
 package kr.pe.greenthumb.controller.post;
 
 import kr.pe.greenthumb.domain.post.Post;
-import kr.pe.greenthumb.dto.board.PostDTO;
+import kr.pe.greenthumb.dto.post.PostDTO;
 import kr.pe.greenthumb.service.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

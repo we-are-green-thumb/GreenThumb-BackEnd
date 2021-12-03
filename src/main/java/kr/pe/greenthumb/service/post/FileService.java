@@ -1,29 +1,11 @@
 package kr.pe.greenthumb.service.post;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
-
-@Entity
+@Service
 @RequiredArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Transactional(readOnly = true)
 public class FileService {
-    @Id
-    @Column(name = "file_idx")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long fileIdx;
-
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "post_idx")
-    @NonNull
-    private PostService post;
-
-    @Column(name = "file_url")
-    @NonNull
-    private String fileUrl;
 }

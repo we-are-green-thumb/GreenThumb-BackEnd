@@ -1,4 +1,10 @@
 package kr.pe.greenthumb.dao.like;
 
-public class LikePostRepository {
+import kr.pe.greenthumb.domain.like.LikePost;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface LikePostRepository extends JpaRepository<LikePost, Long> {
+//    LikePost findByPostIdxAndUserIdx(Post post, User user);
+
+//    List<LikePost> findAllByPostIdxAndUserIdx(Post post, User user);
 }

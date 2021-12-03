@@ -9,17 +9,14 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@RequiredArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
-@ToString
-//@Builder
 public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,33 +26,44 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "post_idx")
-    @NonNull
+    @NotNull
     private Post post;
 
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "user_idx")
-    @NonNull
+    @NotNull
     private User user;
 
     @JoinColumn(name = "comment_content" ,columnDefinition = "varchar(1500)")
-    @NonNull
+    @NotNull
     private String commentContent;
 
     @CreatedDate
-    @JoinColumn(name = "comment_create")
-    @NonNull
+    @Column(nullable = false, updatable = false)
     private LocalDateTime commentCreateDate;
 
     @LastModifiedDate
-    @JoinColumn(name = "comment_update")
+    @Column(nullable = false)
     private LocalDateTime commentUpdateDate;
 
     @JoinColumn(name = "comment_delete")
-    @NonNull
+    @NotNull
     private String commentDelete;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<LikeComment> likeCommentList = new ArrayList<>();
+
+    @Builder
+    public Comment(Post post, User user, String commentContent) {
+        this.post = post;
+        this.user = user;
+        this.commentContent = commentContent;
+    }
+
+    public Comment update(String content) {
+        this.commentContent = commentContent;
+        return this;
+    }
 }
