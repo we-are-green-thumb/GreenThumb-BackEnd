@@ -40,7 +40,7 @@ public class CommentDTO {
 
     @Getter
     public static class Delete {  // 댓글 삭제 정보
-        private String commentDelete;
+        private String isDeleted;
     }
 
     @Getter
@@ -49,14 +49,14 @@ public class CommentDTO {
         private Long userIdx;
         private String commentContent;
         private LocalDateTime commentUpdateDate;
-        private String commentDelete;
+        private String isDeleted;
 
         public Get(Comment entity) {
             this.postIdx = entity.getPost().getPostIdx();
             this.userIdx = entity.getUser().getUserIdx();
             this.commentContent = entity.getCommentContent();
             this.commentUpdateDate = entity.getCommentUpdateDate();
-            this.commentDelete = entity.getCommentDelete();
+            this.isDeleted = entity.getIsDeleted();
         }
 
     }
