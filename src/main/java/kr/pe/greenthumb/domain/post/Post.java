@@ -2,7 +2,7 @@ package kr.pe.greenthumb.domain.post;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import kr.pe.greenthumb.domain.BaseTimeEntity;
+import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

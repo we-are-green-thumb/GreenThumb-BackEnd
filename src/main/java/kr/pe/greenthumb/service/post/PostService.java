@@ -6,22 +6,19 @@ import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
 import kr.pe.greenthumb.dto.post.PostDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Service
 public class PostService {
-    @Autowired
-    PostRepository postDao;
-    @Autowired
-    UserRepository userDao;
+
+    private final PostRepository postDao;
+    private final UserRepository userDao;
 
     public Post add(PostDTO.Create dto) {
+
         User user = userDao.findById(dto.getUserIdx()).
                 orElseThrow(() -> new NullPointerException("This (number" + dto.getUserIdx() + ") user is not exist"));
 
@@ -29,6 +26,7 @@ public class PostService {
     }
 
     public List<Post> getAll(String category) {
+
         return postDao.findPostByPostCategory(category);
     }
 

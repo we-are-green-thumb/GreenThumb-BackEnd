@@ -5,14 +5,11 @@ import kr.pe.greenthumb.domain.post.Comment;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@RequiredArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
-@ToString
-//@Builder
 public class LikeComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +18,17 @@ public class LikeComment {
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "comment_idx")
-    @NonNull
+    @NotNull
     private Comment comment;
 
     @OneToOne
     @JoinColumn(name = "user_Idx")
-    @NonNull
+    @NotNull
     private User user;
+
+    @Builder
+    public LikeComment(Comment comment, User user) {
+        this.comment = comment;
+        this.user = user;
+    }
 }

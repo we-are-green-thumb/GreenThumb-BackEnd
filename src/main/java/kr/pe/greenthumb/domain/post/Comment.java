@@ -2,7 +2,7 @@ package kr.pe.greenthumb.domain.post;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import kr.pe.greenthumb.domain.BaseTimeEntity;
+import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import kr.pe.greenthumb.domain.like.LikeComment;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
@@ -49,7 +49,7 @@ public class Comment extends BaseTimeEntity {
 
     @JoinColumn(name = "comment_delete")
     @NotNull
-    private String commentDelete;
+    private String commentDelete = "n";
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     @JsonBackReference
@@ -62,8 +62,16 @@ public class Comment extends BaseTimeEntity {
         this.commentContent = commentContent;
     }
 
-    public Comment update(String content) {
+    public Comment update(Long commentIdx, Post post, User user, String commentContent, LocalDateTime commentUpdateDate) {
+        this.commentIdx = commentIdx;
+        this.post = post;
+        this.user = user;
         this.commentContent = commentContent;
+        this.commentUpdateDate = commentUpdateDate;
         return this;
+    }
+
+    public void delete() {
+        this.commentDelete = "y";
     }
 }

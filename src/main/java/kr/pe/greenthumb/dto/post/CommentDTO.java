@@ -40,23 +40,24 @@ public class CommentDTO {
 
     @Getter
     public static class Delete {  // 댓글 삭제 정보
-        private Long postIdx;
-        private Long userIdx;
         private String commentDelete;
     }
 
     @Getter
     public static class Get {
-        private Post post;
-        private User user;
+        private Long postIdx;
+        private Long userIdx;
         private String commentContent;
         private LocalDateTime commentUpdateDate;
+        private String commentDelete;
 
         public Get(Comment entity) {
-            this.post = entity.getPost();
-            this.user = entity.getUser();
+            this.postIdx = entity.getPost().getPostIdx();
+            this.userIdx = entity.getUser().getUserIdx();
             this.commentContent = entity.getCommentContent();
             this.commentUpdateDate = entity.getCommentUpdateDate();
+            this.commentDelete = entity.getCommentDelete();
         }
+
     }
 }
