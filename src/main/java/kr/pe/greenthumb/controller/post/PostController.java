@@ -4,7 +4,6 @@ import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.dto.post.PostDTO;
 import kr.pe.greenthumb.service.post.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 public class PostController {
-    PostController() { System.out.println("PostController(){}"); }
 
     private final PostService postService;
 
