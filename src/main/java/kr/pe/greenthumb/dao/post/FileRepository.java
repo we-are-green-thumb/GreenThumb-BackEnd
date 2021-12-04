@@ -1,4 +1,7 @@
 package kr.pe.greenthumb.dao.post;
 
-public class FileRepository {
+import kr.pe.greenthumb.domain.post.File;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FileRepository extends JpaRepository<File, Long> {
 }
