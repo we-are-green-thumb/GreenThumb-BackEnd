@@ -1,6 +1,6 @@
 package kr.pe.greenthumb.domain.login;
 
-import kr.pe.greenthumb.domain.BaseTimeEntity;
+import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
