@@ -44,7 +44,7 @@ public class CommentService {
         Post post = postDao.findById(postIdx).
                 orElseThrow(() -> new NotFoundException("This (number" + postIdx + ") post is not exist"));
 
-        return commentDao.findAllByPostAndCommentDelete(post, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
+        return commentDao.findAllByPostAndIsDeleted(post, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
 
     }
 
@@ -58,7 +58,7 @@ public class CommentService {
         User user = userDao.findById(userIdx).
                 orElseThrow(() -> new NotFoundException("This (number" + userIdx + ") user is not exist"));
 
-        return commentDao.findAllByPostAndUserAndCommentDelete(post, user, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
+        return commentDao.findAllByPostAndUserAndIsDeleted(post, user, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
     }
 
     // 댓글 수정

@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    List<Comment> findAllByPostAndUserAndCommentDelete(Post post, User user, String commentDelete);
+    List<Comment> findAllByPostAndUserAndIsDeleted(Post post, User user, String isDeleted);
 
-    List<Comment> findAllByPostAndCommentDelete(Post post, String commentDelete);
+    List<Comment> findAllByPostAndIsDeleted(Post post, String isDeleted);
 
 }

@@ -49,7 +49,7 @@ public class Comment extends BaseTimeEntity {
 
     @JoinColumn(name = "comment_delete")
     @NotNull
-    private String commentDelete = "n";
+    private String isDeleted = "n";
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     @JsonBackReference
@@ -72,6 +72,6 @@ public class Comment extends BaseTimeEntity {
     }
 
     public void delete() {
-        this.commentDelete = "y";
+        this.isDeleted = "y";
     }
 }
