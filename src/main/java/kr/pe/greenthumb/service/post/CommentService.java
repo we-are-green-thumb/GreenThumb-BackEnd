@@ -74,7 +74,7 @@ public class CommentService {
         Comment comment = commentDao.findById(commentIdx).
                 orElseThrow(() -> new NotFoundException("This (number" + commentIdx + ") comment is not exist"));
 
-        comment.update(commentIdx, post, user, dto.getCommentContent(), dto.getCommentUpdateDate());
+        comment.update(commentIdx, post, user, dto.getCommentContent());
 
         return commentIdx;
 
