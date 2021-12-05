@@ -5,10 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 //import javax.validation.constraints.NotNull;
@@ -43,14 +41,14 @@ public class Post extends BaseTimeEntity {
     @NonNull
     private String postCategory;
 
-    @CreatedDate
-    @JoinColumn(name = "post_create")
-    @NonNull
-    private LocalDateTime postCreateDate;
-    @LastModifiedDate
-    @JoinColumn(name = "post_update")
-    @NonNull
-    private LocalDateTime postUpdateDate;
+//    @CreatedDate
+//    @JoinColumn(name = "post_create")
+//    @NonNull
+//    private LocalDateTime postCreateDate;
+//    @LastModifiedDate
+//    @JoinColumn(name = "post_update")
+//    @NonNull
+//    private LocalDateTime postUpdateDate;
 
     @Column(name = "post_delete")
     @NonNull

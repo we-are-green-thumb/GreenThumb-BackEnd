@@ -6,8 +6,6 @@ import kr.pe.greenthumb.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 public class CommentDTO {
 
     @Getter
@@ -35,7 +33,6 @@ public class CommentDTO {
     @Getter
     public static class Update {  // 댓글 수정 정보
         private String commentContent;
-        private LocalDateTime commentUpdateDate;
     }
 
     @Getter
@@ -48,14 +45,12 @@ public class CommentDTO {
         private Long postIdx;
         private Long userIdx;
         private String commentContent;
-        private LocalDateTime commentUpdateDate;
         private String isDeleted;
 
         public Get(Comment entity) {
             this.postIdx = entity.getPost().getPostIdx();
             this.userIdx = entity.getUser().getUserIdx();
             this.commentContent = entity.getCommentContent();
-            this.commentUpdateDate = entity.getCommentUpdateDate();
             this.isDeleted = entity.getIsDeleted();
         }
 
