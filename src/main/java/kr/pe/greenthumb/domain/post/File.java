@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @RequiredArgsConstructor
@@ -14,18 +15,18 @@ import javax.persistence.*;
 public class File {
 
     @Id
-    @Column(name = "file_idx")
+    @Column(name = "file_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long fileIdx;
+    private Long fileId;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "post_idx")
-    @NonNull
+    @JoinColumn(name = "post_id")
+    @NotNull
     private Post post;
 
     @Column(name = "file_url")
-    @NonNull
+    @NotNull
     private String fileUrl;
 
 }

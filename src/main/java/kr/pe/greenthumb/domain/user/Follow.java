@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @RequiredArgsConstructor
@@ -14,21 +15,20 @@ import javax.persistence.*;
 public class Follow {
 
     @Id
+    @Column(name = "follow_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "follow_idx")
-    private Long followIdx;
+    private Long followId;
 
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "user_follow")
-    @NonNull
-//    @Nonnull
+    @NotNull
     private User follower;
 
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "user_following")
-    @NonNull
+    @NotNull
     private User following;
 
 }

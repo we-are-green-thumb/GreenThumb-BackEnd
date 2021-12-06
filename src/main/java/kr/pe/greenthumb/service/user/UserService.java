@@ -21,8 +21,8 @@ public class UserService {
         return userDao.findAll();
     }
 
-    public User get(Long userIdx) {
-        return userDao.findById(userIdx).get();
+    public User get(Long userId) {
+        return userDao.findById(userId).get();
     }
 
     public User add(User user) {
@@ -33,8 +33,9 @@ public class UserService {
         userDao.save(user);
     }
 
-    public void delete(Long userIdx) {
-        User user = userDao.findById(userIdx).get();
+    public void delete(Long userId) {
+        User user = userDao.findById(userId).get();
         userDao.delete(user);
     }
+
 }

@@ -3,6 +3,7 @@ package kr.pe.greenthumb.domain.plant;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,17 +14,17 @@ import javax.persistence.*;
 public class Image {
 
     @Id
-    @Column(name = "image_idx")
+    @Column(name = "image_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long imageIdx;
+    private Long imageId;
 
     @OneToOne
-    @JoinColumn(name = "plant_idx")
-    @NonNull
+    @JoinColumn(name = "plant_id")
+    @NotNull
     private Plant plant;
 
     @Column(name = "image_url")
-    @NonNull
+    @NotNull
     private String imageUrl;
 
 }

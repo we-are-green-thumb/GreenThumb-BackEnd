@@ -18,8 +18,8 @@ public class PostService {
     private final UserRepository userDao;
 
     public Post add(PostDTO.Create dto) {
-        User user = userDao.findById(dto.getUserIdx()).
-                orElseThrow(() -> new NullPointerException("This (number" + dto.getUserIdx() + ") user is not exist"));
+        User user = userDao.findById(dto.getUserId()).
+                orElseThrow(() -> new NullPointerException("This (number" + dto.getUserId() + ") user is not exist"));
 
         return postDao.save(postDao.save(dto.toEntity(user)));
     }
@@ -32,8 +32,8 @@ public class PostService {
         postDao.save(post);
     }
 
-    public void delete(Long postIdx) {
-        Post post = postDao.findById(postIdx).get();
+    public void delete(Long postId) {
+        Post post = postDao.findById(postId).get();
         postDao.delete(post);
     }
 
