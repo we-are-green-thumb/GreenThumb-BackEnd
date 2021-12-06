@@ -19,6 +19,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, org.springframework.security.oauth2.core.user.OAuth2User> {
+
     private final OAuth2UserRepository userRepository;
     private final HttpSession httpSession;
 
@@ -42,7 +43,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 attributes.getNameAttributeKey());
     }
 
-
     private OAuth2User saveOrUpdate(OAuthAttributes attributes) {
         OAuth2User user = userRepository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
@@ -50,4 +50,5 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         return userRepository.save(user);
     }
+
 }

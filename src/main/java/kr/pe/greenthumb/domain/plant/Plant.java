@@ -3,7 +3,9 @@ package kr.pe.greenthumb.domain.plant;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @RequiredArgsConstructor
@@ -12,34 +14,36 @@ import javax.persistence.*;
 @Setter
 @ToString
 public class Plant {
+
     @Id
-    @Column(name = "plant_idx")
+    @Column(name = "plant_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long plantIdx;
+    private Long plantId;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "user_idx")
-    @NonNull
+    @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
     @Column(name = "plant_name")
-    @NonNull
+    @NotNull
     private String plantName;
 
     @Column(name = "plant_nickname")
-    @NonNull
+    @NotNull
     private String plantNickname;
 
     @Column(name = "water")
-    @NonNull
+    @NotNull
     private Long water;
 
     @Column(name = "temp")
-    @NonNull
+    @NotNull
     private Long temp;
 
     @Column(name = "image_url")
-    @NonNull
+    @NotNull
     private String imageUrl;
+
 }

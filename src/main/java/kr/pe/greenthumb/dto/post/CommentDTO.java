@@ -10,23 +10,23 @@ public class CommentDTO {
 
     @Getter
     public static class Create {  // 댓글 생성 정보
-        private Long postIdx;
-        private Long userIdx;
+        private Long postId;
+        private Long userId;
         private String commentContent;
 
         @Builder
-        public Create(Long postIdx, Long userIdx, String commentContent) {
-            this.postIdx = postIdx;
-            this.userIdx = userIdx;
+        public Create(Long postId, Long userId, String commentContent) {
+            this.postId = postId;
+            this.userId = userId;
             this.commentContent = commentContent;
         }
 
         public Comment toEntity(Post post, User user) {
             return Comment.builder()
-                          .post(post)
-                          .user(user)
-                          .commentContent(commentContent)
-                          .build();
+                    .post(post)
+                    .user(user)
+                    .commentContent(commentContent)
+                    .build();
         }
     }
 
@@ -42,17 +42,17 @@ public class CommentDTO {
 
     @Getter
     public static class Get {
-        private Long postIdx;
-        private Long userIdx;
+        private Long postId;
+        private Long userId;
         private String commentContent;
         private String isDeleted;
 
         public Get(Comment entity) {
-            this.postIdx = entity.getPost().getPostIdx();
-            this.userIdx = entity.getUser().getUserIdx();
+            this.postId = entity.getPost().getPostId();
+            this.userId = entity.getUser().getUserId();
             this.commentContent = entity.getCommentContent();
             this.isDeleted = entity.getIsDeleted();
         }
-
     }
+
 }

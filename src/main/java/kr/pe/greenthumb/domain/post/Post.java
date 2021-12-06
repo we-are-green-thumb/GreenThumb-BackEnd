@@ -7,6 +7,7 @@ import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 //import javax.validation.constraints.NotNull;
@@ -18,44 +19,36 @@ import java.util.List;
 @Setter
 @ToString
 public class Post extends BaseTimeEntity {
+
     @Id
-    @Column(name = "post_idx")
+    @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postIdx;
+    private Long postId;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "user_idx")
-    @NonNull
+    @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
-    @Column(name = "post_title" , columnDefinition = "varchar(300)")
-    @NonNull
+    @Column(name = "post_title", columnDefinition = "varchar(300)")
+    @NotNull
     private String title;
 
-    @Column(name = "post_content" , columnDefinition = "varchar(1500)")
-    @NonNull
+    @Column(name = "post_content", columnDefinition = "varchar(1500)")
+    @NotNull
     private String postContent;
 
     @Column(name = "post_category")
-    @NonNull
+    @NotNull
     private String postCategory;
 
-//    @CreatedDate
-//    @JoinColumn(name = "post_create")
-//    @NonNull
-//    private LocalDateTime postCreateDate;
-//    @LastModifiedDate
-//    @JoinColumn(name = "post_update")
-//    @NonNull
-//    private LocalDateTime postUpdateDate;
-
     @Column(name = "post_delete")
-    @NonNull
+    @NotNull
     private String postDelete;
 
     @Column(name = "post_hits")
-    @NonNull
+    @NotNull
     private Long postHits;
 
     // 자유게시판을 제외한 질문, 거래 게시판 완료 여부 체크
@@ -84,4 +77,5 @@ public class Post extends BaseTimeEntity {
 
         return this;
     }
+
 }

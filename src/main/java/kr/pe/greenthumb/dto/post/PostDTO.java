@@ -6,10 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class PostDTO {
+
     @AllArgsConstructor
     @Getter
     public static class Create {   // 게시물 생성 정보
-        private Long userIdx;
+        private Long userId;
         private String title;
         private String postContent;
         private String postCategory;
@@ -27,17 +28,17 @@ public class PostDTO {
 
         public Post toEntity(User user) {
             return Post.builder()
-                       .user(user)
-                       .title(title)
-                       .postContent(postContent)
-                       .postCategory(postCategory)
-                       .build();
+                    .user(user)
+                    .title(title)
+                    .postContent(postContent)
+                    .postCategory(postCategory)
+                    .build();
         }
     }
 
     @Getter
     public static class Get {   // 게시물 가져오는 정보
-        private Long postIdx;
+        private Long postId;
         // 나중에 repo에서 따로 만들어주는게 낫다?
 //      private String Title;
 //      private String postContent;
@@ -56,7 +57,13 @@ public class PostDTO {
 
     @Getter
     public static class Delete {   // 게시물 삭제 정보
-        private Long postIdx;
+        private Long postId;
         private String postDelete;
     }
+
+    @Getter
+    public static class Check {
+        private String postCheck;
+    }
+
 }

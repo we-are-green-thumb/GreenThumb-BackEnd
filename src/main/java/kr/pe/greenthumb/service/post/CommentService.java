@@ -25,71 +25,63 @@ public class CommentService {
 
     // 댓글 생성
     @Transactional
-    public Long add(Long postIdx, Long userIdx, CommentDTO.Create dto) {
+    public Long add(Long postId, Long userId, CommentDTO.Create dto) {
+        Post post = postDao.findById(postId).
+                orElseThrow(() -> new NotFoundException("This (number" + postId + ") post is not exist"));
 
-        Post post = postDao.findById(postIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + postIdx + ") post is not exist"));
+        User user = userDao.findById(userId).
+                orElseThrow(() -> new NotFoundException("This (number" + userId + ") user is not exist"));
 
-        User user = userDao.findById(userIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + userIdx + ") user is not exist"));
-
-        return commentDao.save(dto.toEntity(post, user)).getCommentIdx();
-
+        return commentDao.save(dto.toEntity(post, user)).getCommentId();
     }
 
     // 게시글별 댓글 조회
     @Transactional
-    public List<CommentDTO.Get> getAllByPost(Long postIdx) {
-
-        Post post = postDao.findById(postIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + postIdx + ") post is not exist"));
+    public List<CommentDTO.Get> getAllByPost(Long postId) {
+        Post post = postDao.findById(postId).
+                orElseThrow(() -> new NotFoundException("This (number" + postId + ") post is not exist"));
 
         return commentDao.findAllByPostAndIsDeleted(post, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
-
     }
 
     // 유저별 댓글 조회
     @Transactional
-    public List<CommentDTO.Get> getAllByUser(Long postIdx, Long userIdx) {
+    public List<CommentDTO.Get> getAllByUser(Long postId, Long userId) {
+        Post post = postDao.findById(postId).
+                orElseThrow(() -> new NotFoundException("This (number" + postId + ") post is not exist"));
 
-        Post post = postDao.findById(postIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + postIdx + ") post is not exist"));
-
-        User user = userDao.findById(userIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + userIdx + ") user is not exist"));
+        User user = userDao.findById(userId).
+                orElseThrow(() -> new NotFoundException("This (number" + userId + ") user is not exist"));
 
         return commentDao.findAllByPostAndUserAndIsDeleted(post, user, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
     }
 
     // 댓글 수정
     @Transactional
-    public Long update(Long postIdx, Long userIdx, Long commentIdx, CommentDTO.Update dto) {
+    public Long update(Long postId, Long userId, Long commentId, CommentDTO.Update dto) {
+        Post post = postDao.findById(postId).
+                orElseThrow(() -> new NotFoundException("This (number" + postId + ") post is not exist"));
 
-        Post post = postDao.findById(postIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + postIdx + ") post is not exist"));
+        User user = userDao.findById(userId).
+                orElseThrow(() -> new NotFoundException("This (number" + userId + ") user is not exist"));
 
-        User user = userDao.findById(userIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + userIdx + ") user is not exist"));
+        Comment comment = commentDao.findById(commentId).
+                orElseThrow(() -> new NotFoundException("This (number" + commentId + ") comment is not exist"));
 
-        Comment comment = commentDao.findById(commentIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + commentIdx + ") comment is not exist"));
+        comment.update(commentId, post, user, dto.getCommentContent());
 
-        comment.update(commentIdx, post, user, dto.getCommentContent());
-
-        return commentIdx;
-
+        return commentId;
     }
 
     // 댓글 삭제
     @Transactional
-    public void delete(Long commentIdx) {
-
-        Comment comment = commentDao.findById(commentIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + commentIdx + ") comment is not exist"));
+    public void delete(Long commentId) {
+        Comment comment = commentDao.findById(commentId).
+                orElseThrow(() -> new NotFoundException("This (number" + commentId + ") comment is not exist"));
 
         comment.delete();
 
         commentDao.save(comment);
-
     }
+
 }

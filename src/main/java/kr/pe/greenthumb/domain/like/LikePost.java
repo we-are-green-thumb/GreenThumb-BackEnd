@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -11,18 +12,20 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class LikePost {
+
     @Id
+    @Column(name = "like_post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likePostIdx;
+    private Long likePostId;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "post_idx")
+    @JoinColumn(name = "post_id")
     @NotNull
     private Post post;
 
     @OneToOne
-    @JoinColumn(name = "user_Idx")
+    @JoinColumn(name = "user_id")
     @NotNull
     private User user;
 
@@ -31,4 +34,5 @@ public class LikePost {
         this.post = post;
         this.user = user;
     }
+
 }

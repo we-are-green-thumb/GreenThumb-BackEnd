@@ -27,53 +27,45 @@ public class LikeService {
     private final UserRepository userDao;
 
     // 게시글 좋아요 등록
-    public Long likePost(Long postIdx, Long userIdx) {
+    public Long likePost(Long postId, Long userId) {
+        Post post = postDao.findById(postId).
+                orElseThrow(() -> new NotFoundException("This (number" + postId + ") post is not exist"));
 
-        Post post = postDao.findById(postIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + postIdx + ") post is not exist"));
+        User user = userDao.findById(userId).
+                orElseThrow(() -> new NotFoundException("This (number" + userId + ") user is not exist"));
 
-        User user = userDao.findById(userIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + userIdx + ") user is not exist"));
+        LikePostDTO.Create likePost = new LikePostDTO.Create(postId, userId);
 
-        LikePostDTO.Create likePost = new LikePostDTO.Create(postIdx, userIdx);
-
-        return likePostDao.save(likePost.toEntity(post, user)).getLikePostIdx();
-
+        return likePostDao.save(likePost.toEntity(post, user)).getLikePostId();
     }
 
     // 게시글 좋아요 취소
-    public void unLikePost(Long likePostIdx) {
-
-        LikePost likePost = likePostDao.findById(likePostIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + likePostIdx + ") likePost is not exist"));
+    public void unLikePost(Long likePostId) {
+        LikePost likePost = likePostDao.findById(likePostId).
+                orElseThrow(() -> new NotFoundException("This (number" + likePostId + ") likePost is not exist"));
 
         likePostDao.delete(likePost);
-
     }
 
     // 댓글 좋아요 등록
-    public Long likeComment(Long commentIdx, Long userIdx) {
+    public Long likeComment(Long commentId, Long userId) {
+        Comment comment = commentDao.findById(commentId).
+                orElseThrow(() -> new NotFoundException("This (number" + commentId + ") comment is not exist"));
 
-        Comment comment = commentDao.findById(commentIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + commentIdx + ") comment is not exist"));
+        User user = userDao.findById(userId).
+                orElseThrow(() -> new NotFoundException("This (number" + userId + ") user is not exist"));
 
-        User user = userDao.findById(userIdx).
-                orElseThrow(() -> new NotFoundException("This (number" + userIdx + ") user is not exist"));
+        LikeCommentDTO.Create dto = new LikeCommentDTO.Create(commentId, userId);
 
-        LikeCommentDTO.Create dto = new LikeCommentDTO.Create(commentIdx, userIdx);
-
-        return likeCommentDao.save(dto.toEntity(comment, user)).getLikeCommentIdx();
-
+        return likeCommentDao.save(dto.toEntity(comment, user)).getLikeCommentId();
     }
 
     // 댓글 좋아요 취소
-    public void unLikeComment(Long likeCommentIdx) {
-
-        LikeComment likeComment = likeCommentDao.findById(likeCommentIdx).
-                    orElseThrow(() -> new NotFoundException("This (number" + likeCommentIdx + ") likeCommentIdx is not exist"));
+    public void unLikeComment(Long likeCommentId) {
+        LikeComment likeComment = likeCommentDao.findById(likeCommentId).
+                orElseThrow(() -> new NotFoundException("This (number" + likeCommentId + ") likeCommentId is not exist"));
 
         likeCommentDao.delete(likeComment);
-
     }
 
 }

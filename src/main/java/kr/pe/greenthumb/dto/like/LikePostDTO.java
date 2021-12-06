@@ -10,13 +10,13 @@ public class LikePostDTO {
 
     @Getter
     public static class Create {
-        private Long postIdx;
-        private Long userIdx;
+        private Long postId;
+        private Long userId;
 
         @Builder
-        public Create(Long postIdx, Long userIdx) {
-            this.postIdx = postIdx;
-            this.userIdx = userIdx;
+        public Create(Long postId, Long userId) {
+            this.postId = postId;
+            this.userId = userId;
         }
 
         public LikePost toEntity(Post post, User user) {
@@ -29,18 +29,18 @@ public class LikePostDTO {
 
     @Getter
     public static class Delete {
-        private Long postIdx;
-        private Long userIdx;
+        private Long postId;
+        private Long userId;
     }
 
     @Getter
     public static class Get {
-        private Long postIdx;
-        private Long userIdx;
+        private Long postId;
+        private Long userId;
 
         public Get(LikePost entity) {
-            this.postIdx = entity.getPost().getPostIdx();
-            this.userIdx = entity.getUser().getUserIdx();
+            this.postId = entity.getPost().getPostId();
+            this.userId = entity.getUser().getUserId();
         }
     }
 

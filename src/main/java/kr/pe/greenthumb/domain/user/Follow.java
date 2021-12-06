@@ -2,7 +2,9 @@ package kr.pe.greenthumb.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @RequiredArgsConstructor
@@ -11,21 +13,22 @@ import javax.persistence.*;
 @Setter
 //@Builder
 public class Follow {
+
     @Id
+    @Column(name = "follow_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "follow_idx")
-    private Long followIdx;
+    private Long followId;
 
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "user_follow")
-    @NonNull
-//    @NotNull
+    @NotNull
     private User follower;
 
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "user_following")
-    @NonNull
+    @NotNull
     private User following;
+
 }
