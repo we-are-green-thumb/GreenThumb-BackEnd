@@ -66,8 +66,6 @@ public class Comment extends BaseTimeEntity {
         return this;
     }
 
-    public void delete() {
-        this.isDeleted = "y";
-    }
+    public void delete() { this.isDeleted = "y"; }
 
 }

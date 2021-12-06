@@ -45,7 +45,11 @@ public class User extends BaseTimeEntity {
     @NotNull
     private String userDeleteCheck;
 
-    //    @LastModifiedDate
+    @Column(name = "user_profile")
+    @NotNull
+    private String userProfile;
+
+    // @LastModifiedDate
     @Column(name = "user_delete_date")
     private LocalDateTime userDeleteDate;
 
