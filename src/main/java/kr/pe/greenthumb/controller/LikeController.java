@@ -14,27 +14,27 @@ public class LikeController {
     private final LikeService likeService;
 
     // 게시글 좋아요 등록
-    @PostMapping("/post/{postIdx}/like")
-    public Long likePost(@PathVariable Long postIdx, @PathVariable Long userIdx) {
-        return likeService.likePost(postIdx, userIdx);
+    @PostMapping("/post/{postid}/like")
+    public Long likePost(@PathVariable Long postid, @PathVariable Long userid) {
+        return likeService.likePost(postid, userid);
     }
 
     // 게시글 좋아요 취소
-    @DeleteMapping("/post/{postIdx}/like")
-    public void unLikePost(@PathVariable Long likePostIdx) {
-        likeService.unLikePost(likePostIdx);
+    @DeleteMapping("/post/{postid}/like")
+    public void unLikePost(@PathVariable Long likePostid) {
+        likeService.unLikePost(likePostid);
     }
 
     // 댓글 좋아요 등록
-    @PostMapping("/comment/{commentIdx}/like")
-    public Long likeComment(@PathVariable Long commentIdx, @PathVariable Long userIdx) {
-        return likeService.likeComment(commentIdx, userIdx);
+    @PostMapping("/comment/{commentid}/like")
+    public Long likeComment(@PathVariable Long commentid, @PathVariable Long userid) {
+        return likeService.likeComment(commentid, userid);
     }
 
     // 댓글 좋아요 취소
-    @DeleteMapping("/comment/{commentIdx}/like")
-    public void unLikeComment(@PathVariable Long likeCommentIdx) {
-        likeService.unLikeComment(likeCommentIdx);
+    @DeleteMapping("/comment/{commentid}/like")
+    public void unLikeComment(@PathVariable Long likeCommentid) {
+        likeService.unLikeComment(likeCommentid);
     }
 
 }

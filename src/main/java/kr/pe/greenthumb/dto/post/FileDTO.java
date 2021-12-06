@@ -13,7 +13,7 @@ public class FileDTO {
         private String fileUrl;
 
         @Builder
-        public Create(Long postId, String fileUrl){
+        public Create(Long postId, String fileUrl) {
             this.postId = postId;
             this.fileUrl = fileUrl;
         }
@@ -29,6 +29,6 @@ public class FileDTO {
     @Getter
     public static class Delete {   // 첨부파일 삭제 정보
         private Post fileId;
-        }
+    }
 
 }

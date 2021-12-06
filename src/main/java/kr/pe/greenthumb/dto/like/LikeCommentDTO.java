@@ -14,8 +14,8 @@ public class LikeCommentDTO {
         private Long userId;
 
         @Builder
-        public Create(Long commentIdx, Long userId) {
-            this.commentId = commentIdx;
+        public Create(Long commentid, Long userId) {
+            this.commentId = commentid;
             this.userId = userId;
         }
 

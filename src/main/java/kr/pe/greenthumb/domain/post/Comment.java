@@ -27,13 +27,13 @@ public class Comment extends BaseTimeEntity {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "post_idx")
+    @JoinColumn(name = "post_id")
     @NotNull
     private Post post;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "user_idx")
+    @JoinColumn(name = "user_id")
     @NotNull
     private User user;
 
@@ -57,8 +57,8 @@ public class Comment extends BaseTimeEntity {
         this.isDeleted = getIsDeleted();
     }
 
-    public Comment update(Long commentIdx, Post post, User user, String commentContent) {
-        this.commentId = commentIdx;
+    public Comment update(Long commentid, Post post, User user, String commentContent) {
+        this.commentId = commentid;
         this.post = post;
         this.user = user;
         this.commentContent = commentContent;
