@@ -11,7 +11,7 @@ public class GreenthumbApplication {
     public static void main(String[] args) {
         SpringApplication.run(GreenthumbApplication.class, args);
     }
-    // 개태구 테스트
+
 }
 
 

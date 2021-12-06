@@ -1,4 +1,7 @@
 package kr.pe.greenthumb.dao.plant;
 
-public class ImageRepository {
+import kr.pe.greenthumb.domain.plant.Image;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ImageRepository extends JpaRepository<Image, Long> {
 }

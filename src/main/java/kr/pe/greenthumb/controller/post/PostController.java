@@ -32,4 +32,5 @@ public class PostController {
     public void delete(Long postIdx) {
         postService.delete(postIdx);
     }
+
 }

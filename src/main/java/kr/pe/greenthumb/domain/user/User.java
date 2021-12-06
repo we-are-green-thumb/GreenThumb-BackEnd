@@ -22,6 +22,7 @@ import java.util.Set;
 @Setter
 @ToString
 public class User extends BaseTimeEntity {
+
     @Id
     @Column(name = "user_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,11 +54,11 @@ public class User extends BaseTimeEntity {
     @NonNull
     private String userDeleteCheck;
 
-//    @LastModifiedDate
+    //    @LastModifiedDate
     @Column(name = "user_delete_date")
     private LocalDateTime userDeleteDate;
 
-    @Column(name = "user_delete_reason" , columnDefinition = "varchar(900)" )
+    @Column(name = "user_delete_reason", columnDefinition = "varchar(900)")
     private String userDeleteReason;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -89,4 +90,5 @@ public class User extends BaseTimeEntity {
         this.userPassword = userPassword;
         this.userRole = userRole;
     }
+
 }

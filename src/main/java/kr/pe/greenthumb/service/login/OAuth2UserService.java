@@ -47,4 +47,5 @@ public class OAuth2UserService extends BaseTimeEntity {
     public String getRoleKey() {
         return this.role.getKey();
     }
+
 }

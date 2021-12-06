@@ -18,6 +18,7 @@ import java.util.List;
 @Setter
 @ToString
 public class Post extends BaseTimeEntity {
+
     @Id
     @Column(name = "post_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +30,11 @@ public class Post extends BaseTimeEntity {
     @NonNull
     private User user;
 
-    @Column(name = "post_title" , columnDefinition = "varchar(300)")
+    @Column(name = "post_title", columnDefinition = "varchar(300)")
     @NonNull
     private String title;
 
-    @Column(name = "post_content" , columnDefinition = "varchar(1500)")
+    @Column(name = "post_content", columnDefinition = "varchar(1500)")
     @NonNull
     private String postContent;
 
@@ -84,4 +85,5 @@ public class Post extends BaseTimeEntity {
 
         return this;
     }
+
 }

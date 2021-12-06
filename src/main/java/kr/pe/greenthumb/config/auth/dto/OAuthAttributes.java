@@ -9,6 +9,7 @@ import java.util.Map;
 
 @Getter
 public class OAuthAttributes {
+
     private Map<String, Object> attributes;
     private String nameAttributeKey;
     private String name;
@@ -25,9 +26,9 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
-        if(registrationId.equals("naver")) {
+        if (registrationId.equals("naver")) {
             return ofNaver("id", attributes);
-        } else if(registrationId.equals("kakao")) {
+        } else if (registrationId.equals("kakao")) {
             return ofKakao(userNameAttributeName, attributes);
         }
         return ofGoogle(userNameAttributeName, attributes);
@@ -74,4 +75,5 @@ public class OAuthAttributes {
                 .role(Role.GUEST)
                 .build();
     }
+
 }

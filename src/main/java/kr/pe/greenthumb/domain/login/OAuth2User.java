@@ -4,6 +4,7 @@ import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Getter
@@ -46,4 +47,5 @@ public class OAuth2User extends BaseTimeEntity {
     public String getRoleKey() {
         return this.role.getKey();
     }
+
 }

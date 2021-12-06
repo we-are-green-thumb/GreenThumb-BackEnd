@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class LikePost {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long likePostIdx;
@@ -31,4 +33,5 @@ public class LikePost {
         this.post = post;
         this.user = user;
     }
+
 }
