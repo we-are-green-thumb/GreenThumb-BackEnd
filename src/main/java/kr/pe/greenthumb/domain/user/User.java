@@ -16,11 +16,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@RequiredArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
-@ToString
 public class User extends BaseTimeEntity {
 
     @Id

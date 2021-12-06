@@ -7,11 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@RequiredArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
-@ToString
 public class File {
 
     @Id
