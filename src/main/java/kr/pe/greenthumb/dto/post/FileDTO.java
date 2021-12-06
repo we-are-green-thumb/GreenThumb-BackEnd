@@ -12,7 +12,7 @@ public class FileDTO {
     }
 
     @Data
-    //첨부파일을 수정하는건 삭제인가 수정인가...?
+    // 첨부파일을 수정하는건 삭제인가 수정인가...?
     public static class Update {   // 첨부파일 수정 정보
         private String fileUrl;
     }

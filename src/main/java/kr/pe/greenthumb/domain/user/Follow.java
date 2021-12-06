@@ -22,7 +22,7 @@ public class Follow {
     @JsonManagedReference
     @JoinColumn(name = "user_follow")
     @NonNull
-//    @NotNull
+//    @Nonnull
     private User follower;
 
     @ManyToOne

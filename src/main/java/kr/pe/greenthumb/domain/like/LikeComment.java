@@ -24,7 +24,7 @@ public class LikeComment {
     private Comment comment;
 
     @OneToOne
-    @JoinColumn(name = "user_Idx")
+    @JoinColumn(name = "user_idx")
     @NotNull
     private User user;
 
