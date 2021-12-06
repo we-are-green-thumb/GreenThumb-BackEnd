@@ -8,13 +8,14 @@ public class FileDTO {
 
     @Getter
     public static class Create {   // 첨부파일 생성 정보
-        private Post postId;
+        private Long postId;
         private Long fileId;
         private String fileUrl;
 
         @Builder
-        public Create(){
-
+        public Create(Long postId, String fileUrl){
+            this.postId = postId;
+            this.fileUrl = fileUrl;
         }
 
     }
