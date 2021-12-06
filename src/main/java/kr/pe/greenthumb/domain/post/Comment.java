@@ -54,7 +54,6 @@ public class Comment extends BaseTimeEntity {
         this.post = post;
         this.user = user;
         this.commentContent = commentContent;
-        this.isDeleted = getIsDeleted();
     }
 
     public Comment update(Long commentId, Post post, User user, String commentContent) {
@@ -62,7 +61,6 @@ public class Comment extends BaseTimeEntity {
         this.post = post;
         this.user = user;
         this.commentContent = commentContent;
-        this.isDeleted = getIsDeleted();
         return this;
     }
 

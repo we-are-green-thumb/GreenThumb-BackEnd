@@ -21,7 +21,7 @@ public class CommentDTO {
             this.commentContent = commentContent;
         }
 
-        public Comment toEntity(Post post, User user) {
+        public Comment toEntity(Post post, User user, String commentContent) {
             return Comment.builder()
                     .post(post)
                     .user(user)

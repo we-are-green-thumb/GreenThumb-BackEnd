@@ -1,5 +1,6 @@
 package kr.pe.greenthumb.service.post;
 
+import kr.pe.greenthumb.common.exception.NotFoundException;
 import kr.pe.greenthumb.dao.post.PostRepository;
 import kr.pe.greenthumb.dao.user.UserRepository;
 import kr.pe.greenthumb.domain.post.Post;
@@ -19,7 +20,7 @@ public class PostService {
 
     public Post add(PostDTO.Create dto) {
         User user = userDao.findById(dto.getUserId()).
-                orElseThrow(() -> new NullPointerException("This (number" + dto.getUserId() + ") user is not exist"));
+                orElseThrow(NotFoundException::new);
 
         return postDao.save(postDao.save(dto.toEntity(user)));
     }
