@@ -1,84 +1,40 @@
 package kr.pe.greenthumb.service.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import kr.pe.greenthumb.domain.plant.Plant;
-import kr.pe.greenthumb.domain.post.Comment;
-import kr.pe.greenthumb.domain.post.Post;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
+import kr.pe.greenthumb.dao.user.UserRepository;
+import kr.pe.greenthumb.domain.user.User;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-@Entity
+@Service
 @RequiredArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Transactional(readOnly = true)
 public class UserService {
-    @Id
-    @Column(name = "user_idx")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userIdx;
 
-    @Column(name = "user_email")
-    @NonNull
-    @Email
-    private String userEmail;
+    @Autowired
+    UserRepository userDao;
 
-    @Column(name = "user_password")
-    @NonNull
-    private String userPassword;
+    public List<User> getAll() {
+        return userDao.findAll();
+    }
 
-    @Column(name = "user_nickname")
-    @NonNull
-    private String userNickname;
+    public User get(Long userIdx) {
+        return userDao.findById(userIdx).get();
+    }
 
-    @Column(name = "user_role")
-    @NonNull
-    private String userRole;
+    public User add(User user) {
+        return userDao.save(user);
+    }
 
-    @Column(name = "assign_date")
-    @NonNull
-    private LocalDateTime assignDate; // Date로 할 지, String으로 할 지
+    public void update(User user) {
+        userDao.save(user);
+    }
 
-    @Column(name = "user_delete")
-    @NonNull
-    private String userDeleteCheck;
-
-    @CreatedDate
-    @Column(name = "user_delete_date")
-    private LocalDateTime userDeleteDate;
-
-    @Column(name = "user_delete_reason" , columnDefinition = "varchar(900)" )
-    private String userDeleteReason;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<Plant> plantList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<Post> postList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<Comment> commentList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private Set<FollowService> followerList = new HashSet<>();
-
-    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private Set<FollowService> followingList = new HashSet<>();
-
-    @OneToOne(mappedBy = "user")
-    private BlackListService blackList;
+    public void delete(Long userIdx) {
+        User user = userDao.findById(userIdx).get();
+        userDao.delete(user);
+    }
 }

@@ -1,62 +1,44 @@
 package kr.pe.greenthumb.service.post;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import kr.pe.greenthumb.dao.post.CommentRepository;
+import kr.pe.greenthumb.dao.post.PostRepository;
+import kr.pe.greenthumb.dao.user.UserRepository;
 import kr.pe.greenthumb.domain.BaseTimeEntity;
-import kr.pe.greenthumb.domain.like.LikeComment;
+import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import kr.pe.greenthumb.dto.post.CommentDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-@Entity
+@Service
 @RequiredArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
-//@Builder
+@Transactional(readOnly = true)
 public class CommentService extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "comment_idx")
-    private Long commentIdx;
 
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "post_idx")
-    @NonNull
-    private PostService post;
+    @Autowired
+    private UserRepository userDao;
+    @Autowired
+    private PostRepository postDao;
+    @Autowired
+    private CommentRepository commentDao;
 
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "user_idx")
-    @NonNull
-    private User user;
+    // 댓글 생성
+    @Transactional
+    public Long save(Long postId, CommentDTO.Create dto) {
+        Post post = postDao.findById(postId).
+                orElseThrow(() -> new NullPointerException("Post with id: " + postId + " is not valid"));
 
-    @JoinColumn(name = "comment_content" ,columnDefinition = "varchar(1500)")
-    @NonNull
-    private String commentContent;
+        User user = userDao.findById(dto.getUserIdx())
+                .orElseThrow(() -> new NullPointerException("User with id: " + dto.getUserIdx() + " is not valid"));
 
-    @CreatedDate
-    @JoinColumn(name = "comment_create")
-    @NonNull
-    private LocalDateTime commentCreateDate;
+        return commentDao.save(dto.toEntity(post, user)).getCommentIdx();
+    }
 
-    @LastModifiedDate
-    @JoinColumn(name = "comment_update")
-    private LocalDateTime commentUpdateDate;
-
-    @JoinColumn(name = "comment_delete")
-    @NonNull
-    private String commentDelete;
-
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<LikeComment> likeCommentList = new ArrayList<>();
+    // 댓글 수정
+    @Transactional
+    public Long update(Long postId, CommentDTO.Update dto) {
+        return null;
+    }
 }

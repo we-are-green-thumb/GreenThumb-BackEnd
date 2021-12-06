@@ -26,6 +26,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userIdx;
 
+    // 유저 이메일 아이디로 바꾸자!
     @Column(name = "user_email")
     @NonNull
     @Email

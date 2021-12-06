@@ -1,32 +1,11 @@
 package kr.pe.greenthumb.service.like;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import kr.pe.greenthumb.domain.post.Comment;
-import kr.pe.greenthumb.domain.user.User;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
-
-@Entity
+@Service
 @RequiredArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
-//@Builder
+@Transactional(readOnly = true)
 public class LikeCommentService {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeCommentIdx;
-
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "comment_idx")
-    @NonNull
-    private Comment comment;
-
-    @OneToOne
-    @JoinColumn(name = "user_Idx")
-    @NonNull
-    private User user;
 }

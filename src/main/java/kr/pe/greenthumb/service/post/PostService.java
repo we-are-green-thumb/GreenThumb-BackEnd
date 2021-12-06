@@ -1,75 +1,43 @@
 package kr.pe.greenthumb.service.post;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import kr.pe.greenthumb.domain.BaseTimeEntity;
+import kr.pe.greenthumb.dao.post.PostRepository;
+import kr.pe.greenthumb.dao.user.UserRepository;
+import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import kr.pe.greenthumb.dto.post.PostDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-//import javax.validation.constraints.NotNull;
 
-@Entity
+@Service
 @RequiredArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
-public class PostService extends BaseTimeEntity {
-    @Id
-    @Column(name = "post_idx")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postIdx;
+@Transactional(readOnly = true)
+public class PostService {
+    @Autowired
+    PostRepository postDao;
+    @Autowired
+    UserRepository userDao;
 
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "user_idx")
-    @NonNull
-    private User user;
+    public Post add(PostDTO.Create dto) {
+        User user = userDao.findById(dto.getUserIdx()).
+                orElseThrow(() -> new NullPointerException("This (number" + dto.getUserIdx() + ") user is not exist"));
 
-    @Column(name = "post_title" , columnDefinition = "varchar(300)")
-    @NonNull
-    private String Title;
+        return postDao.save(postDao.save(dto.toEntity(user)));
+    }
 
-    @Column(name = "post_content" , columnDefinition = "varchar(1500)")
-    @NonNull
-    private String postContent;
+    public List<Post> getAll(String category) {
+        return postDao.findPostByPostCategory(category);
+    }
 
-    @Column(name = "post_category")
-    @NonNull
-    private String postCategory;
+    public void update(Post post) {
+        postDao.save(post);
+    }
 
-    @CreatedDate
-    @JoinColumn(name = "post_create")
-    @NonNull
-    private LocalDateTime postCreateDate;
-    @LastModifiedDate
-    @JoinColumn(name = "post_update")
-    @NonNull
-    private LocalDateTime postUpdateDate;
-
-    @Column(name = "post_delete")
-    @NonNull
-    private String postDelete;
-
-    @Column(name = "post_hits")
-    @NonNull
-    private Long postHits;
-
-    // 자유게시판을 제외한 질문, 거래 게시판 완료 여부 체크
-    @Column(name = "post_check")
-    private String postCheck;
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<CommentService> commentList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<FileService> fileList = new ArrayList<>();
+    public void delete(Long postIdx) {
+        Post post = postDao.findById(postIdx).get();
+        postDao.delete(post);
+    }
 }
