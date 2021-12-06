@@ -19,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Comment extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "comment_idx")
@@ -36,7 +37,7 @@ public class Comment extends BaseTimeEntity {
     @NotNull
     private User user;
 
-    @JoinColumn(name = "comment_content" ,columnDefinition = "varchar(1500)")
+    @JoinColumn(name = "comment_content", columnDefinition = "varchar(1500)")
     @NotNull
     private String commentContent;
 
@@ -68,4 +69,5 @@ public class Comment extends BaseTimeEntity {
     public void delete() {
         this.isDeleted = "y";
     }
+
 }
