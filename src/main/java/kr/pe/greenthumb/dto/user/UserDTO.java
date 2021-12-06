@@ -21,7 +21,7 @@ public class UserDTO {
 
     @Data
     public static class Get {       // 회원정보 가져오기
-        private Long userIdx;
+        private Long userId;
         // 나중에 repo에서 따로 만들어주는게 낫다?
 //      private String userEmail;
 //      private String userPassword;
@@ -30,14 +30,14 @@ public class UserDTO {
 
     @Data
     public static class Update {    // 회원정보 수정
-        private Long userIdx;
+        private Long userId;
         private String userPassword;
         private String userNickname;
     }
 
     @Data
     public static class Delete {    // 회원 탈퇴
-        private Long userIdx;
+        private Long userId;
         private LocalDateTime userDeleteDate;
         private String userDeleteReason;
     }

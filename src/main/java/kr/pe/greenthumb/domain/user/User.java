@@ -8,7 +8,7 @@ import kr.pe.greenthumb.domain.post.Post;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,34 +24,28 @@ import java.util.Set;
 public class User extends BaseTimeEntity {
 
     @Id
-    @Column(name = "user_idx")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userIdx;
+    private Long userId;
 
-    // 유저 이메일 아이디로 바꾸자!
-    @Column(name = "user_email")
-    @NonNull
-    @Email
-    private String userEmail;
+    @Column(name = "user_name")
+    @NotNull
+    private String userName;
 
     @Column(name = "user_password")
-    @NonNull
+    @NotNull
     private String userPassword;
 
     @Column(name = "user_nickname")
-    @NonNull
+    @NotNull
     private String userNickname;
 
     @Column(name = "user_role")
-    @NonNull
+    @NotNull
     private String userRole;
 
-//    @Column(name = "assign_date")
-//    @NonNull
-//    private LocalDateTime assignDate; // Date로 할 지, String으로 할 지
-
     @Column(name = "user_delete")
-    @NonNull
+    @NotNull
     private String userDeleteCheck;
 
     //    @LastModifiedDate
@@ -86,7 +80,6 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(String userEmail, String userPassword, String userRole) {
-        this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userRole = userRole;
     }

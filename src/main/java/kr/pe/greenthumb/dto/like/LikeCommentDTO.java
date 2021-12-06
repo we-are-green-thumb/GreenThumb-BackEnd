@@ -10,13 +10,13 @@ public class LikeCommentDTO {
 
     @Getter
     public static class Create {
-        private Long commentIdx;
-        private Long userIdx;
+        private Long commentId;
+        private Long userId;
 
         @Builder
-        public Create(Long commentIdx, Long userIdx) {
-            this.commentIdx = commentIdx;
-            this.userIdx = userIdx;
+        public Create(Long commentIdx, Long userId) {
+            this.commentId = commentIdx;
+            this.userId = userId;
         }
 
         public LikeComment toEntity(Comment comment, User user) {
@@ -29,18 +29,18 @@ public class LikeCommentDTO {
 
     @Getter
     public static class Delete {
-        private Long commentIdx;
-        private Long userIdx;
+        private Long commentId;
+        private Long userId;
     }
 
     @Getter
     public static class Get {
-        private Long commentIdx;
-        private Long userIdx;
+        private Long commentId;
+        private Long userId;
 
         public Get(LikeComment entity) {
-            this.commentIdx = entity.getComment().getCommentIdx();
-            this.userIdx = entity.getUser().getUserIdx();
+            this.commentId = entity.getComment().getCommentId();
+            this.userId = entity.getUser().getUserId();
         }
     }
 
