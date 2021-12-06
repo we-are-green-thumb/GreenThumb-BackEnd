@@ -4,20 +4,19 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import kr.pe.greenthumb.domain.user.User;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-//import javax.validation.constraints.NotNull;
 
 @Entity
-@RequiredArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
-@ToString
 public class Post extends BaseTimeEntity {
 
     @Id
