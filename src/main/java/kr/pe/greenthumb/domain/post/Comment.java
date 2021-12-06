@@ -2,15 +2,16 @@ package kr.pe.greenthumb.domain.post;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import kr.pe.greenthumb.domain.BaseTimeEntity;
+import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import kr.pe.greenthumb.domain.like.LikeComment;
 import kr.pe.greenthumb.domain.user.User;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,17 +40,9 @@ public class Comment extends BaseTimeEntity {
     @NotNull
     private String commentContent;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime commentCreateDate;
-
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime commentUpdateDate;
-
     @JoinColumn(name = "comment_delete")
     @NotNull
-    private String commentDelete;
+    private String isDeleted = "n";
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     @JsonBackReference
@@ -60,10 +53,19 @@ public class Comment extends BaseTimeEntity {
         this.post = post;
         this.user = user;
         this.commentContent = commentContent;
+        this.isDeleted = getIsDeleted();
     }
 
-    public Comment update(String content) {
+    public Comment update(Long commentIdx, Post post, User user, String commentContent) {
+        this.commentIdx = commentIdx;
+        this.post = post;
+        this.user = user;
         this.commentContent = commentContent;
+        this.isDeleted = getIsDeleted();
         return this;
+    }
+
+    public void delete() {
+        this.isDeleted = "y";
     }
 }
