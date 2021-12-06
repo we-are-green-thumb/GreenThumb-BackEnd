@@ -44,11 +44,11 @@ public class Post extends BaseTimeEntity {
 
     @Column(name = "post_delete")
     @NotNull
-    private String postDelete;
+    private String isDeleted = "n";
 
     @Column(name = "post_hits")
     @NotNull
-    private Long postHits;
+    private Long postHits = 0L;
 
     // 자유게시판을 제외한 질문, 거래 게시판 완료 여부 체크
     @Column(name = "post_check")

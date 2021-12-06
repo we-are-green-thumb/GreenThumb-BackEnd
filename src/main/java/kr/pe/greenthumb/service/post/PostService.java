@@ -22,7 +22,7 @@ public class PostService {
 
     public Post add(PostDTO.Create dto) {
         User user = userDao.findById(dto.getUserId()).
-                orElseThrow(() -> new NullPointerException("This (number" + dto.getUserId() + ") user is not exist"));
+                orElseThrow(NotFoundException::new);
 
         return postDao.save(postDao.save(dto.toEntity(user)));
     }

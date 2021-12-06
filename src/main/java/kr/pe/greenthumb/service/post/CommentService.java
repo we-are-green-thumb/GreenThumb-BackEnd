@@ -27,19 +27,19 @@ public class CommentService {
     @Transactional
     public Long add(Long postId, Long userId, CommentDTO.Create dto) {
         Post post = postDao.findById(postId).
-                orElseThrow(() -> new NotFoundException("This (number" + postId + ") post is not exist"));
+                orElseThrow(NotFoundException::new);
 
         User user = userDao.findById(userId).
-                orElseThrow(() -> new NotFoundException("This (number" + userId + ") user is not exist"));
+                orElseThrow(NotFoundException::new);
 
-        return commentDao.save(dto.toEntity(post, user)).getCommentId();
+        return commentDao.save(dto.toEntity(post, user, dto.getCommentContent())).getCommentId();
     }
 
     // 게시글별 댓글 조회
     @Transactional
     public List<CommentDTO.Get> getAllByPost(Long postId) {
         Post post = postDao.findById(postId).
-                orElseThrow(() -> new NotFoundException("This (number" + postId + ") post is not exist"));
+                orElseThrow(NotFoundException::new);
 
         return commentDao.findAllByPostAndIsDeleted(post, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
     }
@@ -48,10 +48,10 @@ public class CommentService {
     @Transactional
     public List<CommentDTO.Get> getAllByUser(Long postId, Long userId) {
         Post post = postDao.findById(postId).
-                orElseThrow(() -> new NotFoundException("This (number" + postId + ") post is not exist"));
+                orElseThrow(NotFoundException::new);
 
         User user = userDao.findById(userId).
-                orElseThrow(() -> new NotFoundException("This (number" + userId + ") user is not exist"));
+                orElseThrow(NotFoundException::new);
 
         return commentDao.findAllByPostAndUserAndIsDeleted(post, user, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
     }
@@ -60,13 +60,13 @@ public class CommentService {
     @Transactional
     public Long update(Long postId, Long userId, Long commentId, CommentDTO.Update dto) {
         Post post = postDao.findById(postId).
-                orElseThrow(() -> new NotFoundException("This (number" + postId + ") post is not exist"));
+                orElseThrow(NotFoundException::new);
 
         User user = userDao.findById(userId).
-                orElseThrow(() -> new NotFoundException("This (number" + userId + ") user is not exist"));
+                orElseThrow(NotFoundException::new);
 
         Comment comment = commentDao.findById(commentId).
-                orElseThrow(() -> new NotFoundException("This (number" + commentId + ") comment is not exist"));
+                orElseThrow(NotFoundException::new);
 
         comment.update(commentId, post, user, dto.getCommentContent());
 
@@ -77,7 +77,7 @@ public class CommentService {
     @Transactional
     public void delete(Long commentId) {
         Comment comment = commentDao.findById(commentId).
-                orElseThrow(() -> new NotFoundException("This (number" + commentId + ") comment is not exist"));
+                orElseThrow(NotFoundException::new);
 
         comment.delete();
 
