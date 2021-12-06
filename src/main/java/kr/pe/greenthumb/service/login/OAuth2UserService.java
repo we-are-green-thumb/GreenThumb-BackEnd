@@ -1,16 +1,15 @@
 package kr.pe.greenthumb.service.login;
 
-import kr.pe.greenthumb.domain.BaseTimeEntity;
+import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import kr.pe.greenthumb.domain.login.Role;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 
-@Getter
-@NoArgsConstructor
-@Entity
+@RequiredArgsConstructor
+@Service
 public class OAuth2UserService extends BaseTimeEntity {
 
     @Id
@@ -48,4 +47,5 @@ public class OAuth2UserService extends BaseTimeEntity {
     public String getRoleKey() {
         return this.role.getKey();
     }
+
 }

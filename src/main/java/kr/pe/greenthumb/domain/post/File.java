@@ -2,6 +2,7 @@ package kr.pe.greenthumb.domain.post;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 public class File {
+
     @Id
     @Column(name = "file_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +27,5 @@ public class File {
     @Column(name = "file_url")
     @NonNull
     private String fileUrl;
+
 }

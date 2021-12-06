@@ -1,11 +1,12 @@
 package kr.pe.greenthumb.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import kr.pe.greenthumb.domain.post.Post;
-import kr.pe.greenthumb.domain.post.Comment;
+import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import kr.pe.greenthumb.domain.plant.Plant;
+import kr.pe.greenthumb.domain.post.Comment;
+import kr.pe.greenthumb.domain.post.Post;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
@@ -20,12 +21,14 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class User {
+public class User extends BaseTimeEntity {
+
     @Id
     @Column(name = "user_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userIdx;
 
+    // 유저 이메일 아이디로 바꾸자!
     @Column(name = "user_email")
     @NonNull
     @Email
@@ -43,19 +46,19 @@ public class User {
     @NonNull
     private String userRole;
 
-    @Column(name = "assign_date")
-    @NonNull
-    private LocalDateTime assignDate; // Date로 할 지, String으로 할 지
+//    @Column(name = "assign_date")
+//    @NonNull
+//    private LocalDateTime assignDate; // Date로 할 지, String으로 할 지
 
     @Column(name = "user_delete")
     @NonNull
     private String userDeleteCheck;
 
-    @CreatedDate
+    //    @LastModifiedDate
     @Column(name = "user_delete_date")
     private LocalDateTime userDeleteDate;
 
-    @Column(name = "user_delete_reason" , columnDefinition = "varchar(900)" )
+    @Column(name = "user_delete_reason", columnDefinition = "varchar(900)")
     private String userDeleteReason;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -80,4 +83,12 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private BlackList blackList;
+
+    @Builder
+    public User(String userEmail, String userPassword, String userRole) {
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.userRole = userRole;
+    }
+
 }

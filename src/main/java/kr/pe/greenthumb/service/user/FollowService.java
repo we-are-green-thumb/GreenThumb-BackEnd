@@ -1,32 +1,11 @@
 package kr.pe.greenthumb.service.user;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
-
-@Entity
+@Service
 @RequiredArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-//@Builder
+@Transactional(readOnly = true)
 public class FollowService {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "follow_idx")
-    private Long followIdx;
-
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "user_follow")
-    @NonNull
-//    @NotNull
-    private UserService follower;
-
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "user_following")
-    @NonNull
-    private UserService following;
 }

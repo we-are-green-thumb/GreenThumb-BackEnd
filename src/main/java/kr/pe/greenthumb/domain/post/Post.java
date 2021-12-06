@@ -2,13 +2,11 @@ package kr.pe.greenthumb.domain.post;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import kr.pe.greenthumb.domain.BaseTimeEntity;
+import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 //import javax.validation.constraints.NotNull;
@@ -20,6 +18,7 @@ import java.util.List;
 @Setter
 @ToString
 public class Post extends BaseTimeEntity {
+
     @Id
     @Column(name = "post_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,11 +30,11 @@ public class Post extends BaseTimeEntity {
     @NonNull
     private User user;
 
-    @Column(name = "post_title" , columnDefinition = "varchar(300)")
+    @Column(name = "post_title", columnDefinition = "varchar(300)")
     @NonNull
-    private String Title;
+    private String title;
 
-    @Column(name = "post_content" , columnDefinition = "varchar(1500)")
+    @Column(name = "post_content", columnDefinition = "varchar(1500)")
     @NonNull
     private String postContent;
 
@@ -43,14 +42,14 @@ public class Post extends BaseTimeEntity {
     @NonNull
     private String postCategory;
 
-    @CreatedDate
-    @JoinColumn(name = "post_create")
-    @NonNull
-    private LocalDateTime postCreateDate;
-    @LastModifiedDate
-    @JoinColumn(name = "post_update")
-    @NonNull
-    private LocalDateTime postUpdateDate;
+//    @CreatedDate
+//    @JoinColumn(name = "post_create")
+//    @NonNull
+//    private LocalDateTime postCreateDate;
+//    @LastModifiedDate
+//    @JoinColumn(name = "post_update")
+//    @NonNull
+//    private LocalDateTime postUpdateDate;
 
     @Column(name = "post_delete")
     @NonNull
@@ -71,4 +70,20 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<File> fileList = new ArrayList<>();
+
+    @Builder
+    public Post(User user, String title, String postContent, String postCategory) {
+        this.user = user;
+        this.title = title;
+        this.postContent = postContent;
+        this.postCategory = postCategory;
+    }
+
+    public Post update(String title, String postContent) {
+        this.title = title;
+        this.postContent = postContent;
+
+        return this;
+    }
+
 }

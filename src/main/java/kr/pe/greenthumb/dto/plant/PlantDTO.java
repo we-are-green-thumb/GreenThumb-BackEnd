@@ -5,6 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 public class PlantDTO {
+
     @Data
     public static class Create {    // 식물 작성 필요 정보
         private Long userIdx;
@@ -34,4 +35,5 @@ public class PlantDTO {
     public static class Delete {    // 식물 삭제
         private Long plantIdx;
     }
+
 }

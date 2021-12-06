@@ -1,62 +1,87 @@
 package kr.pe.greenthumb.service.post;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import kr.pe.greenthumb.domain.BaseTimeEntity;
-import kr.pe.greenthumb.domain.like.LikeComment;
+import kr.pe.greenthumb.common.exception.NotFoundException;
+import kr.pe.greenthumb.dao.post.CommentRepository;
+import kr.pe.greenthumb.dao.post.PostRepository;
+import kr.pe.greenthumb.dao.user.UserRepository;
+import kr.pe.greenthumb.domain.post.Comment;
+import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import kr.pe.greenthumb.dto.post.CommentDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Entity
 @RequiredArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
-//@Builder
-public class CommentService extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "comment_idx")
-    private Long commentIdx;
+@Service
+public class CommentService {
 
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "post_idx")
-    @NonNull
-    private PostService post;
+    private final UserRepository userDao;
+    private final PostRepository postDao;
+    private final CommentRepository commentDao;
 
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "user_idx")
-    @NonNull
-    private User user;
+    // 댓글 생성
+    @Transactional
+    public Long add(Long postIdx, Long userIdx, CommentDTO.Create dto) {
+        Post post = postDao.findById(postIdx).
+                orElseThrow(() -> new NotFoundException("This (number" + postIdx + ") post is not exist"));
 
-    @JoinColumn(name = "comment_content" ,columnDefinition = "varchar(1500)")
-    @NonNull
-    private String commentContent;
+        User user = userDao.findById(userIdx).
+                orElseThrow(() -> new NotFoundException("This (number" + userIdx + ") user is not exist"));
 
-    @CreatedDate
-    @JoinColumn(name = "comment_create")
-    @NonNull
-    private LocalDateTime commentCreateDate;
+        return commentDao.save(dto.toEntity(post, user)).getCommentIdx();
+    }
 
-    @LastModifiedDate
-    @JoinColumn(name = "comment_update")
-    private LocalDateTime commentUpdateDate;
+    // 게시글별 댓글 조회
+    @Transactional
+    public List<CommentDTO.Get> getAllByPost(Long postIdx) {
+        Post post = postDao.findById(postIdx).
+                orElseThrow(() -> new NotFoundException("This (number" + postIdx + ") post is not exist"));
 
-    @JoinColumn(name = "comment_delete")
-    @NonNull
-    private String commentDelete;
+        return commentDao.findAllByPostAndIsDeleted(post, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
+    }
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<LikeComment> likeCommentList = new ArrayList<>();
+    // 유저별 댓글 조회
+    @Transactional
+    public List<CommentDTO.Get> getAllByUser(Long postIdx, Long userIdx) {
+        Post post = postDao.findById(postIdx).
+                orElseThrow(() -> new NotFoundException("This (number" + postIdx + ") post is not exist"));
+
+        User user = userDao.findById(userIdx).
+                orElseThrow(() -> new NotFoundException("This (number" + userIdx + ") user is not exist"));
+
+        return commentDao.findAllByPostAndUserAndIsDeleted(post, user, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
+    }
+
+    // 댓글 수정
+    @Transactional
+    public Long update(Long postIdx, Long userIdx, Long commentIdx, CommentDTO.Update dto) {
+        Post post = postDao.findById(postIdx).
+                orElseThrow(() -> new NotFoundException("This (number" + postIdx + ") post is not exist"));
+
+        User user = userDao.findById(userIdx).
+                orElseThrow(() -> new NotFoundException("This (number" + userIdx + ") user is not exist"));
+
+        Comment comment = commentDao.findById(commentIdx).
+                orElseThrow(() -> new NotFoundException("This (number" + commentIdx + ") comment is not exist"));
+
+        comment.update(commentIdx, post, user, dto.getCommentContent());
+
+        return commentIdx;
+    }
+
+    // 댓글 삭제
+    @Transactional
+    public void delete(Long commentIdx) {
+        Comment comment = commentDao.findById(commentIdx).
+                orElseThrow(() -> new NotFoundException("This (number" + commentIdx + ") comment is not exist"));
+
+        comment.delete();
+
+        commentDao.save(comment);
+    }
+
 }

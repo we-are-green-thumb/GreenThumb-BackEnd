@@ -5,6 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 public class BlackListDTO {
+
     @Data
     public static class Create {    // 블랙리스트 생성 정보
         private Long blackIdx;
@@ -29,4 +30,5 @@ public class BlackListDTO {
         private Long blackIdx;
         private Long blackStatus;
     }
+
 }

@@ -1,28 +1,9 @@
 package kr.pe.greenthumb.service.plant;
 
-import lombok.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-import javax.persistence.*;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
-@Entity
+@RequiredArgsConstructor
+@Service
 public class ImageService {
-    @Id
-    @Column(name = "image_idx")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long imageIdx;
-
-    @OneToOne
-    @JoinColumn(name = "plant_idx")
-    @NonNull
-    private PlantService plant;
-
-    @Column(name = "image_url")
-    @NonNull
-    private String imageUrl;
-
 }
