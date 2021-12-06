@@ -22,8 +22,8 @@ public class UserController {
     }
 
 //    @GetMapping
-    public User getOne(Long userid) {
-        return userService.get(userid);
+    public User getOne(Long userId) {
+        return userService.get(userId);
     }
 
 //    @PostMapping
@@ -37,7 +37,7 @@ public class UserController {
     }
 
 //    @DeleteMapping
-    public void delete(Long userid) {
-        userService.delete(userid);
+    public void delete(Long userId) {
+        userService.delete(userId);
     }
 }

@@ -76,7 +76,8 @@ public class User extends BaseTimeEntity {
     private BlackList blackList;
 
     @Builder
-    public User(String userEmail, String userPassword, String userRole) {
+    public User(String userName, String userPassword, String userRole) {
+        this.userName = userName;
         this.userPassword = userPassword;
         this.userRole = userRole;
     }

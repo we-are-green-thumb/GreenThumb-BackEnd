@@ -13,7 +13,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/post/{postid}")
+    @PostMapping("/post/{postId}")
     public Post add(@RequestBody PostDTO.Create dto) {
         return postService.add(dto);
     }
@@ -29,8 +29,8 @@ public class PostController {
     }
 
     @DeleteMapping
-    public void delete(Long postid) {
-        postService.delete(postid);
+    public void delete(Long postId) {
+        postService.delete(postId);
     }
 
 }
