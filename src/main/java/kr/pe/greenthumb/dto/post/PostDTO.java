@@ -3,11 +3,11 @@ package kr.pe.greenthumb.dto.post;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 public class PostDTO {
 
-    @AllArgsConstructor
     @Getter
     public static class Create {   // 게시물 생성 정보
         private Long userId;
@@ -16,15 +16,13 @@ public class PostDTO {
         private String postCategory;
 //        private String postCreateDate;    // 날짜 자동이라 안 넣어줘도 되는 것으로 추정,,
 
-        // 모든 멤버변수를 파라미터로 받기 때문에 굳이 Builder로 따로 생성자 만들 필요 없음 (?)
-        // 그래서 위에 AllArgs... 선언
-//        @Builder
-//        public Create(Long userId, String title, String postContent, String postCategory) {
-//            this.userId = userId;
-//            this.title = title;
-//            this.postContent = postContent;
-//            this.postCategory = postCategory;
-//        }
+        @Builder
+        public Create(Long userId, String title, String postContent, String postCategory) {
+            this.userId = userId;
+            this.title = title;
+            this.postCategory = postCategory;
+            this.postContent = postContent;
+        }
 
         public Post toEntity(User user) {
             return Post.builder()

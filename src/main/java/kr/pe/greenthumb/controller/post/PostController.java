@@ -1,4 +1,5 @@
 package kr.pe.greenthumb.controller.post;
+
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.dto.post.PostDTO;
 import kr.pe.greenthumb.service.post.PostService;
@@ -13,22 +14,26 @@ public class PostController {
 
     private final PostService postService;
 
+    // 게시글 생성
     @PostMapping("/post/{postId}")
     public Post add(@RequestBody PostDTO.Create dto) {
         return postService.add(dto);
     }
 
-    @GetMapping
+    // 게시글 조회
+    @GetMapping("/post/{postId}")
     public List<Post> getAll(String postCategory) {
         return postService.getAll(postCategory);
     }
 
-    @PutMapping
+    //게시글 수정
+    @PutMapping("/post/{postId}")
     public void update(Post post) {
         postService.update(post);
     }
 
-    @DeleteMapping
+    // 게시글 삭제
+    @DeleteMapping("/post/{postId}")
     public void delete(Long postId) {
         postService.delete(postId);
     }
