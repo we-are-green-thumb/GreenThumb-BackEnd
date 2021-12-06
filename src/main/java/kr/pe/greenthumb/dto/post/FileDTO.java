@@ -4,6 +4,7 @@ import kr.pe.greenthumb.domain.post.Post;
 import lombok.Data;
 
 public class FileDTO {
+
     @Data
     public static class Create {   // 첨부파일 생성 정보
         private Post postIdx;
@@ -20,5 +21,6 @@ public class FileDTO {
     @Data
     public static class Delete {   // 첨부파일 삭제 정보
         private Post fileIdx;
-        }
+    }
+
 }

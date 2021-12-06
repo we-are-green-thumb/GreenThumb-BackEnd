@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class PostDTO {
+
     @AllArgsConstructor
     @Getter
     public static class Create {   // 게시물 생성 정보
@@ -27,11 +28,11 @@ public class PostDTO {
 
         public Post toEntity(User user) {
             return Post.builder()
-                       .user(user)
-                       .title(title)
-                       .postContent(postContent)
-                       .postCategory(postCategory)
-                       .build();
+                    .user(user)
+                    .title(title)
+                    .postContent(postContent)
+                    .postCategory(postCategory)
+                    .build();
         }
     }
 
@@ -59,4 +60,5 @@ public class PostDTO {
         private Long postIdx;
         private String postDelete;
     }
+
 }
