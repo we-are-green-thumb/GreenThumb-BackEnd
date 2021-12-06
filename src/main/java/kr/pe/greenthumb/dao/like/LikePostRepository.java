@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LikePostRepository extends JpaRepository<LikePost, Long> {
 
-//    LikePost findByPostIdxAndUserIdx(Post post, User user);
+//    LikePost findByPostIdAndUserId(Post post, User user);
 
-//    List<LikePost> findAllByPostIdxAndUserIdx(Post post, User user);
+//    List<LikePost> findAllByPostIdAndUserId(Post post, User user);
 
 }

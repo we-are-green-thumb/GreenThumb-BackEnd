@@ -14,33 +14,33 @@ public class CommentController {
     private final CommentService commentService;
 
     // 댓글 생성
-    @PostMapping("/post/{postIdx}/user/{userIdx}/comment")
-    public Long add(@PathVariable Long postIdx, @PathVariable Long userIdx, @RequestBody CommentDTO.Create dto) {
-        return commentService.add(postIdx, userIdx, dto);
+    @PostMapping("/post/{postId}/user/{userId}/comment")
+    public Long add(@PathVariable Long postId, @PathVariable Long userId, @RequestBody CommentDTO.Create dto) {
+        return commentService.add(postId, userId, dto);
     }
 
     // 게시글별 댓글 조회
-    @GetMapping("/post/{postIdx}/comments")
-    public List<CommentDTO.Get> getAllByPost(@PathVariable Long postIdx) {
-        return commentService.getAllByPost(postIdx);
+    @GetMapping("/post/{postId}/comments")
+    public List<CommentDTO.Get> getAllByPost(@PathVariable Long postId) {
+        return commentService.getAllByPost(postId);
     }
 
     // 유저별 댓글 조회
-    @GetMapping("post/{postIdx}/user/{userIdx}/comments")
-    public List<CommentDTO.Get> getAllByUser(@PathVariable Long postIdx, @PathVariable Long userIdx) {
-        return commentService.getAllByUser(postIdx, userIdx);
+    @GetMapping("post/{postId}/user/{userId}/comments")
+    public List<CommentDTO.Get> getAllByUser(@PathVariable Long postId, @PathVariable Long userId) {
+        return commentService.getAllByUser(postId, userId);
     }
 
     // 댓글 수정
-    @PutMapping("/post/{postIdx}/user/{userIdx}/comment/{commentIdx}")
-    public Long update(@PathVariable Long postIdx, @PathVariable Long userIdx, @PathVariable Long commentIdx, @RequestBody CommentDTO.Update dto) {
-        return commentService.update(postIdx, userIdx, commentIdx, dto);
+    @PutMapping("/post/{postId}/user/{userId}/comment/{commentId}")
+    public Long update(@PathVariable Long postId, @PathVariable Long userId, @PathVariable Long commentId, @RequestBody CommentDTO.Update dto) {
+        return commentService.update(postId, userId, commentId, dto);
     }
 
     // 댓글 삭제
-    @DeleteMapping("/comment/{commentIdx}")
-    public void delete(@PathVariable Long commentIdx) {
-        commentService.delete(commentIdx);
+    @DeleteMapping("/comment/{commentId}")
+    public void delete(@PathVariable Long commentId) {
+        commentService.delete(commentId);
     }
 
 }

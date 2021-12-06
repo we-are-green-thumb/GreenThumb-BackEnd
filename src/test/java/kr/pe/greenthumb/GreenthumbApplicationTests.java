@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -25,9 +24,9 @@ class GreenthumbApplicationTests {
 
     @Test
     public void insertBaseTimeEntity() {
-        LocalDateTime now = LocalDateTime.now();
+//        LocalDateTime now = LocalDateTime.now();
 
-        User user = User.builder().userEmail("doon@doon.com").userPassword("111").userRole("회원").build();
+        User user = User.builder().userName("doon@doon.com").userPassword("111").userRole("회원").userNickName("ㅇㅇ").build();
         userDao.save(user);
         Post post = Post.builder().postCategory("질문").postContent("첫번째 게시글").user(user).title("일빠다").build();
         postDao.save(post);

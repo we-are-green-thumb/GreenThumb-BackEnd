@@ -4,20 +4,19 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import kr.pe.greenthumb.domain.user.User;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-//import javax.validation.constraints.NotNull;
 
 @Entity
-@RequiredArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
-@ToString
 public class Post extends BaseTimeEntity {
 
     @Id
@@ -45,11 +44,11 @@ public class Post extends BaseTimeEntity {
 
     @Column(name = "post_delete")
     @NotNull
-    private String postDelete;
+    private String isDeleted = "n";
 
     @Column(name = "post_hits")
     @NotNull
-    private Long postHits;
+    private Long postHits = 0L;
 
     // 자유게시판을 제외한 질문, 거래 게시판 완료 여부 체크
     @Column(name = "post_check")

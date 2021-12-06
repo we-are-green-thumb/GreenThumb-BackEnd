@@ -19,8 +19,8 @@ public class PostDTO {
         // 모든 멤버변수를 파라미터로 받기 때문에 굳이 Builder로 따로 생성자 만들 필요 없음 (?)
         // 그래서 위에 AllArgs... 선언
 //        @Builder
-//        public Create(Long userIdx, String title, String postContent, String postCategory) {
-//            this.userIdx = userIdx;
+//        public Create(Long userId, String title, String postContent, String postCategory) {
+//            this.userId = userId;
 //            this.title = title;
 //            this.postContent = postContent;
 //            this.postCategory = postCategory;

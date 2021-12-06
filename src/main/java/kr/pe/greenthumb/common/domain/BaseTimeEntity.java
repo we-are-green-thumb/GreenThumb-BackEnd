@@ -18,18 +18,17 @@ public abstract class BaseTimeEntity {
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Column(nullable = false)
     private LocalDateTime modifiedDate;
 
-//    @PrePersist
-//    public void before() {
-//        LocalDateTime now = LocalDateTime.now();
-//        this.createdTime = now;
-//        this.modifiedTime = now;
-//    }
-//
-//    @PreUpdate
-//    public void always() {
-//        this.modifiedTime = LocalDateTime.now();
-//    }
+    @PrePersist
+    public void prePersist() {
+        this.createdDate = LocalDateTime.now();
+        this.modifiedDate = null;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.modifiedDate = LocalDateTime.now();
+    }
+
 }

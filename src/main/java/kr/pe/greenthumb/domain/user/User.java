@@ -16,11 +16,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@RequiredArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
-@ToString
 public class User extends BaseTimeEntity {
 
     @Id
@@ -46,7 +43,7 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "user_delete")
     @NotNull
-    private String userDeleteCheck;
+    private String isDeleted = "n";
 
     //    @LastModifiedDate
     @Column(name = "user_delete_date")
@@ -79,8 +76,10 @@ public class User extends BaseTimeEntity {
     private BlackList blackList;
 
     @Builder
-    public User(String userEmail, String userPassword, String userRole) {
+    public User(String userName, String userPassword, String userNickName, String userRole) {
+        this.userName = userName;
         this.userPassword = userPassword;
+        this.userNickname = userNickName;
         this.userRole = userRole;
     }
 
