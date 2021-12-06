@@ -29,10 +29,10 @@ public class LikeService {
     // 게시글 좋아요 등록
     public Long likePost(Long postId, Long userId) {
         Post post = postDao.findById(postId).
-                orElseThrow(() -> new NotFoundException("This (number" + postId + ") post is not exist"));
+                orElseThrow(NotFoundException::new);
 
         User user = userDao.findById(userId).
-                orElseThrow(() -> new NotFoundException("This (number" + userId + ") user is not exist"));
+                orElseThrow(NotFoundException::new);
 
         LikePostDTO.Create likePost = new LikePostDTO.Create(postId, userId);
 
@@ -42,7 +42,7 @@ public class LikeService {
     // 게시글 좋아요 취소
     public void unLikePost(Long likePostId) {
         LikePost likePost = likePostDao.findById(likePostId).
-                orElseThrow(() -> new NotFoundException("This (number" + likePostId + ") likePost is not exist"));
+                orElseThrow(NotFoundException::new);
 
         likePostDao.delete(likePost);
     }
@@ -50,10 +50,10 @@ public class LikeService {
     // 댓글 좋아요 등록
     public Long likeComment(Long commentId, Long userId) {
         Comment comment = commentDao.findById(commentId).
-                orElseThrow(() -> new NotFoundException("This (number" + commentId + ") comment is not exist"));
+                orElseThrow(NotFoundException::new);
 
         User user = userDao.findById(userId).
-                orElseThrow(() -> new NotFoundException("This (number" + userId + ") user is not exist"));
+                orElseThrow(NotFoundException::new);
 
         LikeCommentDTO.Create dto = new LikeCommentDTO.Create(commentId, userId);
 
@@ -63,7 +63,7 @@ public class LikeService {
     // 댓글 좋아요 취소
     public void unLikeComment(Long likeCommentId) {
         LikeComment likeComment = likeCommentDao.findById(likeCommentId).
-                orElseThrow(() -> new NotFoundException("This (number" + likeCommentId + ") likeCommentId is not exist"));
+                orElseThrow(NotFoundException::new);
 
         likeCommentDao.delete(likeComment);
     }

@@ -43,7 +43,7 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "user_delete")
     @NotNull
-    private String userDeleteCheck;
+    private String isDeleted = "n";
 
     @Column(name = "user_profile")
     @NotNull
@@ -80,9 +80,10 @@ public class User extends BaseTimeEntity {
     private BlackList blackList;
 
     @Builder
-    public User(String userName, String userPassword, String userRole) {
+    public User(String userName, String userPassword, String userNickName, String userRole) {
         this.userName = userName;
         this.userPassword = userPassword;
+        this.userNickname = userNickName;
         this.userRole = userRole;
     }
 
