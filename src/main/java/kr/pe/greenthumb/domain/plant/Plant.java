@@ -3,6 +3,7 @@ package kr.pe.greenthumb.domain.plant;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 public class Plant {
+
     @Id
     @Column(name = "plant_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,4 +44,5 @@ public class Plant {
     @Column(name = "image_url")
     @NonNull
     private String imageUrl;
+
 }

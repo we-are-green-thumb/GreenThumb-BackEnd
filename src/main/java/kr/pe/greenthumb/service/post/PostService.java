@@ -18,7 +18,6 @@ public class PostService {
     private final UserRepository userDao;
 
     public Post add(PostDTO.Create dto) {
-
         User user = userDao.findById(dto.getUserIdx()).
                 orElseThrow(() -> new NullPointerException("This (number" + dto.getUserIdx() + ") user is not exist"));
 
@@ -26,7 +25,6 @@ public class PostService {
     }
 
     public List<Post> getAll(String category) {
-
         return postDao.findPostByPostCategory(category);
     }
 
@@ -38,4 +36,5 @@ public class PostService {
         Post post = postDao.findById(postIdx).get();
         postDao.delete(post);
     }
+
 }

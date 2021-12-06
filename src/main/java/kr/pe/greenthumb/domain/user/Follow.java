@@ -2,6 +2,7 @@ package kr.pe.greenthumb.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Setter
 //@Builder
 public class Follow {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "follow_idx")
@@ -28,4 +30,5 @@ public class Follow {
     @JoinColumn(name = "user_following")
     @NonNull
     private User following;
+
 }

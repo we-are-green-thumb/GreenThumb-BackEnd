@@ -5,6 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 public class UserDTO {
+
     @Data   // (실무에서) '@Data' 사용을 지양하라고 하던데 이유는?, 일단 '@Data' 만듭니다!
     public static class Login {     // 로그인 정보
         private String userEmail;
@@ -40,4 +41,5 @@ public class UserDTO {
         private LocalDateTime userDeleteDate;
         private String userDeleteReason;
     }
+
 }

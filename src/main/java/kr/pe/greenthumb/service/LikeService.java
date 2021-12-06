@@ -28,7 +28,6 @@ public class LikeService {
 
     // 게시글 좋아요 등록
     public Long likePost(Long postIdx, Long userIdx) {
-
         Post post = postDao.findById(postIdx).
                 orElseThrow(() -> new NotFoundException("This (number" + postIdx + ") post is not exist"));
 
@@ -38,22 +37,18 @@ public class LikeService {
         LikePostDTO.Create likePost = new LikePostDTO.Create(postIdx, userIdx);
 
         return likePostDao.save(likePost.toEntity(post, user)).getLikePostIdx();
-
     }
 
     // 게시글 좋아요 취소
     public void unLikePost(Long likePostIdx) {
-
         LikePost likePost = likePostDao.findById(likePostIdx).
                 orElseThrow(() -> new NotFoundException("This (number" + likePostIdx + ") likePost is not exist"));
 
         likePostDao.delete(likePost);
-
     }
 
     // 댓글 좋아요 등록
     public Long likeComment(Long commentIdx, Long userIdx) {
-
         Comment comment = commentDao.findById(commentIdx).
                 orElseThrow(() -> new NotFoundException("This (number" + commentIdx + ") comment is not exist"));
 
@@ -63,17 +58,14 @@ public class LikeService {
         LikeCommentDTO.Create dto = new LikeCommentDTO.Create(commentIdx, userIdx);
 
         return likeCommentDao.save(dto.toEntity(comment, user)).getLikeCommentIdx();
-
     }
 
     // 댓글 좋아요 취소
     public void unLikeComment(Long likeCommentIdx) {
-
         LikeComment likeComment = likeCommentDao.findById(likeCommentIdx).
-                    orElseThrow(() -> new NotFoundException("This (number" + likeCommentIdx + ") likeCommentIdx is not exist"));
+                orElseThrow(() -> new NotFoundException("This (number" + likeCommentIdx + ") likeCommentIdx is not exist"));
 
         likeCommentDao.delete(likeComment);
-
     }
 
 }

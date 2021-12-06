@@ -23,10 +23,10 @@ public class CommentDTO {
 
         public Comment toEntity(Post post, User user) {
             return Comment.builder()
-                          .post(post)
-                          .user(user)
-                          .commentContent(commentContent)
-                          .build();
+                    .post(post)
+                    .user(user)
+                    .commentContent(commentContent)
+                    .build();
         }
     }
 
@@ -53,6 +53,6 @@ public class CommentDTO {
             this.commentContent = entity.getCommentContent();
             this.isDeleted = entity.getIsDeleted();
         }
-
     }
+
 }

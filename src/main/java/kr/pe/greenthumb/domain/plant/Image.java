@@ -1,6 +1,7 @@
 package kr.pe.greenthumb.domain.plant;
 
 import lombok.*;
+
 import javax.persistence.*;
 
 @AllArgsConstructor
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 public class Image {
+
     @Id
     @Column(name = "image_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
