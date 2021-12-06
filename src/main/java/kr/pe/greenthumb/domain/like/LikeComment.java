@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class LikeComment {
 
     @Id
-    @Column(name = "like_comment_id")
+    @Column(name = "like_comment_Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long likeCommentId;
 
@@ -25,7 +25,7 @@ public class LikeComment {
     private Comment comment;
 
     @OneToOne
-    @JoinColumn(name = "user_Id")
+    @JoinColumn(name = "user_id")
     @NotNull
     private User user;
 
