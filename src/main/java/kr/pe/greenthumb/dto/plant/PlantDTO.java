@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public class PlantDTO {
     @Data
     public static class Create {    // 식물 작성 필요 정보
+        private Long userIdx;
         private Long plantIdx;
         private String plantName;
         private String plantNickname;
@@ -22,7 +23,6 @@ public class PlantDTO {
 
     @Data
     public static class Update {    // 식물정보 수정
-        private Long plantIdx;
         private String plantName;
         private String plantNickname;
         private Long water;
