@@ -31,16 +31,6 @@ public class CommentDTO {
     }
 
     @Getter
-    public static class Update {  // 댓글 수정 정보
-        private String commentContent;
-    }
-
-    @Getter
-    public static class Delete {  // 댓글 삭제 정보
-        private String isDeleted;
-    }
-
-    @Getter
     public static class Get {
         private Long postId;
         private Long userId;
@@ -53,6 +43,16 @@ public class CommentDTO {
             this.commentContent = entity.getCommentContent();
             this.isDeleted = entity.getIsDeleted();
         }
+    }
+
+    @Getter
+    public static class Update {  // 댓글 수정 정보
+        private String commentContent;
+    }
+
+    @Getter
+    public static class Delete {  // 댓글 삭제 정보
+        private String isDeleted;
     }
 
 }
