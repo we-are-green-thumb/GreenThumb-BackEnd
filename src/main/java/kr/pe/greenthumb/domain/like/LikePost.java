@@ -14,17 +14,18 @@ import javax.validation.constraints.NotNull;
 public class LikePost {
 
     @Id
+    @Column(name = "like_post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likePostIdx;
+    private Long likePostId;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "post_idx")
+    @JoinColumn(name = "post_id")
     @NotNull
     private Post post;
 
     @OneToOne
-    @JoinColumn(name = "user_Idx")
+    @JoinColumn(name = "user_id")
     @NotNull
     private User user;
 

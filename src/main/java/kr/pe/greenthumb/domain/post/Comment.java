@@ -21,9 +21,9 @@ import java.util.List;
 public class Comment extends BaseTimeEntity {
 
     @Id
+    @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "comment_idx")
-    private Long commentIdx;
+    private Long commentId;
 
     @ManyToOne
     @JsonManagedReference
@@ -58,7 +58,7 @@ public class Comment extends BaseTimeEntity {
     }
 
     public Comment update(Long commentIdx, Post post, User user, String commentContent) {
-        this.commentIdx = commentIdx;
+        this.commentId = commentIdx;
         this.post = post;
         this.user = user;
         this.commentContent = commentContent;
