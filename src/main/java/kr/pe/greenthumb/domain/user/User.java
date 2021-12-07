@@ -45,13 +45,12 @@ public class User extends BaseTimeEntity {
     @NotNull
     private String isDeleted = "n";
 
-    @Column(name = "user_profile")
-    @NotNull
-    private String userProfile;
-
-    // @LastModifiedDate
+    //    @LastModifiedDate
     @Column(name = "user_delete_date")
     private LocalDateTime userDeleteDate;
+
+    @Column(name = "user_profile", columnDefinition = "varchar(900)")
+    private String userProfile;
 
     @Column(name = "user_delete_reason", columnDefinition = "varchar(900)")
     private String userDeleteReason;
@@ -86,5 +85,6 @@ public class User extends BaseTimeEntity {
         this.userNickname = userNickName;
         this.userRole = userRole;
     }
+
 
 }

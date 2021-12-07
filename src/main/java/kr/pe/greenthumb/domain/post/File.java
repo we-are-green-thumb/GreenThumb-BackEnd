@@ -32,9 +32,10 @@ public class File {
         this.fileUrl = fileUrl;
     }
 
-    public File update(Post post, String fileUrl) {
+    public File Create(Post post, String fileUrl) {
         this.post = post;
         this.fileUrl = fileUrl;
+
         return this;
     }
 

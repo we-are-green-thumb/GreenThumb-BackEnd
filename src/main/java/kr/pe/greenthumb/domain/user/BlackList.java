@@ -1,5 +1,6 @@
 package kr.pe.greenthumb.domain.user;
 
+import kr.pe.greenthumb.domain.post.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class BlackList {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @NotNull
-    private User user;
+    private kr.pe.greenthumb.domain.post.User user;
 
     @Column(name = "black_reason", columnDefinition = "varchar(900)")
     @NotNull
@@ -29,7 +30,7 @@ public class BlackList {
     private String blackStatus = "n";
 
     @Builder
-    public BlackList(User user, String blackReason) {
+    public BlackList(kr.pe.greenthumb.domain.post.User user, String blackReason) {
         this.user = user;
         this.blackReason = blackReason;
     }

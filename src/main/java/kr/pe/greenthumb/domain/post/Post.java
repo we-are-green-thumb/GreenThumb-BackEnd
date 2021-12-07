@@ -52,7 +52,7 @@ public class Post extends BaseTimeEntity {
 
     // 자유게시판을 제외한 질문, 거래 게시판 완료 여부 체크
     @Column(name = "post_check")
-    private String postCheck;
+    private String isComplete;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonBackReference
@@ -70,11 +70,23 @@ public class Post extends BaseTimeEntity {
         this.postCategory = postCategory;
     }
 
-    public Post update(String title, String postContent) {
+    public Post update(String title, String postContent, String postCategory) {
         this.title = title;
         this.postContent = postContent;
+        this.postCategory = postCategory;
 
         return this;
     }
 
+    public void updateCheck(String isComplete) {
+        if (isComplete.equals("n")) {
+            this.isComplete = "y";
+        } else if (isComplete.equals("y")) {
+            this.isComplete = "n";
+        }
+    }
+
+    public void delete() {
+        this.isDeleted = "y";
+    }
 }

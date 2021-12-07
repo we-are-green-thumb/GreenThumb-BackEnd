@@ -2,9 +2,8 @@ package kr.pe.greenthumb.dto.user;
 
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.BlackList;
-import kr.pe.greenthumb.domain.user.User;
+import kr.pe.greenthumb.domain.post.User;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 
 public class BlackListDTO {

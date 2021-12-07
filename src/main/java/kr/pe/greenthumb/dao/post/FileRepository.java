@@ -14,4 +14,7 @@ public interface FileRepository extends JpaRepository<File, Long> {
     // 모두 찾는 것
     List<File> findAllByPostAndFileUrl(Post post, String fileUrl);
 
+    // 파일 삭제
+    File deleteByPost(Post post);
+
 }
