@@ -70,11 +70,28 @@ public class Post extends BaseTimeEntity {
         this.postCategory = postCategory;
     }
 
-    public Post update(String title, String postContent) {
+    public Post create(User user, String title, String postContent, String postCategory) {
+        this.user = user;
         this.title = title;
         this.postContent = postContent;
+        this.postCategory = postCategory;
 
         return this;
     }
 
+    public Post update(String title, String postContent, String postCategory) {
+        this.title = title;
+        this.postContent = postContent;
+        this.postCategory = postCategory;
+
+        return this;
+    }
+
+    public void updateCheck(String postCheck) {
+        this.postCheck = postCheck;
+    }
+
+    public void delete() {
+        this.isDeleted = "y";
+    }
 }
