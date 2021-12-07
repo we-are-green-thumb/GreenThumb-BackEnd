@@ -1,4 +1,4 @@
-package kr.pe.greenthumb.service.login;
+package kr.pe.greenthumb.service;
 
 import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import kr.pe.greenthumb.domain.login.Role;
