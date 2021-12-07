@@ -3,7 +3,6 @@ package kr.pe.greenthumb.dto.post;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 public class PostDTO {
@@ -26,7 +25,8 @@ public class PostDTO {
         }
     }
 
-    @Builder
+
+    @Getter
     public static class Get {
         private String title;
         private String postCategory;

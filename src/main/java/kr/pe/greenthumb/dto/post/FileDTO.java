@@ -35,8 +35,7 @@ public class FileDTO {
 
     @Getter
     public static class Delete {   // 첨부파일 삭제 정보
-        private Long fileId;
-        private Long postId;
+        private Post fileId;
     }
 
 }

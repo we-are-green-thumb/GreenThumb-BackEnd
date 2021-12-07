@@ -71,9 +71,9 @@ public class User extends BaseTimeEntity {
     @JsonBackReference
     private Set<Follow> followerList = new HashSet<>();
 
-    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "followee", cascade = CascadeType.ALL)
     @JsonBackReference
-    private Set<Follow> followingList = new HashSet<>();
+    private Set<Follow> followeeList = new HashSet<>();
 
     @OneToOne(mappedBy = "user")
     private BlackList blackList;
