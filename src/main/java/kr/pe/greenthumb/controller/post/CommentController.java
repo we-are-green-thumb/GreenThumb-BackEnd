@@ -26,15 +26,15 @@ public class CommentController {
     }
 
     // 유저별 댓글 조회
-    @GetMapping("post/{postId}/user/{userId}/comments")
+    @GetMapping("/post/{postId}/user/{userId}/comments")
     public List<CommentDTO.Get> getAllByUser(@PathVariable Long postId, @PathVariable Long userId) {
         return commentService.getAllByUser(postId, userId);
     }
 
     // 댓글 수정
-    @PutMapping("/post/{postId}/user/{userId}/comment/{commentId}")
-    public Long update(@PathVariable Long postId, @PathVariable Long userId, @PathVariable Long commentId, @RequestBody CommentDTO.Update dto) {
-        return commentService.update(postId, userId, commentId, dto);
+    @PutMapping("/comment/{commentId}")
+    public Long update(@PathVariable Long commentId, @RequestBody CommentDTO.Update dto) {
+        return commentService.update(commentId, dto);
     }
 
     // 댓글 삭제

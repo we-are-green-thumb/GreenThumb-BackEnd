@@ -49,6 +49,9 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_delete_date")
     private LocalDateTime userDeleteDate;
 
+    @Column(name = "user_profile", columnDefinition = "varchar(900)")
+    private String userProfile;
+
     @Column(name = "user_delete_reason", columnDefinition = "varchar(900)")
     private String userDeleteReason;
 
@@ -68,9 +71,9 @@ public class User extends BaseTimeEntity {
     @JsonBackReference
     private Set<Follow> followerList = new HashSet<>();
 
-    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "followee", cascade = CascadeType.ALL)
     @JsonBackReference
-    private Set<Follow> followingList = new HashSet<>();
+    private Set<Follow> followeeList = new HashSet<>();
 
     @OneToOne(mappedBy = "user")
     private BlackList blackList;
@@ -82,5 +85,6 @@ public class User extends BaseTimeEntity {
         this.userNickname = userNickName;
         this.userRole = userRole;
     }
+
 
 }

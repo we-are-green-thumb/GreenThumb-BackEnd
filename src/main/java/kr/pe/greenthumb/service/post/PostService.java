@@ -9,7 +9,9 @@ import kr.pe.greenthumb.dto.post.PostDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -18,24 +20,50 @@ public class PostService {
     private final PostRepository postDao;
     private final UserRepository userDao;
 
-    public Post add(PostDTO.Create dto) {
-        User user = userDao.findById(dto.getUserId()).
+    @Transactional
+    public Long add(Long userId, PostDTO.Create dto) {
+        User user = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
-        return postDao.save(postDao.save(dto.toEntity(user)));
+        return postDao.save(dto.toEntity(user, dto.getTitle(), dto.getPostContent(), dto.getPostCategory())).getPostId();
     }
 
-    public List<Post> getAll(String category) {
-        return postDao.findPostByPostCategory(category);
+    @Transactional
+    public List<PostDTO.Get> getAll(String postCategory) {
+        return postDao.findAllPostByPostCategoryAndIsDeleted(postCategory, "n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
     }
 
-    public void update(Post post) {
-        postDao.save(post);
+    @Transactional
+    public PostDTO.Get getOne(Long postId) {
+        return postDao.findById(postId).map(PostDTO.Get::new).get();
     }
 
+    @Transactional
+    public Long update(Long postId, PostDTO.Update dto) {
+        Post post = postDao.findById(postId).
+                orElseThrow(NotFoundException::new);
+
+        post.update(dto.getTitle(), dto.getPostCategory(), dto.getPostContent());
+
+        return postId;
+    }
+
+    @Transactional
+    public Long updateCheck(Long postId, PostDTO.UpdateCheck dto) {
+        Post post = postDao.findById(postId).
+                orElseThrow(NotFoundException::new);
+
+        post.updateCheck(dto.getIsComplete());
+
+        return postId;
+    }
+
+    @Transactional
     public void delete(Long postId) {
-        Post post = postDao.findById(postId).get();
-        postDao.delete(post);
+        Post post = postDao.findById(postId)
+                .orElseThrow(NotFoundException::new);
+
+        post.delete();
     }
 
 }
