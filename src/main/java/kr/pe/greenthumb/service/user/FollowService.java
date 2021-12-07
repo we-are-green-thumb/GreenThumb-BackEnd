@@ -25,7 +25,7 @@ public class FollowService {
         User follower = userDao.findById(dto.getFollowerId()).
                 orElseThrow(NotFoundException::new);
 
-        User following = userDao.findById(dto.getFollowingId()).
+        User following = userDao.findById(dto.getFolloweeId()).
                 orElseThrow(NotFoundException::new);
 
         return followDao.save(dto.toEntity(follower, following)).getFollowId();
@@ -34,15 +34,15 @@ public class FollowService {
     // 유저 한명의 팔로워 목록 조회
     @Transactional
     public List<FollowDTO.Get> getFollwers(FollowDTO.Get dto) {
-        User user = userDao.findById(dto.getFollowingId()).
+        User user = userDao.findById(dto.getFolloweeId()).
                 orElseThrow(NotFoundException::new);
 
-        return followDao.findAllByFollowing(user).stream().map(FollowDTO.Get::new).collect(Collectors.toList());
+        return followDao.findAllByFollowee(user).stream().map(FollowDTO.Get::new).collect(Collectors.toList());
     }
 
     // 유저 한명의 팔로잉 목록 조회
     @Transactional
-    public List<FollowDTO.Get> getFollowings(FollowDTO.Get dto) {
+    public List<FollowDTO.Get> getFollowees(FollowDTO.Get dto) {
         User user = userDao.findById(dto.getFollowerId()).
                 orElseThrow(NotFoundException::new);
 
@@ -55,10 +55,10 @@ public class FollowService {
         User follower = userDao.findById(dto.getFollowerId()).
                 orElseThrow(NotFoundException::new);
 
-        User following = userDao.findById(dto.getFollowingId()).
+        User followee = userDao.findById(dto.getFolloweeId()).
                 orElseThrow(NotFoundException::new);
 
-        followDao.deleteByFollowerAndFollowing(follower, following);
+        followDao.deleteByFollowerAndFollowee(follower, followee);
     }
 
 }

@@ -33,7 +33,7 @@ public class PostController {
         return postService.update(postId, dto);
     }
 
-    @PutMapping("post/{postId}")
+    @PutMapping("post/{postId}/check")
     public Long updateCheck(@PathVariable Long postId, @RequestBody PostDTO.UpdateCheck dto) {
         return postService.updateCheck(postId, dto);
     }

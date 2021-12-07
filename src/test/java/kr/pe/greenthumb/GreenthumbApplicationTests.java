@@ -3,10 +3,13 @@ package kr.pe.greenthumb;
 import kr.pe.greenthumb.common.exception.NotFoundException;
 import kr.pe.greenthumb.dao.post.CommentRepository;
 import kr.pe.greenthumb.dao.post.PostRepository;
+import kr.pe.greenthumb.dao.user.FollowRepository;
 import kr.pe.greenthumb.dao.user.UserRepository;
 import kr.pe.greenthumb.domain.post.Comment;
 import kr.pe.greenthumb.domain.post.Post;
+import kr.pe.greenthumb.domain.user.Follow;
 import kr.pe.greenthumb.domain.user.User;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,6 +24,8 @@ class GreenthumbApplicationTests {
     private UserRepository userDao;
     @Autowired
     private PostRepository postDao;
+    @Autowired
+    private FollowRepository followDao;
 
 //    @Test
     public void insertBaseTimeEntity() {
@@ -60,6 +65,22 @@ class GreenthumbApplicationTests {
         comment.delete();
 
         commentDao.save(comment);
+
+    }
+
+    // follow test
+    @Test
+    public void follow() {
+        User follower = User.builder().userName("follower").userPassword("aa").userRole("회원").userNickName("팔로워").build();
+        userDao.save(follower);
+
+        User followee = User.builder().userName("followee").userPassword("aa").userRole("회원").userNickName("팔로위").build();
+        userDao.save(followee);
+
+        followDao.save(Follow.builder()
+                        .follower(follower)
+                        .followee(followee)
+                        .build());
 
     }
 

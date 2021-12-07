@@ -11,18 +11,18 @@ public class FollowDTO {
     @Getter
     public static class Create {
         private Long followerId;
-        private Long followingId;
+        private Long followeeId;
 
         @Builder
-        public Create(Long followerId, Long followingId) {
+        public Create(Long followerId, Long followeeId) {
             this.followerId = followerId;
-            this.followingId = followingId;
+            this.followeeId = followeeId;
         }
 
-        public Follow toEntity(User follower, User following) {
+        public Follow toEntity(User follower, User followee) {
             return Follow.builder()
                     .follower(follower)
-                    .following(following)
+                    .followee(followee)
                     .build();
         }
     }
@@ -30,11 +30,11 @@ public class FollowDTO {
     @Getter
     public static class Get {
         private Long followerId;
-        private Long followingId;
+        private Long followeeId;
 
         public Get(Follow entity) {
             this.followerId = entity.getFollower().getUserId();
-            this.followingId = entity.getFollowing().getUserId();
+            this.followeeId = entity.getFollowee().getUserId();
         }
     }
 
@@ -42,7 +42,7 @@ public class FollowDTO {
     @Getter
     public static class Delete {
         private Long followerId;
-        private Long followingId;
+        private Long followeeId;
     }
 
 }

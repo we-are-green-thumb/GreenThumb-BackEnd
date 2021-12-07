@@ -8,14 +8,10 @@ import java.util.List;
 
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
-    List<Follow> findFollowerByUser(User user);
-
-    List<Follow> findFollowingByUser(User user);
-
     List<Follow> findAllByFollower(User follower);
 
-    List<Follow> findAllByFollowing(User following);
+    List<Follow> findAllByFollowee(User followee);
 
-    Follow deleteByFollowerAndFollowing(User follower, User following);
+    void deleteByFollowerAndFollowee(User follower, User followee);
 
 }
