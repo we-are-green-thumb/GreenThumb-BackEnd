@@ -14,12 +14,13 @@ public class FileDTO {
         private String fileUrl;
 
         @Builder
-        public Create(Long postId, String fileUrl) {
+        public Create(Long postId, Long fileId, String fileUrl) {
             this.postId = postId;
+            this.fileId = fileId;
             this.fileUrl = fileUrl;
         }
 
-        public File toEntity(Post post, String fileUrl) {
+        public File toEntity(Post post, Long fileId, String fileUrl) {
             return File.builder()
                     .post(post)
                     .fileUrl(fileUrl)
@@ -29,6 +30,11 @@ public class FileDTO {
     }
 
     @Getter
+    public static class Get {       // 첨부파일 가져오기
+        private Long fileId;
+    }
+
+        @Getter
     public static class Update {   // 첨부파일 수정 정보
         private String fileUrl;
     }

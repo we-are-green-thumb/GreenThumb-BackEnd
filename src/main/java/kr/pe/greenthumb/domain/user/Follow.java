@@ -28,4 +28,8 @@ public class Follow {
     @NotNull
     private User following;
 
+    @Builder
+    public Follow(User user, Long followId){
+    }
+
 }
