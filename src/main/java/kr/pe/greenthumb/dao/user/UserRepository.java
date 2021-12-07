@@ -1,6 +1,6 @@
 package kr.pe.greenthumb.dao.user;
 
-import kr.pe.greenthumb.domain.user.User;
+import kr.pe.greenthumb.domain.post.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

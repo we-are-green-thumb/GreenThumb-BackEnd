@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.common.domain.BaseTimeEntity;
 import kr.pe.greenthumb.domain.like.LikeComment;
-import kr.pe.greenthumb.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -62,8 +61,6 @@ public class Comment extends BaseTimeEntity {
         return this;
     }
 
-    public void delete() {
-        this.isDeleted = "y";
-    }
+    public void delete() { this.isDeleted = "y"; }
 
 }

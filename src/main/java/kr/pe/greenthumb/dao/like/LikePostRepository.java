@@ -10,3 +10,4 @@ public interface LikePostRepository extends JpaRepository<LikePost, Long> {
 //    List<LikePost> findAllByPostIdAndUserId(Post post, User user);
 
 }
+

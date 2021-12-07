@@ -1,7 +1,7 @@
 package kr.pe.greenthumb.domain.plant;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import kr.pe.greenthumb.domain.user.User;
+import kr.pe.greenthumb.domain.post.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -42,5 +42,27 @@ public class Plant {
     @Column(name = "image_url")
     @NotNull
     private String imageUrl;
+
+    @Builder
+    public Plant(User user, String plantName, String plantNickname,
+                 Long water, Long temp, String imageUrl) {
+        this.user = user;
+        this.plantName = plantName;
+        this.plantNickname = plantNickname;
+        this.water = water;
+        this.temp = temp;
+        this.imageUrl = imageUrl;
+    }
+
+    public Plant update(String plantName, String plantNickname,
+                        Long water, Long temp, String imageUrl) {
+        this.plantName = plantName;
+        this.plantNickname = plantNickname;
+        this.water = water;
+        this.temp = temp;
+        this.imageUrl = imageUrl;
+
+        return this;
+    }
 
 }
