@@ -70,6 +70,8 @@ public class CommentService {
 
         comment.update(commentId, post, user, dto.getCommentContent());
 
+        commentDao.save(comment);
+
         return commentId;
     }
 

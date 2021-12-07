@@ -1,12 +1,12 @@
 package kr.pe.greenthumb;
 
+import kr.pe.greenthumb.common.exception.NotFoundException;
 import kr.pe.greenthumb.dao.post.CommentRepository;
 import kr.pe.greenthumb.dao.post.PostRepository;
 import kr.pe.greenthumb.dao.user.UserRepository;
 import kr.pe.greenthumb.domain.post.Comment;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -22,7 +22,7 @@ class GreenthumbApplicationTests {
     @Autowired
     private PostRepository postDao;
 
-    @Test
+//    @Test
     public void insertBaseTimeEntity() {
 //        LocalDateTime now = LocalDateTime.now();
 
@@ -46,5 +46,21 @@ class GreenthumbApplicationTests {
     }
 //    void contextLoads() {
 //    }
+
+//    @Test
+    public void update() {
+
+    }
+
+//    @Test
+    public void delete() {
+
+        Comment comment = commentDao.findById(1L).orElseThrow(NotFoundException::new);
+
+        comment.delete();
+
+        commentDao.save(comment);
+
+    }
 
 }
