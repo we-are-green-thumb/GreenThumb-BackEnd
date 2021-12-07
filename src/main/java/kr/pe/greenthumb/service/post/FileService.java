@@ -3,6 +3,7 @@ package kr.pe.greenthumb.service.post;
 import kr.pe.greenthumb.common.exception.NotFoundException;
 import kr.pe.greenthumb.dao.post.PostRepository;
 import kr.pe.greenthumb.dao.post.FileRepository;
+import kr.pe.greenthumb.domain.post.File;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.dto.post.FileDTO;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,12 @@ public class FileService {
     @Transactional
     public Long add(Long postId, Long fileUrl, FileDTO.Create dto){
         Post post = postDao.findById(postId).
-                orElseThrow(() -> new NotFoundException("This (number" + postId + ") post is not exist"));
+                orElseThrow(NotFoundException::new);
 
-        return fileDao.save(dto.toEntity(post, fileUrl)).getFileUrl();
+        return fileDao.save(dto.toEntity(post, dto.getFileUrl())).getFileId();
+    }
+
+    public List<File> getAll(String category) {
+        return fileDao.findAllByPostAndFileUrl();
     }
 }

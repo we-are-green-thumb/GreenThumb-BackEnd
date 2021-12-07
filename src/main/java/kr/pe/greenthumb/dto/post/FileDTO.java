@@ -19,7 +19,7 @@ public class FileDTO {
             this.fileUrl = fileUrl;
         }
 
-        public File toEntity(Post post) {
+        public File toEntity(Post post, String fileUrl) {
             return File.builder()
                     .post(post)
                     .fileUrl(fileUrl)
