@@ -34,13 +34,13 @@ public class BlackList {
         this.blackReason = blackReason;
     }
 
-    public BlackList update(Long blackId, User user, String reason, String blackReason) {
-        this.blackId = blackId;
-        this.user = user;
+    public BlackList update(String blackReason) {
         this.blackReason = blackReason;
         return this;
     }
 
-    public void delete() { this.blackStatus = "n"; }
+    public void delete() {
+        this.blackStatus = "n";
+    }
 
 }

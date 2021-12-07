@@ -1,12 +1,12 @@
 package kr.pe.greenthumb;
 
+import kr.pe.greenthumb.dao.plant.PlantRepository;
 import kr.pe.greenthumb.dao.post.CommentRepository;
 import kr.pe.greenthumb.dao.post.PostRepository;
 import kr.pe.greenthumb.dao.user.UserRepository;
 import kr.pe.greenthumb.domain.post.Comment;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,8 +21,10 @@ class GreenthumbApplicationTests {
     private UserRepository userDao;
     @Autowired
     private PostRepository postDao;
+    @Autowired
+    private PlantRepository plantDao;
 
-    @Test
+//    @Test
     public void insertBaseTimeEntity() {
 //        LocalDateTime now = LocalDateTime.now();
 
@@ -45,6 +47,12 @@ class GreenthumbApplicationTests {
 
     }
 //    void contextLoads() {
+//    }
+
+//    @Test
+//    public void test1() {
+////        PlantDTO.Get dto = new PlantDTO.Get(1L,"name","nickname",1L,1L,"imageURL");
+//        plantDao.findById(dto.getPlantId()).map(PlantDTO.Get::new).get();
 //    }
 
 }

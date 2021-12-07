@@ -43,4 +43,26 @@ public class Plant {
     @NotNull
     private String imageUrl;
 
+    @Builder
+    public Plant(User user, String plantName, String plantNickname,
+                 Long water, Long temp, String imageUrl) {
+        this.user = user;
+        this.plantName = plantName;
+        this.plantNickname = plantNickname;
+        this.water = water;
+        this.temp = temp;
+        this.imageUrl = imageUrl;
+    }
+
+    public Plant update(String plantName, String plantNickname,
+                        Long water, Long temp, String imageUrl) {
+        this.plantName = plantName;
+        this.plantNickname = plantNickname;
+        this.water = water;
+        this.temp = temp;
+        this.imageUrl = imageUrl;
+
+        return this;
+    }
+
 }

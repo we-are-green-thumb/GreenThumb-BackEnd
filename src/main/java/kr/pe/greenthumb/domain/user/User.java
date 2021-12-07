@@ -53,6 +53,9 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_delete_date")
     private LocalDateTime userDeleteDate;
 
+    @Column(name = "user_profile", columnDefinition = "varchar(900)")
+    private String userProfile;
+
     @Column(name = "user_delete_reason", columnDefinition = "varchar(900)")
     private String userDeleteReason;
 

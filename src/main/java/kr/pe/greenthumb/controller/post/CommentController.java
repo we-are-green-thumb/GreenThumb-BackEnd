@@ -33,7 +33,7 @@ public class CommentController {
 
     // 댓글 수정
     @PutMapping("/comment/{commentId}")
-    public Long update(@PathVariable Long commentId, @RequestBody CommentDTO.Update dto, @PathVariable String postId) {
+    public Long update(@PathVariable Long commentId, @RequestBody CommentDTO.Update dto) {
         return commentService.update(commentId, dto);
     }
 
