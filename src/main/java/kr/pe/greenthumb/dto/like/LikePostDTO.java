@@ -2,7 +2,7 @@ package kr.pe.greenthumb.dto.like;
 
 import kr.pe.greenthumb.domain.like.LikePost;
 import kr.pe.greenthumb.domain.post.Post;
-import kr.pe.greenthumb.domain.user.User;
+import kr.pe.greenthumb.domain.post.User;
 import lombok.Builder;
 import lombok.Getter;
 

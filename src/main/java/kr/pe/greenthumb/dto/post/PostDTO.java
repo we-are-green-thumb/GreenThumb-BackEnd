@@ -25,6 +25,7 @@ public class PostDTO {
         }
     }
 
+
     @Getter
     public static class Get {
         private String title;
