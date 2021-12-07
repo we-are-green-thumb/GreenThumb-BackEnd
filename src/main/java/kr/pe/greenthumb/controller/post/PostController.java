@@ -13,7 +13,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/user")
+    @PostMapping("/post/user/{userId}")
     public Long add(@RequestBody PostDTO.Create dto) {
         return postService.add(dto);
     }
@@ -23,22 +23,22 @@ public class PostController {
         return postService.getAll(postCategory);
     }
 
-    @GetMapping("post/{postId}")
+    @GetMapping("/post/{postId}")
     public PostDTO.Get getOne(@PathVariable Long postId) {
         return postService.getOne(postId);
     }
 
-    @PutMapping("post/update")
+    @PutMapping("/post/{postId}")
     public Long update(@RequestBody PostDTO.Update dto) {
         return postService.update(dto);
     }
 
-    @PutMapping("post/updateCheck")
+    @PutMapping("/post/{postId}/check")
     public Long updateCheck(@RequestBody PostDTO.UpdateCheck dto) {
         return postService.updateCheck(dto);
     }
 
-    @DeleteMapping("post/{postId}")
+    @DeleteMapping("/post/{postId}")
     public void delete(@PathVariable Long postId) {
         postService.delete(postId);
     }

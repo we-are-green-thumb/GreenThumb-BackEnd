@@ -10,7 +10,7 @@ import kr.pe.greenthumb.domain.like.LikeComment;
 import kr.pe.greenthumb.domain.like.LikePost;
 import kr.pe.greenthumb.domain.post.Comment;
 import kr.pe.greenthumb.domain.post.Post;
-import kr.pe.greenthumb.domain.post.User;
+import kr.pe.greenthumb.domain.user.User;
 import kr.pe.greenthumb.dto.like.LikeCommentDTO;
 import kr.pe.greenthumb.dto.like.LikePostDTO;
 import lombok.RequiredArgsConstructor;

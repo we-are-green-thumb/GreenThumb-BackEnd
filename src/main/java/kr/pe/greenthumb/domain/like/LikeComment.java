@@ -2,8 +2,11 @@ package kr.pe.greenthumb.domain.like;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.domain.post.Comment;
-import kr.pe.greenthumb.domain.post.User;
-import lombok.*;
+import kr.pe.greenthumb.domain.user.User;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
