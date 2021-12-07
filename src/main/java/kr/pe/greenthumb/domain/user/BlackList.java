@@ -1,7 +1,9 @@
 package kr.pe.greenthumb.domain.user;
 
-import kr.pe.greenthumb.domain.post.User;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,7 +21,7 @@ public class BlackList {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @NotNull
-    private kr.pe.greenthumb.domain.post.User user;
+    private User user;
 
     @Column(name = "black_reason", columnDefinition = "varchar(900)")
     @NotNull

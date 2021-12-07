@@ -1,8 +1,11 @@
 package kr.pe.greenthumb.controller.plant;
 
+import kr.pe.greenthumb.dto.plant.PlantDTO;
 import kr.pe.greenthumb.service.plant.PlantService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
