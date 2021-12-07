@@ -1,6 +1,6 @@
 package kr.pe.greenthumb.controller.user;
 
-import kr.pe.greenthumb.domain.user.User;
+import kr.pe.greenthumb.domain.post.User;
 import kr.pe.greenthumb.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

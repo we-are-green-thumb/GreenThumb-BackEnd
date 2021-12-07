@@ -1,7 +1,7 @@
 package kr.pe.greenthumb.service.user;
 
 import kr.pe.greenthumb.dao.user.UserRepository;
-import kr.pe.greenthumb.domain.user.User;
+import kr.pe.greenthumb.domain.post.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

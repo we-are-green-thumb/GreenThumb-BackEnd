@@ -11,5 +11,5 @@ public interface BlackListRepository extends JpaRepository<BlackList, Long> {
     BlackList findByUserAndBlackStatus(User user, String blackStatus);
 
     List<BlackList> findAllByBlacklist(BlackList blackList);
-
+  
 }

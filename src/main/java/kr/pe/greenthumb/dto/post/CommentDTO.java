@@ -3,7 +3,6 @@ package kr.pe.greenthumb.dto.post;
 import kr.pe.greenthumb.domain.post.Comment;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
-import lombok.Builder;
 import lombok.Getter;
 
 public class CommentDTO {
@@ -14,12 +13,12 @@ public class CommentDTO {
         private Long userId;
         private String commentContent;
 
-        @Builder
-        public Create(Long postId, Long userId, String commentContent) {
-            this.postId = postId;
-            this.userId = userId;
-            this.commentContent = commentContent;
-        }
+//        @Builder
+//        public Create(Long postId, Long userId, String commentContent) {
+//            this.postId = postId;
+//            this.userId = userId;
+//            this.commentContent = commentContent;
+//        }
 
         public Comment toEntity(Post post, User user, String commentContent) {
             return Comment.builder()

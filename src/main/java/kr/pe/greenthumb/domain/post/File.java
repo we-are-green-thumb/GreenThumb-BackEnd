@@ -26,4 +26,17 @@ public class File {
     @NotNull
     private String fileUrl;
 
+    @Builder
+    public File(Post post, String fileUrl) {
+        this.post = post;
+        this.fileUrl = fileUrl;
+    }
+
+    public File Create(Post post, String fileUrl) {
+        this.post = post;
+        this.fileUrl = fileUrl;
+
+        return this;
+    }
+
 }

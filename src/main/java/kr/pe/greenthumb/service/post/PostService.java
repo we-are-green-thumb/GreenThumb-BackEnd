@@ -4,13 +4,15 @@ import kr.pe.greenthumb.common.exception.NotFoundException;
 import kr.pe.greenthumb.dao.post.PostRepository;
 import kr.pe.greenthumb.dao.user.UserRepository;
 import kr.pe.greenthumb.domain.post.Post;
-import kr.pe.greenthumb.domain.user.User;
+import kr.pe.greenthumb.domain.post.User;
 import kr.pe.greenthumb.dto.post.PostDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -20,40 +22,25 @@ public class PostService {
     private final UserRepository userDao;
 
     @Transactional
-    public Post add(PostDTO.Create dto) {
-        User user = userDao.findById(dto.getUserId()).
+    public Long add(Long userId, PostDTO.Create dto) {
+        User user = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
-        return postDao.save(dto.toEntity(user));
+        return postDao.save(dto.toEntity(user, dto.getTitle(), dto.getPostContent(), dto.getPostCategory())).getPostId();
     }
 
     @Transactional
-    public List<Post> getAll(String category) {
-        return postDao.findPostByPostCategory(category);
+    public List<PostDTO.Get> getAll(String postCategory) {
+        return postDao.findAllPostByPostCategoryAndIsDeleted(postCategory, "n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
     }
 
-    @Transactional // dto로 리턴하는 법은 모르겠음...
+    @Transactional
     public PostDTO.Get getOne(Long postId) {
-        Post post = postDao.findById(postId).
-                orElseThrow(NotFoundException::new);
-
-        PostDTO.Get dto = null;
-        PostDTO.Get getDto = null;
-
-        getDto = dto.builder()
-            .title(post.getTitle())
-            .postCategory(post.getPostCategory())
-            .postContent(post.getPostContent())
-            .postHits(post.getPostHits())
-            .postCheck(post.getPostCheck())
-            .build();
-
-        return getDto;
+        return postDao.findById(postId).map(PostDTO.Get::new).get();
     }
 
-    // 1조 코드 참고
     @Transactional
-    public Long update(PostDTO.Update dto, Long postId) {
+    public Long update(Long postId, PostDTO.Update dto) {
         Post post = postDao.findById(postId).
                 orElseThrow(NotFoundException::new);
 
@@ -62,7 +49,14 @@ public class PostService {
         return postId;
     }
 
-    public Long updateCheck(PostDTO.UpdateCheck updateCheck) {
+    @Transactional
+    public Long updateCheck(Long postId, PostDTO.UpdateCheck dto) {
+        Post post = postDao.findById(postId).
+                orElseThrow(NotFoundException::new);
+
+        post.updateCheck(dto.getIsComplete());
+
+        return postId;
     }
 
     @Transactional
@@ -71,8 +65,6 @@ public class PostService {
                 .orElseThrow(NotFoundException::new);
 
         post.delete();
-
-        postDao.save(post);
     }
 
 }

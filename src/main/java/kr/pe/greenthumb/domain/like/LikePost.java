@@ -2,7 +2,7 @@ package kr.pe.greenthumb.domain.like;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import kr.pe.greenthumb.domain.post.Post;
-import kr.pe.greenthumb.domain.user.User;
+import kr.pe.greenthumb.domain.post.User;
 import lombok.*;
 
 import javax.persistence.*;

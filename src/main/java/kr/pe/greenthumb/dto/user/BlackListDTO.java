@@ -2,6 +2,7 @@ package kr.pe.greenthumb.dto.user;
 
 import kr.pe.greenthumb.domain.user.BlackList;
 import kr.pe.greenthumb.domain.user.User;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -20,6 +21,7 @@ public class BlackListDTO {
         }
 
         public BlackList toEntity(User user,String blackReason) {
+
             return BlackList.builder()
                     .user(user)
                     .blackReason(blackReason)

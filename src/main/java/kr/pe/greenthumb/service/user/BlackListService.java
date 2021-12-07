@@ -63,6 +63,7 @@ public class BlackListService {
         BlackList blackList = blackListDao.findById(blackId).
                 orElseThrow(NotFoundException::new);
 
+
         blackList.delete();
 
         blackListDao.save(blackList);

@@ -1,11 +1,8 @@
 package kr.pe.greenthumb.controller.plant;
 
-import kr.pe.greenthumb.dto.plant.PlantDTO;
 import kr.pe.greenthumb.service.plant.PlantService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
@@ -42,5 +39,5 @@ public class PlantController {
     public void delete(@RequestBody PlantDTO.Delete dto) {
         plantService.delete(dto);
     }
-
+  
 }
