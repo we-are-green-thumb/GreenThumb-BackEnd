@@ -28,4 +28,10 @@ public class Follow {
     @NotNull
     private User following;
 
+    @Builder
+    public Follow(User follower, User following) {
+        this.follower = follower;
+        this.following = following;
+    }
+
 }

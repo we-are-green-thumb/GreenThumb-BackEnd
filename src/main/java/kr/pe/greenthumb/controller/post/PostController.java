@@ -24,9 +24,14 @@ public class PostController {
         return postService.getAll(postCategory);
     }
 
+    @GetMapping
+    public Post getOne(Long postId) {
+        return postService.getOne(postId);
+    }
+
     @PutMapping
-    public void update(Post post) {
-        postService.update(post);
+    public Long update(PostDTO.Update dto) {
+        return postService.update(dto);
     }
 
     @DeleteMapping

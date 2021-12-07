@@ -3,6 +3,7 @@ package kr.pe.greenthumb.dto.post;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 public class PostDTO {
@@ -14,17 +15,6 @@ public class PostDTO {
         private String title;
         private String postContent;
         private String postCategory;
-//        private String postCreateDate;    // 날짜 자동이라 안 넣어줘도 되는 것으로 추정,,
-
-        // 모든 멤버변수를 파라미터로 받기 때문에 굳이 Builder로 따로 생성자 만들 필요 없음 (?)
-        // 그래서 위에 AllArgs... 선언
-//        @Builder
-//        public Create(Long userId, String title, String postContent, String postCategory) {
-//            this.userId = userId;
-//            this.title = title;
-//            this.postContent = postContent;
-//            this.postCategory = postCategory;
-//        }
 
         public Post toEntity(User user) {
             return Post.builder()
@@ -37,22 +27,37 @@ public class PostDTO {
     }
 
     @Getter
-    public static class Get {   // 게시물 가져오는 정보
-        private Long postId;
-        // 나중에 repo에서 따로 만들어주는게 낫다?
-//      private String Title;
-//      private String postContent;
-//      private String postCategory;
-//      private Long postHits;
-    }
-
-    @Getter
     public static class Update {   // 게시물 수정 정보
-        private String Title;
+        private String title;
         private String postContent;
         private String postCategory;
-        private String postUpdateDate;
-//      private String postCheck; // DTO로 따로 빼주자
+
+//        public Post toEntity() {
+//            return Post.builder()
+//                    .title(title)
+//                    .postContent(postContent)
+//                    .postCategory(postCategory)
+//                    .build();
+//        }
+    }
+
+    @Builder
+    public static class Get {
+        private String title;
+        private String postCategory;
+        private String postContent;
+        private Long postHits;
+        private String postCheck;
+    }
+
+    // 질문완료 or 거래완료 상태 변경
+    @Getter
+    public static class PostCheckUpdate {
+        private String postCheck;
+
+        public void PostCheckUpdate(Post entity) {
+            this.postCheck = entity.getPostCheck();
+        }
     }
 
     @Getter
@@ -62,8 +67,8 @@ public class PostDTO {
     }
 
     @Getter
-    public static class Check {
-        private String postCheck;
+    public static class UpdateCheck {
+        private String updateCheck;
     }
 
 }

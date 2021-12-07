@@ -21,6 +21,6 @@ public class FileDTO {
     @Data
     public static class Delete {   // 첨부파일 삭제 정보
         private Post fileId;
-        }
+    }
 
 }
