@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    List<Post> findPostByPostCategory(String postCategory);
+    List<Post> findAllPostByPostCategoryAndIsDeleted(String postCategory, String isDeleted);
 
 }

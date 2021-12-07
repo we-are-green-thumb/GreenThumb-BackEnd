@@ -10,13 +10,13 @@ public class PostDTO {
 
     @AllArgsConstructor
     @Getter
-    public static class Create {   // 게시물 생성 정보
+    public static class Create {
         private Long userId;
         private String title;
         private String postContent;
         private String postCategory;
 
-        public Post toEntity(User user) {
+        public Post toEntity(User user, String title, String postContent, String postCategory) {
             return Post.builder()
                     .user(user)
                     .title(title)
@@ -26,49 +26,38 @@ public class PostDTO {
         }
     }
 
-    @Getter
-    public static class Update {   // 게시물 수정 정보
-        private String title;
-        private String postContent;
-        private String postCategory;
-
-//        public Post toEntity() {
-//            return Post.builder()
-//                    .title(title)
-//                    .postContent(postContent)
-//                    .postCategory(postCategory)
-//                    .build();
-//        }
-    }
-
     @Builder
     public static class Get {
         private String title;
         private String postCategory;
         private String postContent;
         private Long postHits;
-        private String postCheck;
-    }
+        private String isComplete;
 
-    // 질문완료 or 거래완료 상태 변경
-    @Getter
-    public static class PostCheckUpdate {
-        private String postCheck;
-
-        public void PostCheckUpdate(Post entity) {
-            this.postCheck = entity.getPostCheck();
+        public Get(Post entity) {
+            this.title = entity.getTitle();
+            this.postCategory = entity.getPostCategory();
+            this.postContent = entity.getPostContent();
+            this.postHits = entity.getPostHits();
+            this.isComplete = entity.getIsComplete();
         }
     }
 
     @Getter
-    public static class Delete {   // 게시물 삭제 정보
-        private Long postId;
-        private String postDelete;
+    public static class Update {
+        private String title;
+        private String postCategory;
+        private String postContent;
     }
 
     @Getter
     public static class UpdateCheck {
-        private String updateCheck;
+        private String isComplete;
+    }
+
+    @Getter
+    public static class Delete {
+        private String isDeleted;
     }
 
 }
