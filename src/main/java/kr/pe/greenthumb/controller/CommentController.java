@@ -1,7 +1,7 @@
-package kr.pe.greenthumb.controller.post;
+package kr.pe.greenthumb.controller;
 
 import kr.pe.greenthumb.dto.post.CommentDTO;
-import kr.pe.greenthumb.service.post.CommentService;
+import kr.pe.greenthumb.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

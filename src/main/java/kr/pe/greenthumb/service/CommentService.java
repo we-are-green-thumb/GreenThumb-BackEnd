@@ -1,4 +1,4 @@
-package kr.pe.greenthumb.service.post;
+package kr.pe.greenthumb.service;
 
 import kr.pe.greenthumb.common.exception.NotFoundException;
 import kr.pe.greenthumb.dao.post.CommentRepository;

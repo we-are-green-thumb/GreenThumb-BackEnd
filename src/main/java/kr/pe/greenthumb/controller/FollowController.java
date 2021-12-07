@@ -1,7 +1,7 @@
-package kr.pe.greenthumb.controller.user;
+package kr.pe.greenthumb.controller;
 
 import kr.pe.greenthumb.dto.user.FollowDTO;
-import kr.pe.greenthumb.service.user.FollowService;
+import kr.pe.greenthumb.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
