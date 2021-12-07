@@ -27,20 +27,21 @@ public class BlackList {
 
     @Column(name = "black_status")
     @NotNull
-    private String blackStatus = "n";
+    private String blackStatus = "y";
 
     @Builder
-    public BlackList(kr.pe.greenthumb.domain.post.User user, String blackReason) {
+    public BlackList(User user, String blackReason) {
         this.user = user;
         this.blackReason = blackReason;
     }
 
-    public BlackList update(Long blackId, User user, String reason, String blackReason) {
-        this.blackId = blackId;
-        this.user = user;
+    public BlackList update(String blackReason) {
         this.blackReason = blackReason;
         return this;
     }
 
-    public void delete() { this.blackStatus = "y"; }
+    public void delete() {
+        this.blackStatus = "n";
+    }
+
 }

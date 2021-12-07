@@ -8,7 +8,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -89,4 +88,5 @@ public class Post extends BaseTimeEntity {
     public void delete() {
         this.isDeleted = "y";
     }
+  
 }
