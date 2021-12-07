@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class FollowController {
+
     FollowController() {
         System.out.println("FollowController(){}");
     }
@@ -17,8 +18,6 @@ public class FollowController {
     public void addFollow(FollowDTO.Create follow, Long followUser, Long followerUser) {
 //        User followee = userDao.findUserById(followUser);
 //        User follower = userDao.findUserById(followerUser);
-
-
     }
 
 }

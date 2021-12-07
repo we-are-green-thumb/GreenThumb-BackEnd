@@ -21,10 +21,25 @@ public class BlackList {
     private User user;
 
     @Column(name = "black_reason", columnDefinition = "varchar(900)")
-    @NotNull    private String blackReason;
+    @NotNull
+    private String blackReason;
 
     @Column(name = "black_status")
     @NotNull
-    private Long blackStatus;
+    private String blackStatus = "n";
 
+    @Builder
+    public BlackList(User user, String blackReason) {
+        this.user = user;
+        this.blackReason = blackReason;
+    }
+
+    public BlackList update(Long blackId, User user, String reason, String blackReason) {
+        this.blackId = blackId;
+        this.user = user;
+        this.blackReason = blackReason;
+        return this;
+    }
+
+    public void delete() { this.blackStatus = "y"; }
 }
