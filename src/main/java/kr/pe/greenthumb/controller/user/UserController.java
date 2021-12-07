@@ -1,44 +1,40 @@
 package kr.pe.greenthumb.controller.user;
 
-import kr.pe.greenthumb.domain.post.User;
+import kr.pe.greenthumb.dto.user.UserDTO;
 import kr.pe.greenthumb.service.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 public class UserController {
 
-    UserController() {
-        System.out.println("UserController(){}");
+    private final UserService userService;
+
+    @PostMapping("/user")
+    public Long add(@RequestBody UserDTO.Create dto) {
+        return userService.add(dto);
     }
 
-    @Autowired
-    private UserService userService;
-
-//  @GetMapping
-    public List<User> getAll() {
+    @GetMapping("/user")
+    public List<UserDTO.Get> getAll() {
         return userService.getAll();
     }
 
-//  @GetMapping
-    public User getOne(Long userId) {
-        return userService.get(userId);
+    @GetMapping("/user/{userId}")
+    public UserDTO.Get getOne(@PathVariable Long userId) {
+        return userService.getOne(userId);
     }
 
-//  @PostMapping
-    public User add(User user) {
-        return userService.add(user);
+    @PutMapping("/user/{userId}")
+    public Long update(@PathVariable Long userId, @RequestBody UserDTO.Update dto) {
+        return userService.update(userId, dto);
     }
 
-//  @PutMapping
-    public void update(User user) {
-        userService.update(user);
-    }
-
-//  @DeleteMapping
-    public void delete(Long userId) {
+    @DeleteMapping("/user/{userId}")
+    public void delete(@PathVariable Long userId) {
         userService.delete(userId);
     }
 

@@ -90,5 +90,13 @@ public class User extends BaseTimeEntity {
         this.userRole = userRole;
     }
 
+    public User Update(String userPassword, String userNickname) {
+        this.userPassword = userPassword;
+        this.userNickname = userNickname;
+
+        return this;
+    }
+
+    public void delete() { this.isDeleted = "y"; }
 
 }

@@ -25,11 +25,11 @@ public class CommentService {
 
     // 댓글 생성
     @Transactional
-    public Long add(Long postId, Long userId, CommentDTO.Create dto) {
-        Post post = postDao.findById(postId).
+    public Long add(CommentDTO.Create dto) {
+        Post post = postDao.findById(dto.getPostId()).
                 orElseThrow(NotFoundException::new);
 
-        User user = userDao.findById(userId).
+        User user = userDao.findById(dto.getUserId()).
                 orElseThrow(NotFoundException::new);
 
         return commentDao.save(dto.toEntity(post, user, dto.getCommentContent())).getCommentId();
