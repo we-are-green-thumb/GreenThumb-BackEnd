@@ -22,32 +22,31 @@ public class BlackListService {
     @Transactional
     public Long add(Long userId, Long blackId, BlackListDTO.Create dto) {
         User user = userDao.findById(userId).
-                orElseThrow(() -> new NotFoundException("This (number" + userId + ") post is not exist"));
+                orElseThrow(NotFoundException::new);
 
         BlackList blackList = blackListDao.findById(userId).
-                orElseThrow(() -> new NotFoundException("This (number" + userId + ") post is not exist"));
+                orElseThrow(NotFoundException::new);
 
         return blackListDao.save(dto.toEntity(user, blackList)).getBlackId();
     }
 
     // 해당 유저가 블랙리스트인지 조회
+    @Transactional
+    public Long get(Long userId) {
+        User user = userDao.findById(userId).
+                orElseThrow(NotFoundException::new);
 
-//    @Transactional
-//    public Long get(User user) {
-//        User user = userDao.findById(userId).
-//                orElseThrow(() -> new NotFoundException("This (number" + userId + ") post is not exist"));
-//
-//        return;
-//    }
+        return blackListDao.findByUserAndBlackStatus(user, "y").getBlackId();
+    }
 
     // 블랙리스트 수정
     @Transactional
     public Long update(Long userId, Long blackId, BlackListDTO.Update dto) {
         User user = userDao.findById(userId).
-                orElseThrow(() -> new NotFoundException("This (number" + userId + ") post is not exist"));
+                orElseThrow(NotFoundException::new);
 
         BlackList blackList = blackListDao.findById(userId).
-                orElseThrow(() -> new NotFoundException("This (number" + userId + ") post is not exist"));
+                orElseThrow(NotFoundException::new);
 
         blackList.update(blackId, user, dto.getBlackReason(), dto.getBlackStatus());
 
@@ -58,10 +57,11 @@ public class BlackListService {
     @Transactional
     public void delete(Long blackId) {
         BlackList blackList = blackListDao.findById(blackId).
-                orElseThrow(() -> new NotFoundException("This (number" + blackId + ") comment is not exist"));
+                orElseThrow(NotFoundException::new);
 
         blackList.delete();
 
         blackListDao.save(blackList);
     }
+
 }

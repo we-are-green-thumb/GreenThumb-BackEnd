@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface BlackListRepository extends JpaRepository<BlackList, Long> {
 
-    BlackList findByUser(User user);
+    BlackList findByUserAndBlackStatus(User user, String blackStatus);
 
 }

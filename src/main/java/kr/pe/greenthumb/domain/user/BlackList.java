@@ -26,7 +26,7 @@ public class BlackList {
 
     @Column(name = "black_status")
     @NotNull
-    private String blackStatus = "n";
+    private String blackStatus = "y";
 
     @Builder
     public BlackList(User user, String blackReason) {
@@ -41,5 +41,6 @@ public class BlackList {
         return this;
     }
 
-    public void delete() { this.blackStatus = "y"; }
+    public void delete() { this.blackStatus = "n"; }
+
 }

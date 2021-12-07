@@ -58,17 +58,13 @@ public class CommentService {
 
     // 댓글 수정
     @Transactional
-    public Long update(Long postId, Long userId, Long commentId, CommentDTO.Update dto) {
-        Post post = postDao.findById(postId).
-                orElseThrow(NotFoundException::new);
-
-        User user = userDao.findById(userId).
-                orElseThrow(NotFoundException::new);
-
+    public Long update(Long commentId, CommentDTO.Update dto) {
         Comment comment = commentDao.findById(commentId).
                 orElseThrow(NotFoundException::new);
 
-        comment.update(commentId, post, user, dto.getCommentContent());
+        comment.update(dto.getCommentContent());
+
+        commentDao.save(comment);
 
         return commentId;
     }
