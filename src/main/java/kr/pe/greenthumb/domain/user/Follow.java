@@ -24,8 +24,8 @@ public class Follow {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "user_following")
+    @JoinColumn(name = "followee")
     @NotNull
-    private User following;
+    private User followee;
 
 }

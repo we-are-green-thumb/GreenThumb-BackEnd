@@ -14,9 +14,9 @@ public class CommentController {
     private final CommentService commentService;
 
     // 댓글 생성
-    @PostMapping("/post/{postId}/user/{userId}/comment")
-    public Long add(@PathVariable Long postId, @PathVariable Long userId, @RequestBody CommentDTO.Create dto) {
-        return commentService.add(postId, userId, dto);
+    @PostMapping("/post")
+    public Long add(@RequestBody CommentDTO.Create dto) {
+        return commentService.add(dto);
     }
 
     // 게시글별 댓글 조회

@@ -13,9 +13,9 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/user/{userId}")
-    public Long add(@PathVariable Long userId, @RequestBody PostDTO.Create dto) {
-        return postService.add(userId, dto);
+    @PostMapping("/user")
+    public Long add(@RequestBody PostDTO.Create dto) {
+        return postService.add(dto);
     }
 
     @GetMapping("/post/{postCategory}")
@@ -28,14 +28,14 @@ public class PostController {
         return postService.getOne(postId);
     }
 
-    @PutMapping("post/{postId}")
-    public Long update(@PathVariable Long postId, @RequestBody PostDTO.Update dto) {
-        return postService.update(postId, dto);
+    @PutMapping("post/update")
+    public Long update(@RequestBody PostDTO.Update dto) {
+        return postService.update(dto);
     }
 
-    @PutMapping("post/{postId}")
-    public Long updateCheck(@PathVariable Long postId, @RequestBody PostDTO.UpdateCheck dto) {
-        return postService.updateCheck(postId, dto);
+    @PutMapping("post/updateCheck")
+    public Long updateCheck(@RequestBody PostDTO.UpdateCheck dto) {
+        return postService.updateCheck(dto);
     }
 
     @DeleteMapping("post/{postId}")

@@ -21,8 +21,8 @@ public class PostService {
     private final UserRepository userDao;
 
     @Transactional
-    public Long add(Long userId, PostDTO.Create dto) {
-        User user = userDao.findById(userId).
+    public Long add(PostDTO.Create dto) {
+        User user = userDao.findById(dto.getUserId()).
                 orElseThrow(NotFoundException::new);
 
         return postDao.save(dto.toEntity(user, dto.getTitle(), dto.getPostContent(), dto.getPostCategory())).getPostId();
@@ -39,23 +39,23 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(Long postId, PostDTO.Update dto) {
-        Post post = postDao.findById(postId).
+    public Long update(PostDTO.Update dto) {
+        Post post = postDao.findById(dto.getPostId()).
                 orElseThrow(NotFoundException::new);
 
         post.update(dto.getTitle(), dto.getPostCategory(), dto.getPostContent());
 
-        return postId;
+        return post.getPostId();
     }
 
     @Transactional
-    public Long updateCheck(Long postId, PostDTO.UpdateCheck dto) {
-        Post post = postDao.findById(postId).
+    public Long updateCheck(PostDTO.UpdateCheck dto) {
+        Post post = postDao.findById(dto.getPostId()).
                 orElseThrow(NotFoundException::new);
 
         post.updateCheck(dto.getIsComplete());
 
-        return postId;
+        return post.getPostId();
     }
 
     @Transactional

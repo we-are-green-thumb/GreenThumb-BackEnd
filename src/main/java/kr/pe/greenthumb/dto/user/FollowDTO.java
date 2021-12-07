@@ -9,7 +9,7 @@ public class FollowDTO {
     public static class Create {
         private Long followId;
         private Long follower;
-        private Long following;
+        private Long followee;
     }
 
     //언팔

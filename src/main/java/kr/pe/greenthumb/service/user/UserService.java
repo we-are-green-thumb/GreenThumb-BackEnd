@@ -1,41 +1,54 @@
 package kr.pe.greenthumb.service.user;
 
+import kr.pe.greenthumb.common.exception.NotFoundException;
 import kr.pe.greenthumb.dao.user.UserRepository;
 import kr.pe.greenthumb.domain.user.User;
+import kr.pe.greenthumb.dto.user.UserDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService {
 
-    @Autowired
-    UserRepository userDao;
+    private final UserRepository userDao;
 
-    public List<User> getAll() {
-        return userDao.findAll();
+    @Transactional
+    public Long add(UserDTO.Create dto) {
+        return userDao.save(dto.toEntity(dto.getUserName(), dto.getUserPassword(), dto.getUserNickname())).getUserId();
     }
 
-    public User get(Long userId) {
-        return userDao.findById(userId).get();
+    @Transactional
+    public List<UserDTO.Get> getAll() {
+        return userDao.findAllByIsDeleted("n").stream().map(UserDTO.Get::new).collect(Collectors.toList());
     }
 
-    public User add(User user) {
-        return userDao.save(user);
+    @Transactional
+    public UserDTO.Get getOne(Long userId) {
+        return userDao.findById(userId).map(UserDTO.Get::new).get();
     }
 
-    public void update(User user) {
-        userDao.save(user);
+    @Transactional
+    public Long update(Long userId, UserDTO.Update dto) {
+        User user = userDao.findById(userId)
+                .orElseThrow(NotFoundException::new);
+
+        user.Update(dto.getUserPassword(), dto.getUserNickname());
+
+        return userId;
     }
 
+    @Transactional
     public void delete(Long userId) {
-        User user = userDao.findById(userId).get();
-        userDao.delete(user);
+        User user = userDao.findById(userId)
+                .orElseThrow(NotFoundException::new);
+
+        user.delete();
     }
 
 }
