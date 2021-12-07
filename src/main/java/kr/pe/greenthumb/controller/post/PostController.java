@@ -1,6 +1,5 @@
 package kr.pe.greenthumb.controller.post;
 
-import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.dto.post.PostDTO;
 import kr.pe.greenthumb.service.post.PostService;
 import lombok.RequiredArgsConstructor;
@@ -14,28 +13,33 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/post/{postId}")
-    public Post add(@RequestBody PostDTO.Create dto) {
-        return postService.add(dto);
+    @PostMapping("/user/{userId}")
+    public Long add(@PathVariable Long userId, @RequestBody PostDTO.Create dto) {
+        return postService.add(userId, dto);
     }
 
-    @GetMapping
-    public List<Post> getAll(String postCategory) {
+    @GetMapping("/post/{postCategory}")
+    public List<PostDTO.Get> getAll(@PathVariable String postCategory) {
         return postService.getAll(postCategory);
     }
 
-    @GetMapping
-    public Post getOne(Long postId) {
+    @GetMapping("post/{postId}")
+    public PostDTO.Get getOne(@PathVariable Long postId) {
         return postService.getOne(postId);
     }
 
-    @PutMapping
-    public Long update(PostDTO.Update dto) {
-        return postService.update(dto);
+    @PutMapping("post/{postId}")
+    public Long update(@PathVariable Long postId, @RequestBody PostDTO.Update dto) {
+        return postService.update(postId, dto);
     }
 
-    @DeleteMapping
-    public void delete(Long postId) {
+    @PutMapping("post/{postId}")
+    public Long updateCheck(@PathVariable Long postId, @RequestBody PostDTO.UpdateCheck dto) {
+        return postService.updateCheck(postId, dto);
+    }
+
+    @DeleteMapping("post/{postId}")
+    public void delete(@PathVariable Long postId) {
         postService.delete(postId);
     }
 
