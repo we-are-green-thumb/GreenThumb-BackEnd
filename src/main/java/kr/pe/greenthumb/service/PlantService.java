@@ -70,4 +70,12 @@ public class PlantService {
 
     }
 
+    // 유저별 식물 조회(전체)
+    @Transactional
+    public List<PlantDTO.Get> getAllpp(User userId) {
+        return plantDao.findAllByUser(userId).stream().map(PlantDTO.Get::new).collect(Collectors.toList());
+
+    }
+
+
 }

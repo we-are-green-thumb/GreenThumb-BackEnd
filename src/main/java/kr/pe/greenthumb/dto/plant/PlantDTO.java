@@ -58,6 +58,7 @@ public class PlantDTO {
             this.water = entity.getWater();
             this.temp = entity.getTemp();
             this.imageUrl = entity.getImageUrl();
+            this.userId = entity.getUser().getUserId();
         }
     }
 

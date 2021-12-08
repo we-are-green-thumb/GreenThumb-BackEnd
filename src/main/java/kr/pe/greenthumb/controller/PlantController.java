@@ -1,5 +1,6 @@
 package kr.pe.greenthumb.controller;
 
+import kr.pe.greenthumb.domain.user.User;
 import kr.pe.greenthumb.dto.plant.PlantDTO;
 import kr.pe.greenthumb.service.PlantService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = { "*" })
+
 public class PlantController {
 
     private final PlantService plantService;
@@ -42,5 +45,9 @@ public class PlantController {
     public void delete(@RequestBody PlantDTO.Delete dto) {
         plantService.delete(dto);
     }
-  
+
+    @GetMapping("/user/{userId}/plantslist")
+    public List<PlantDTO.Get> getAllplant(@PathVariable User userId) {
+        return plantService.getAllpp(userId);
+    }
 }

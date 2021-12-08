@@ -31,11 +31,13 @@ public class UserDTO {
         private String userName;
         private String userPassword;
         private String userNickname;
+        private String userProfile;
 
         public Get(User entity) {
             this.userName = entity.getUserName();
             this.userPassword = entity.getUserPassword();
             this.userNickname = entity.getUserNickname();
+            this.userProfile = entity.getUserProfile();
         }
     }
 
