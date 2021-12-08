@@ -43,6 +43,7 @@ public class UserDTO {
     public static class Update {
         private String userPassword;
         private String userNickname;
+        private String isBlack;
     }
 
     @Getter

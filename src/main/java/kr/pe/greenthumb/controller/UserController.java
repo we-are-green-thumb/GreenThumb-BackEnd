@@ -34,6 +34,11 @@ public class UserController {
         return userService.update(userId, dto);
     }
 
+    @PatchMapping("/user/{userId}/black")
+    public String isblack(@PathVariable Long userId) {
+        return userService.blackUser(userId);
+    }
+
     @DeleteMapping("/user/{userId}")
     public void delete(@PathVariable Long userId) {
         userService.delete(userId);
@@ -51,7 +56,7 @@ public class UserController {
         return userService.getBlackList();
     }
 
-    // 해당 유저가 블랙스트인지 조회
+    // 해당 유저가 블랙리스트인지 조회
     @GetMapping("/user/{userId}/blacklist/")
     public String isBlack(@RequestBody BlackListDTO.Get dto) {
         return userService.isBlack(dto);

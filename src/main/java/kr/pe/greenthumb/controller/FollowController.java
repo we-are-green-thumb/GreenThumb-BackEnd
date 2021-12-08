@@ -21,14 +21,14 @@ public class FollowController {
 
     // 유저 한명의 팔로워 목록 조회
     @GetMapping("/user/{userId}/followers")
-    public List<FollowDTO.Get> getAllFollowers(@RequestBody FollowDTO.Get dto) {
-        return followService.getFollwers(dto);
+    public List<FollowDTO.Get> getAllFollowers(@PathVariable Long userId) {
+        return followService.getFollwers(userId);
     }
 
     // 유저 한명의 팔로잉 목록 조회
     @GetMapping("/user/{userId}/followees")
-    public List<FollowDTO.Get> getAllFollowees(@RequestBody FollowDTO.Get dto) {
-        return followService.getFollowees(dto);
+    public List<FollowDTO.Get> getAllFollowees(@PathVariable  Long userId) {
+        return followService.getFollowees(userId);
     }
 
     // 언팔로우

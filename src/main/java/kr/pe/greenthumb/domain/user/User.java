@@ -45,6 +45,10 @@ public class User extends BaseTimeEntity {
     @NotNull
     private String isDeleted = "n";
 
+    @Column(name = "user_black")
+    @NotNull
+    private String isBlack = "n";
+
     // @LastModifiedDate
     @Column(name = "user_delete_date")
     private LocalDateTime userDeleteDate;
@@ -86,11 +90,17 @@ public class User extends BaseTimeEntity {
         this.userRole = userRole;
     }
 
-    public User Update(String userPassword, String userNickname) {
+    public User update(String userPassword, String userNickname) {
         this.userPassword = userPassword;
         this.userNickname = userNickname;
 
         return this;
+    }
+
+    public String blackUser() {
+        this.isBlack = "y";
+
+        return this.isBlack;
     }
 
     public void delete() { this.isDeleted = "y"; }

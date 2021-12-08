@@ -33,8 +33,8 @@ public class FollowService {
 
     // 유저 한명의 팔로워 목록 조회
     @Transactional
-    public List<FollowDTO.Get> getFollwers(FollowDTO.Get dto) {
-        User user = userDao.findById(dto.getFolloweeId()).
+    public List<FollowDTO.Get> getFollwers(Long userId) {
+        User user = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
         return followDao.findAllByFollowee(user).stream().map(FollowDTO.Get::new).collect(Collectors.toList());
@@ -42,8 +42,8 @@ public class FollowService {
 
     // 유저 한명의 팔로잉 목록 조회
     @Transactional
-    public List<FollowDTO.Get> getFollowees(FollowDTO.Get dto) {
-        User user = userDao.findById(dto.getFollowerId()).
+    public List<FollowDTO.Get> getFollowees(Long userId) {
+        User user = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
         return followDao.findAllByFollower(user).stream().map(FollowDTO.Get::new).collect(Collectors.toList());

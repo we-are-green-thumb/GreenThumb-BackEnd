@@ -34,9 +34,9 @@ public class PostController {
         return postService.update(dto);
     }
 
-    @PutMapping("/post/{postId}/check")
-    public Long updateCheck(@RequestBody PostDTO.UpdateCheck dto) {
-        return postService.updateCheck(dto);
+    @PatchMapping("/post/{postId}/check")
+    public Long updateCheck(@PathVariable Long postId) {
+        return postService.update(postId);
     }
 
     @DeleteMapping("/post/{postId}")

@@ -53,11 +53,11 @@ public class PostService {
     }
 
     @Transactional
-    public Long updateCheck(PostDTO.UpdateCheck dto) {
-        Post post = postDao.findById(dto.getPostId()).
+    public Long updateCheck(Long postId) {
+        Post post = postDao.findById(postId).
                 orElseThrow(NotFoundException::new);
 
-        post.updateCheck(dto.getIsComplete());
+        post.updateCheck(postId);
 
         return post.getPostId();
     }
