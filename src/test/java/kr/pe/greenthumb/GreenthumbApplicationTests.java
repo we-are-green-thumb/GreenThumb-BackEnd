@@ -1,7 +1,7 @@
 package kr.pe.greenthumb;
 
-import kr.pe.greenthumb.dao.plant.PlantRepository;
 import kr.pe.greenthumb.common.exception.NotFoundException;
+import kr.pe.greenthumb.dao.plant.PlantRepository;
 import kr.pe.greenthumb.dao.post.CommentRepository;
 import kr.pe.greenthumb.dao.post.PostRepository;
 import kr.pe.greenthumb.dao.user.FollowRepository;
@@ -10,6 +10,7 @@ import kr.pe.greenthumb.domain.post.Comment;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.Follow;
 import kr.pe.greenthumb.domain.user.User;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -29,7 +30,7 @@ class GreenthumbApplicationTests {
     @Autowired
     private FollowRepository followDao;
 
-//    @Test
+    @Test
     public void insertBaseTimeEntity() {
 //        LocalDateTime now = LocalDateTime.now();
 
@@ -75,7 +76,7 @@ class GreenthumbApplicationTests {
     }
 
     // follow test
-    @Test
+//    @Test
     public void follow() {
         User follower = User.builder().userName("follower").userPassword("aa").userRole("회원").userNickName("팔로워").build();
         userDao.save(follower);

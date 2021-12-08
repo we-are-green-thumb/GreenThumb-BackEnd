@@ -41,9 +41,19 @@ public class UserService {
         User user = userDao.findById(userId)
                 .orElseThrow(NotFoundException::new);
 
-        user.Update(dto.getUserPassword(), dto.getUserNickname());
+        user.update(dto.getUserPassword(), dto.getUserNickname());
 
         return userId;
+    }
+
+    @Transactional
+    public String blackUser(Long userId) {
+        User user = userDao.findById(userId)
+                .orElseThrow(NotFoundException::new);
+
+        user.blackUser();
+
+        return user.getIsBlack();
     }
 
     @Transactional

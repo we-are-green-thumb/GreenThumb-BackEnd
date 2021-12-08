@@ -77,7 +77,7 @@ public class Post extends BaseTimeEntity {
         return this;
     }
 
-    public void updateCheck(String isComplete) {
+    public void updateCheck(Long postId) {
         if (isComplete.equals("n")) {
             this.isComplete = "y";
         } else if (isComplete.equals("y")) {
