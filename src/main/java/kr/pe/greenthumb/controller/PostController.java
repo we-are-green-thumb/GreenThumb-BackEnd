@@ -36,7 +36,7 @@ public class PostController {
 
     @PatchMapping("/post/{postId}/check")
     public Long updateCheck(@PathVariable Long postId) {
-        return postService.update(postId);
+        return postService.updateCheck(postId);
     }
 
     @DeleteMapping("/post/{postId}")

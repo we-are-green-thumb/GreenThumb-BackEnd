@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 public class FollowController {
 
-    private FollowService followService;
+    private final FollowService followService;
 
     // 팔로우 요청
     @PostMapping("/follower/{followerId}/followee/{followeeId}/follow")
