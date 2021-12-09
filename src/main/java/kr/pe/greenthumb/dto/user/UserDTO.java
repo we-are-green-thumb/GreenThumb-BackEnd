@@ -29,6 +29,7 @@ public class UserDTO {
     @Getter
     public static class Get {
         private String userName;
+        // Q 마이페이지에서 유저 정보 가져올 떄 패스워드 필요성 여부
         private String userPassword;
         private String userNickname;
         private String userProfile;
@@ -45,11 +46,6 @@ public class UserDTO {
     public static class Update {
         private String userPassword;
         private String userNickname;
-    }
-
-    @Getter
-    public static class Delete {    // 회원 탈퇴 - 시간 넣기!
-        private String isDeleted;
     }
 
 }

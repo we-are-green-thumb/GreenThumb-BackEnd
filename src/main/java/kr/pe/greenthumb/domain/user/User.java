@@ -39,11 +39,15 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "user_role")
     @NotNull
-    private String userRole;
+    private String userRole = "일반회원";
 
     @Column(name = "user_delete")
     @NotNull
     private String isDeleted = "n";
+
+    @Column(name = "user_black")
+    @NotNull
+    private String isBlack = "n";
 
     // @LastModifiedDate
     @Column(name = "user_delete_date")
@@ -78,19 +82,31 @@ public class User extends BaseTimeEntity {
     @OneToOne(mappedBy = "user")
     private BlackList blackList;
 
+    //Q 마이페이지에서 유저정보 가져올 때 비밀번호 가져올까?
     @Builder
-    public User(String userName, String userPassword, String userNickName, String userRole) {
+    public User(String userName, String userPassword, String userNickName) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userNickname = userNickName;
-        this.userRole = userRole;
     }
 
-    public User Update(String userPassword, String userNickname) {
+    public User update(String userPassword, String userNickname) {
         this.userPassword = userPassword;
         this.userNickname = userNickname;
 
         return this;
+    }
+
+    public String blackUser() {
+        this.isBlack = "y";
+
+        return this.isBlack;
+    }
+
+    public String nonBlackUser() {
+        this.isBlack = "n";
+
+        return this.isBlack;
     }
 
     public void delete() { this.isDeleted = "y"; }

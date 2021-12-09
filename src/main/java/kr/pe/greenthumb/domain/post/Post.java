@@ -51,7 +51,7 @@ public class Post extends BaseTimeEntity {
 
     // 자유게시판을 제외한 질문, 거래 게시판 완료 여부 체크
     @Column(name = "post_check")
-    private String isComplete;
+    private String isComplete = "n";
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonBackReference

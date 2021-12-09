@@ -1,7 +1,10 @@
 package kr.pe.greenthumb.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
