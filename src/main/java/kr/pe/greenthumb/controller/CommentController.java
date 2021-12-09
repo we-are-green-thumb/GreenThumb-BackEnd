@@ -14,7 +14,7 @@ public class CommentController {
     private final CommentService commentService;
 
     // 댓글 생성
-    @PostMapping("/post")
+    @PostMapping("/comment")
     public Long add(@RequestBody CommentDTO.Create dto) {
         return commentService.add(dto);
     }

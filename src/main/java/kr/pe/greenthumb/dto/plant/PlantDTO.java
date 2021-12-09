@@ -72,12 +72,6 @@ public class PlantDTO {
     }
 
     @Getter
-    public static class Delete {    // 식물 삭제
-        private Long plantId;
-        private Long userId;
-    }
-
-    @Getter
     @Setter
     public static class Request {
         private Long userId;

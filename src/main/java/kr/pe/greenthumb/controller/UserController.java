@@ -19,24 +19,22 @@ public class UserController {
         return userService.add(dto);
     }
 
+    //Q 유저정보 모두 출력할 때, userId도 필요할까?
     @GetMapping("/user")
     public List<UserDTO.Get> getAll() {
         return userService.getAll();
     }
 
+    //Q 유저정보 출력할 때, userId도 필요할까?
     @GetMapping("/user/{userId}")
     public UserDTO.Get getOne(@PathVariable Long userId) {
         return userService.getOne(userId);
     }
 
+    //Q 업데이트한 항목 확인하는 게 좋을 것 같은데.. dto map에러 발생해서 그냥 둠
     @PutMapping("/user/{userId}")
     public Long update(@PathVariable Long userId, @RequestBody UserDTO.Update dto) {
         return userService.update(userId, dto);
-    }
-
-    @PatchMapping("/user/{userId}/black")
-    public String isblack(@PathVariable Long userId) {
-        return userService.blackUser(userId);
     }
 
     @DeleteMapping("/user/{userId}")
@@ -45,26 +43,27 @@ public class UserController {
     }
 
     // 블랙리스트 등록
-    @PostMapping("/user/{userId}/blacklist")
+    @PostMapping("/user/blacklist")
     public Long addBlack(@RequestBody BlackListDTO.Create dto) {
         return userService.addBlack(dto);
     }
 
     // 블랙리스트 전체 조회
-    @GetMapping("blacklist/")
+    //Q userId만 받아올까 아님 닉네임, 사유까지 다 ?
+    @GetMapping("/blacklist")
     public List<BlackListDTO.Get> getBlackList() {
         return userService.getBlackList();
     }
 
     // 해당 유저가 블랙리스트인지 조회
-    @GetMapping("/user/{userId}/blacklist/")
-    public String isBlack(@RequestBody BlackListDTO.Get dto) {
-        return userService.isBlack(dto);
+    @GetMapping("/user/{userId}/blacklist")
+    public String isBlack(@PathVariable Long userId) {
+        return userService.isBlack(userId);
     }
 
-    // 블랙리스트 수정
-    @PutMapping("blacklist/{blackID}")
-    public Long updateBlack( @RequestBody BlackListDTO.Update dto) {
+    // 블랙리스트 사유 수정
+    @PutMapping("/blacklist/black_update")
+    public Long updateBlack(@RequestBody BlackListDTO.Update dto) {
         return userService.updateBlack(dto);
     }
 

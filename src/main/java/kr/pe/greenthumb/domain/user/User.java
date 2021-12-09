@@ -39,7 +39,7 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "user_role")
     @NotNull
-    private String userRole;
+    private String userRole = "일반회원";
 
     @Column(name = "user_delete")
     @NotNull
@@ -82,12 +82,12 @@ public class User extends BaseTimeEntity {
     @OneToOne(mappedBy = "user")
     private BlackList blackList;
 
+    //Q 마이페이지에서 유저정보 가져올 때 비밀번호 가져올까?
     @Builder
-    public User(String userName, String userPassword, String userNickName, String userRole) {
+    public User(String userName, String userPassword, String userNickName) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userNickname = userNickName;
-        this.userRole = userRole;
     }
 
     public User update(String userPassword, String userNickname) {
@@ -99,6 +99,12 @@ public class User extends BaseTimeEntity {
 
     public String blackUser() {
         this.isBlack = "y";
+
+        return this.isBlack;
+    }
+
+    public String nonBlackUser() {
+        this.isBlack = "n";
 
         return this.isBlack;
     }

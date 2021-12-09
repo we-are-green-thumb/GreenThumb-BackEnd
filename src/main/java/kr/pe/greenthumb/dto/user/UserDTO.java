@@ -43,12 +43,6 @@ public class UserDTO {
     public static class Update {
         private String userPassword;
         private String userNickname;
-        private String isBlack;
-    }
-
-    @Getter
-    public static class Delete {    // 회원 탈퇴 - 시간 넣기!
-        private String isDeleted;
     }
 
 }

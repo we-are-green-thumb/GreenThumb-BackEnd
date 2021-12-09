@@ -20,7 +20,7 @@ public class PlantController {
     }
 
     // 유저별 식물 조회(전체)
-    @GetMapping("/user/{userId}/plant")
+    @GetMapping("/user/{userId}/plants")
     public List<PlantDTO.Get> getAll(@PathVariable Long userId) {
         return plantService.getAll(userId);
     }
@@ -39,8 +39,8 @@ public class PlantController {
 
     // 식물 삭제
     @DeleteMapping("plant/{plantId}")
-    public void delete(@RequestBody PlantDTO.Delete dto) {
-        plantService.delete(dto);
+    public void delete(@PathVariable Long plantId) {
+        plantService.delete(plantId);
     }
   
 }

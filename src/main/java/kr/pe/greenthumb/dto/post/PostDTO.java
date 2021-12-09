@@ -44,7 +44,6 @@ public class PostDTO {
 
     @Getter
     public static class Update {
-        private Long postId;
         private String title;
         private String postCategory;
         private String postContent;
