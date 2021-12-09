@@ -41,9 +41,15 @@ public class UserService {
         User user = userDao.findById(userId)
                 .orElseThrow(NotFoundException::new);
 
-        user.update(dto.getUserPassword(), dto.getUserNickname());
+        return user.update(dto.getUserPassword(), dto.getUserNickname()).getUserId();
+    }
 
-        return user.getUserId();
+    @Transactional
+    public Long updateRole(Long userId) {
+        User user = userDao.findById(userId)
+                .orElseThrow(NotFoundException::new);
+
+        return user.updateRole().getUserId();
     }
 
     @Transactional

@@ -97,6 +97,12 @@ public class User extends BaseTimeEntity {
         return this;
     }
 
+    public User updateRole() {
+        this.userRole = "관리자";
+
+        return this;
+    }
+
     public String blackUser() {
         this.isBlack = "y";
 

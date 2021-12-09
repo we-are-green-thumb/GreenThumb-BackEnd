@@ -67,13 +67,4 @@ public class PlantService {
         plantDao.delete(plant);
     }
 
-    @Transactional
-    public Long patch(Long plantId, PlantDTO.Update dto) {
-        Plant plant = plantDao.findById(plantId).
-                orElseThrow(NotFoundException::new);
-
-        plant.patch(dto.getPlantName());
-
-        return plantId;
-    }
 }

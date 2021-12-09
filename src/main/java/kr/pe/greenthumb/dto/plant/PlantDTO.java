@@ -2,7 +2,6 @@ package kr.pe.greenthumb.dto.plant;
 
 import kr.pe.greenthumb.domain.plant.Plant;
 import kr.pe.greenthumb.domain.user.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

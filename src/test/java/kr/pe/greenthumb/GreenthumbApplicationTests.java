@@ -1,20 +1,13 @@
 package kr.pe.greenthumb;
 
-import kr.pe.greenthumb.common.exception.NotFoundException;
 import kr.pe.greenthumb.dao.plant.PlantRepository;
 import kr.pe.greenthumb.dao.post.CommentRepository;
 import kr.pe.greenthumb.dao.post.PostRepository;
 import kr.pe.greenthumb.dao.user.FollowRepository;
 import kr.pe.greenthumb.dao.user.UserRepository;
-import kr.pe.greenthumb.domain.post.Comment;
-import kr.pe.greenthumb.domain.post.Post;
-import kr.pe.greenthumb.domain.user.Follow;
-import kr.pe.greenthumb.domain.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 @SpringBootTest
 class GreenthumbApplicationTests {
@@ -34,22 +27,22 @@ class GreenthumbApplicationTests {
     public void insertBaseTimeEntity() {
 //        LocalDateTime now = LocalDateTime.now();
 
-        User user = User.builder().userName("doon@doon.com").userPassword("111").userNickName("ㅇㅇ").build();
-        userDao.save(user);
-        Post post = Post.builder().postCategory("질문").postContent("첫번째 게시글").user(user).title("일빠다").build();
-        postDao.save(post);
-
-        commentDao.save(Comment.builder()
-                .post(post)
-                .user(user)
-                .commentContent("안녕")
-                .build());
-
-        List<Comment> commentList = commentDao.findAll();
-
-        Comment comment = commentList.get(0);
-
-        System.out.println(">>>>>>>>> createDate=" + user.getCreatedDate() + ", modifiedDate = " + user.getModifiedDate() + "<<<<<<<<<<");
+//        User user = User.builder().userName("doon@doon.com").userPassword("111").userRole("회원").userNickName("ㅇㅇ").build();
+//        userDao.save(user);
+//        Post post = Post.builder().postCategory("질문").postContent("첫번째 게시글").user(user).title("일빠다").build();
+//        postDao.save(post);
+//
+//        commentDao.save(Comment.builder()
+//                .post(post)
+//                .user(user)
+//                .commentContent("안녕")
+//                .build());
+//
+//        List<Comment> commentList = commentDao.findAll();
+//
+//        Comment comment = commentList.get(0);
+//
+//        System.out.println(">>>>>>>>> createDate=" + user.getCreatedDate() + ", modifiedDate = " + user.getModifiedDate() + "<<<<<<<<<<");
 
     }
 //    void contextLoads() {
@@ -67,30 +60,31 @@ class GreenthumbApplicationTests {
 //    @Test
     public void delete() {
 
-        Comment comment = commentDao.findById(1L).orElseThrow(NotFoundException::new);
-
-        comment.delete();
-
-        commentDao.save(comment);
+//        Comment comment = commentDao.findById(1L).orElseThrow(NotFoundException::new);
+//
+//        comment.delete();
+//
+//        commentDao.save(comment);
 
     }
 
     // follow test
-    @Test
+//     @Test
     public void follow() {
+
 //        User follower = User.builder().userName("follower").userPassword("aa").userNickName("팔로워").build();
 //        userDao.save(follower);
 //
 //        User followee = User.builder().userName("followee").userPassword("aa").userNickName("팔로위").build();
 //        userDao.save(followee);
 
-        User follower = userDao.findById(2L).get();
-        User followee = userDao.findById(1L).get();
+//         User follower = userDao.findById(2L).get();
+//         User followee = userDao.findById(1L).get();
 
-        followDao.save(Follow.builder()
-                        .follower(follower)
-                        .followee(followee)
-                        .build());
-    }
+//         followDao.save(Follow.builder()
+//                         .follower(follower)
+//                         .followee(followee)
+//                         .build());
+//     }
 
 }
