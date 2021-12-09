@@ -69,18 +69,22 @@ class GreenthumbApplicationTests {
     }
 
     // follow test
-    @Test
+//     @Test
     public void follow() {
-//        User follower = User.builder().userName("follower").userPassword("aa").userRole("회원").userNickName("팔로워").build();
+
+//        User follower = User.builder().userName("follower").userPassword("aa").userNickName("팔로워").build();
 //        userDao.save(follower);
 //
-//        User followee = User.builder().userName("followee").userPassword("aa").userRole("회원").userNickName("팔로위").build();
+//        User followee = User.builder().userName("followee").userPassword("aa").userNickName("팔로위").build();
 //        userDao.save(followee);
-//
-//        followDao.save(Follow.builder()
-//                        .follower(follower)
-//                        .followee(followee)
-//                        .build());
-    }
+
+//         User follower = userDao.findById(2L).get();
+//         User followee = userDao.findById(1L).get();
+
+//         followDao.save(Follow.builder()
+//                         .follower(follower)
+//                         .followee(followee)
+//                         .build());
+//     }
 
 }
