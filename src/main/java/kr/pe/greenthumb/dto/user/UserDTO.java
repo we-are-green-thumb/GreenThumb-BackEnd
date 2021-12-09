@@ -29,6 +29,7 @@ public class UserDTO {
     @Getter
     public static class Get {
         private String userName;
+        // Q 마이페이지에서 유저 정보 가져올 떄 패스워드 필요성 여부
         private String userPassword;
         private String userNickname;
 

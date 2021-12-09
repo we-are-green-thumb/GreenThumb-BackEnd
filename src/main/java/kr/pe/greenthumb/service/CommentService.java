@@ -71,13 +71,15 @@ public class CommentService {
 
     // 댓글 삭제
     @Transactional
-    public void delete(Long commentId) {
+    public String delete(Long commentId) {
         Comment comment = commentDao.findById(commentId).
                 orElseThrow(NotFoundException::new);
 
         comment.delete();
 
         commentDao.save(comment);
+
+        return comment.getIsDeleted();
     }
 
 }

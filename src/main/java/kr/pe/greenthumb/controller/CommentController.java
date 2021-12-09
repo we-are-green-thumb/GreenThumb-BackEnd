@@ -14,7 +14,7 @@ public class CommentController {
     private final CommentService commentService;
 
     // 댓글 생성
-    @PostMapping("/post")
+    @PostMapping("/comment")
     public Long add(@RequestBody CommentDTO.Create dto) {
         return commentService.add(dto);
     }
@@ -39,8 +39,8 @@ public class CommentController {
 
     // 댓글 삭제
     @DeleteMapping("/comment/{commentId}")
-    public void delete(@PathVariable Long commentId) {
-        commentService.delete(commentId);
+    public String delete(@PathVariable Long commentId) {
+        return commentService.delete(commentId);
     }
 
 }

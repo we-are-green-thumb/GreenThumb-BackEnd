@@ -30,7 +30,7 @@ class GreenthumbApplicationTests {
     @Autowired
     private FollowRepository followDao;
 
-    @Test
+//    @Test
     public void insertBaseTimeEntity() {
 //        LocalDateTime now = LocalDateTime.now();
 
@@ -76,7 +76,7 @@ class GreenthumbApplicationTests {
     }
 
     // follow test
-//    @Test
+    @Test
     public void follow() {
         User follower = User.builder().userName("follower").userPassword("aa").userRole("회원").userNickName("팔로워").build();
         userDao.save(follower);
