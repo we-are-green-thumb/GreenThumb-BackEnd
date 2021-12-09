@@ -8,14 +8,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequiredArgsConstructor
+@RequestMapping("/follow")
 @RestController
 public class FollowController {
 
     private final FollowService followService;
 
     // 팔로우 요청
-    @PostMapping("/follow")
-    public Long add(@RequestBody FollowDTO.Create dto) {
+    @PostMapping
+    public String add(@RequestBody FollowDTO.Create dto) {
         return followService.add(dto);
     }
 
@@ -32,7 +33,7 @@ public class FollowController {
     }
 
     // 언팔로우
-    @DeleteMapping("/follow")
+    @DeleteMapping
     public void delete(@RequestBody FollowDTO.Delete dto) {
          followService.delete(dto);
     }
