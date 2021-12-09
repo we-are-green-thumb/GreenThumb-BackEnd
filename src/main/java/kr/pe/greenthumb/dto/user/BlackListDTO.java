@@ -9,9 +9,8 @@ import lombok.Getter;
 public class BlackListDTO {
 
     @Getter
-    public static class Create {    // 블랙리스트 생성 정보
+    public static class Create {
         private Long userId;
-        private Long blackId;
         private String blackReason;
 
         @Builder
@@ -32,9 +31,11 @@ public class BlackListDTO {
     @Getter
     public static class Get {       // 블랙리스트 가져오기
         private Long userId;
+        private String userNickname;
 
         public Get(BlackList entity) {
             this.userId = entity.getUser().getUserId();
+            this.userNickname = entity.getUser().getUserNickname();
         }
     }
 

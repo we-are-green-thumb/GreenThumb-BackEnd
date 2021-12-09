@@ -14,12 +14,13 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/post/user/{userId}")
+    //Q 카테고리명 어떻게 할지!
+    @PostMapping("/post")
     public Long add(@RequestBody PostDTO.Create dto) {
         return postService.add(dto);
     }
 
-    @GetMapping("/post/{postCategory}")
+    @GetMapping("/posts/{postCategory}")
     public List<PostDTO.Get> getAll(@PathVariable String postCategory) {
         return postService.getAll(postCategory);
     }
@@ -30,8 +31,8 @@ public class PostController {
     }
 
     @PutMapping("/post/{postId}")
-    public Long update(@RequestBody PostDTO.Update dto) {
-        return postService.update(dto);
+    public Long update(@PathVariable Long postId, @RequestBody PostDTO.Update dto) {
+        return postService.update(postId, dto);
     }
 
     @PatchMapping("/post/{postId}/check")
@@ -44,16 +45,14 @@ public class PostController {
         postService.delete(postId);
     }
 
-    // 파일 생성
     @PostMapping("/post/{postId}/file")
     public Long addFile(@PathVariable Long postId, @RequestBody FileDTO.Create dto) {
         return postService.addFile(postId, dto);
     }
 
-    // 파일 삭제
-    @DeleteMapping("/post/{postId}/file/{fileId}")
-    public void deleteFile(@PathVariable Long postId, @PathVariable Long fileId) {
-        postService.deleteFile(postId, fileId);
+    @DeleteMapping("/file/{fileId}")
+    public void deleteFile(@PathVariable Long fileId) {
+        postService.deleteFile(fileId);
     }
 
 }

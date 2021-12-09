@@ -43,8 +43,8 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(PostDTO.Update dto) {
-        Post post = postDao.findById(dto.getPostId()).
+    public Long update(Long postId, PostDTO.Update dto) {
+        Post post = postDao.findById(postId).
                 orElseThrow(NotFoundException::new);
 
         post.update(dto.getTitle(), dto.getPostCategory(), dto.getPostContent());
@@ -57,7 +57,7 @@ public class PostService {
         Post post = postDao.findById(postId).
                 orElseThrow(NotFoundException::new);
 
-        post.updateCheck(postId);
+        post.updateCheck(post.getIsComplete());
 
         return post.getPostId();
     }
@@ -81,14 +81,11 @@ public class PostService {
 
     // 파일 삭제
     @Transactional
-    public void deleteFile(Long postId, Long fileId) {
-        Post post = postDao.findById(postId).
-                orElseThrow(NotFoundException::new);
-
+    public void deleteFile(Long fileId) {
         File file = fileDao.findById(fileId).
                 orElseThrow(NotFoundException::new);
 
-        fileDao.deleteByPost(post);
+        fileDao.delete(file);
     }
 
 }

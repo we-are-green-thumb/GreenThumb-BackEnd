@@ -60,12 +60,11 @@ public class PlantService {
 
     // 식물 삭제
     @Transactional
-    public void delete(PlantDTO.Delete dto) {
-        Plant plant = plantDao.findById(dto.getPlantId()).
+    public void delete(Long plantId) {
+        Plant plant = plantDao.findById(plantId).
                 orElseThrow(NotFoundException::new);
 
         plantDao.delete(plant);
-
     }
 
     @Transactional
