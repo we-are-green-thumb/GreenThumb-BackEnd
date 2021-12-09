@@ -13,12 +13,6 @@ public class BlackListDTO {
         private Long userId;
         private String blackReason;
 
-        @Builder
-        public Create(Long userId, Long blackId, String blackReason) {
-            this.userId = userId;
-            this.blackReason = blackReason;
-        }
-
         public BlackList toEntity(User user,String blackReason) {
 
             return BlackList.builder()

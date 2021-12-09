@@ -25,12 +25,12 @@ public class PostController {
         return postService.getAll(postCategory);
     }
 
-    @GetMapping("/post/{postId}")
+    @GetMapping("/post/{postId}/user/{userId}")
     public PostDTO.Get getOne(@PathVariable Long postId) {
         return postService.getOne(postId);
     }
 
-    @PutMapping("/post/{postId}")
+    @PutMapping("/post/{postId}/user/{userId}")
     public Long update(@PathVariable Long postId, @RequestBody PostDTO.Update dto) {
         return postService.update(postId, dto);
     }

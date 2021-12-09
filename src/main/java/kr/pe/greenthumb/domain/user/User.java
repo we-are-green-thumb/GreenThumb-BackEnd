@@ -39,7 +39,7 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "user_role")
     @NotNull
-    private String userRole = "일반회원";
+    private String userRole = "회원";
 
     @Column(name = "user_delete")
     @NotNull

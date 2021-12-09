@@ -34,7 +34,7 @@ class GreenthumbApplicationTests {
     public void insertBaseTimeEntity() {
 //        LocalDateTime now = LocalDateTime.now();
 
-        User user = User.builder().userName("doon@doon.com").userPassword("111").userRole("회원").userNickName("ㅇㅇ").build();
+        User user = User.builder().userName("doon@doon.com").userPassword("111").userNickName("ㅇㅇ").build();
         userDao.save(user);
         Post post = Post.builder().postCategory("질문").postContent("첫번째 게시글").user(user).title("일빠다").build();
         postDao.save(post);
@@ -78,11 +78,14 @@ class GreenthumbApplicationTests {
     // follow test
     @Test
     public void follow() {
-        User follower = User.builder().userName("follower").userPassword("aa").userRole("회원").userNickName("팔로워").build();
-        userDao.save(follower);
+//        User follower = User.builder().userName("follower").userPassword("aa").userNickName("팔로워").build();
+//        userDao.save(follower);
+//
+//        User followee = User.builder().userName("followee").userPassword("aa").userNickName("팔로위").build();
+//        userDao.save(followee);
 
-        User followee = User.builder().userName("followee").userPassword("aa").userRole("회원").userNickName("팔로위").build();
-        userDao.save(followee);
+        User follower = userDao.findById(2L).get();
+        User followee = userDao.findById(1L).get();
 
         followDao.save(Follow.builder()
                         .follower(follower)

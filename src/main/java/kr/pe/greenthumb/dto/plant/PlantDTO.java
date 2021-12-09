@@ -17,17 +17,6 @@ public class PlantDTO {
         private Long temp;
         private String imageUrl;
 
-        @Builder
-        public Create(Long userId, String plantName, String plantNickname,
-                      Long water, Long temp, String imageUrl) {
-            this.userId = userId;
-            this.plantName = plantName;
-            this.plantNickname = plantNickname;
-            this.water = water;
-            this.temp = temp;
-            this.imageUrl = imageUrl;
-        }
-
         public Plant toEntity(User user, String plantName, String plantNickname, Long water,
                               Long temp, String imageUrl) {
             return Plant.builder()
