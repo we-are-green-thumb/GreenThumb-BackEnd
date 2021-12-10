@@ -14,26 +14,43 @@ public class UserController {
 
     private final UserService userService;
 
+    // 유저 등록
     @PostMapping("/user")
     public Long add(@RequestBody UserDTO.Create dto) {
         return userService.add(dto);
     }
 
+    // 네임 중복 체크
+    @PostMapping("/user/name-check")
+    public boolean check(@RequestBody UserDTO.NameCheck dto) {
+        return userService.checkName(dto.getUserName());
+    }
+
+    // 닉네임 중복 체크
+    @PostMapping("/user/nickname-check")
+    public boolean check(@RequestBody UserDTO.NicknameCheck dto) {
+        return userService.checkNickname(dto.getUserNickname());
+    }
+
+    // 모든 유저 검색
     @GetMapping("/user")
     public List<UserDTO.Get> getAll() {
         return userService.getAll();
     }
 
+    // 유저 한명 검색
     @GetMapping("/user/{userId}")
     public UserDTO.Get getOne(@PathVariable Long userId) {
         return userService.getOne(userId);
     }
 
+    // 유저 수정
     @PutMapping("/user/{userId}")
     public Long update(@PathVariable Long userId, @RequestBody UserDTO.Update dto) {
         return userService.update(userId, dto);
     }
 
+    // 유저 삭제
     @DeleteMapping("/user/{userId}")
     public void delete(@PathVariable Long userId) {
         userService.delete(userId);
@@ -59,7 +76,7 @@ public class UserController {
 
     // 블랙리스트 수정
     @PutMapping("blacklist/{blackID}")
-    public Long updateBlack( @RequestBody BlackListDTO.Update dto) {
+    public Long updateBlack(@RequestBody BlackListDTO.Update dto) {
         return userService.updateBlack(dto);
     }
 

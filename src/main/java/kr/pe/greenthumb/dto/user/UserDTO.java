@@ -5,7 +5,7 @@ import lombok.Getter;
 
 public class UserDTO {
 
-    @Getter   // (실무에서) '@Data' 사용을 지양하라고 하던데 이유는?, 일단 '@Data' 만듭니다!
+    @Getter
     public static class Login {     // 로그인 정보
         private String userName;
         private String userPassword;
@@ -24,6 +24,18 @@ public class UserDTO {
                     .userNickName(userNickname)
                     .build();
         }
+    }
+
+    // 네임 체크
+    @Getter
+    public static class NameCheck {
+        private String userName;
+    }
+
+    // 닉네임 체크
+    @Getter
+    public static class NicknameCheck {
+        private String userNickname;
     }
 
     @Getter

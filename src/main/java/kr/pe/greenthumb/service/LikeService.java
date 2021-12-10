@@ -15,6 +15,7 @@ import kr.pe.greenthumb.dto.like.LikeCommentDTO;
 import kr.pe.greenthumb.dto.like.LikePostDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -27,6 +28,7 @@ public class LikeService {
     private final UserRepository userDao;
 
     // 게시글 좋아요 등록
+    @Transactional
     public Long likePost(Long postId, Long userId) {
         Post post = postDao.findById(postId).
                 orElseThrow(NotFoundException::new);
@@ -40,6 +42,7 @@ public class LikeService {
     }
 
     // 게시글 좋아요 취소
+    @Transactional
     public void unLikePost(Long likePostId) {
         LikePost likePost = likePostDao.findById(likePostId).
                 orElseThrow(NotFoundException::new);
@@ -47,7 +50,12 @@ public class LikeService {
         likePostDao.delete(likePost);
     }
 
+    // 게시글별 추천 카운트
+    @Transactional
+    public void countListPost(Loing post)
+
     // 댓글 좋아요 등록
+    @Transactional
     public Long likeComment(Long commentId, Long userId) {
         Comment comment = commentDao.findById(commentId).
                 orElseThrow(NotFoundException::new);
@@ -61,6 +69,7 @@ public class LikeService {
     }
 
     // 댓글 좋아요 취소
+    @Transactional
     public void unLikeComment(Long likeCommentId) {
         LikeComment likeComment = likeCommentDao.findById(likeCommentId).
                 orElseThrow(NotFoundException::new);

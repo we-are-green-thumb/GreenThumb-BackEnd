@@ -21,21 +21,52 @@ public class UserService {
     private final UserRepository userDao;
     private final BlackListRepository blackListDao;
 
+    // 유저 등록
     @Transactional
     public Long add(UserDTO.Create dto) {
         return userDao.save(dto.toEntity(dto.getUserName(), dto.getUserPassword(), dto.getUserNickname())).getUserId();
     }
 
+    // 네임 중복 체크
+    public boolean checkName(String userName) {
+        boolean result = false;
+        User user = userDao.findByUserName(userName);
+
+        if (user == null) {
+            result = true;
+        }
+
+        // 네임 중복 : false, 사용가능 : true
+        return result;
+    }
+
+    // 닉네임 중복 체크
+    public boolean checkNickname(String userNickname) {
+        boolean result = false;
+        User user = userDao.findByUserNickname(userNickname);
+
+        if (user == null) {
+            result = true;
+        }
+
+        // 닉네임 중복 : false, 사용가능 : true
+        return result;
+    }
+
+
+    // 모든 유저 검색
     @Transactional
     public List<UserDTO.Get> getAll() {
         return userDao.findAllByIsDeleted("n").stream().map(UserDTO.Get::new).collect(Collectors.toList());
     }
 
+    // 유저 한명 검색
     @Transactional
     public UserDTO.Get getOne(Long userId) {
         return userDao.findById(userId).map(UserDTO.Get::new).get();
     }
 
+    // 유저 수정
     @Transactional
     public Long update(Long userId, UserDTO.Update dto) {
         User user = userDao.findById(userId)
@@ -46,6 +77,7 @@ public class UserService {
         return userId;
     }
 
+    // 유저 삭제
     @Transactional
     public void delete(Long userId) {
         User user = userDao.findById(userId)

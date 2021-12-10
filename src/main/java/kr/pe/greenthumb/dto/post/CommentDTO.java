@@ -8,7 +8,7 @@ import lombok.Getter;
 public class CommentDTO {
 
     @Getter
-    public static class Create {  // 댓글 생성 정보
+    public static class Create {  // 댓글 생성
         private Long postId;
         private Long userId;
         private String commentContent;
@@ -30,7 +30,7 @@ public class CommentDTO {
     }
 
     @Getter
-    public static class Get {
+    public static class Get {   // 댓글 정보
         private Long postId;
         private Long userId;
         private String commentContent;
