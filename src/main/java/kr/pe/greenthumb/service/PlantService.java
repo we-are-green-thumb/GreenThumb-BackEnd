@@ -30,9 +30,15 @@ public class PlantService {
                 dto.getWater(), dto.getTemp(), dto.getImageUrl())).getPlantId();
     }
 
+    // 전체 식물 조회
+    @Transactional
+    public List<PlantDTO.Get> getAll() {
+        return plantDao.findAll().stream().map(PlantDTO.Get::new).collect(Collectors.toList());
+    }
+
     // 유저별 식물 조회(전체)
     @Transactional
-    public List<PlantDTO.Get> getAll(Long userId) {
+    public List<PlantDTO.Get> getAllByUser(Long userId) {
         User user = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
@@ -42,7 +48,7 @@ public class PlantService {
 
     // 유저별 식물 조회(하나)
     @Transactional
-    public PlantDTO.Get getOne(Long plantId) {
+    public PlantDTO.Get getOneByUser(Long plantId) {
         return plantDao.findById(plantId).map(PlantDTO.Get::new).get();
     }
 

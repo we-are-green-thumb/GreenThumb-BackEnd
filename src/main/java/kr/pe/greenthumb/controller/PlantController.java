@@ -20,16 +20,21 @@ public class PlantController {
         return plantService.add(dto);
     }
 
+    @GetMapping("/all")
+    public List<PlantDTO.Get> getAll() {
+        return plantService.getAll();
+    }
+
     // 유저별 식물 조회(전체)
     @GetMapping("/user/{userId}/plants")
-    public List<PlantDTO.Get> getAll(@PathVariable Long userId) {
-        return plantService.getAll(userId);
+    public List<PlantDTO.Get> getAllByUser(@PathVariable Long userId) {
+        return plantService.getAllByUser(userId);
     }
 
     // 유저별 식물 조회(하나)
     @GetMapping("/{plantId}")
-    public PlantDTO.Get getOne(@PathVariable Long plantId) {
-        return plantService.getOne(plantId);
+    public PlantDTO.Get getOneByUser(@PathVariable Long plantId) {
+        return plantService.getOneByUser(plantId);
     }
 
     // 식물 수정
