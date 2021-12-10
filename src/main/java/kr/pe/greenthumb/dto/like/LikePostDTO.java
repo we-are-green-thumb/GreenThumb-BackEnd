@@ -3,21 +3,16 @@ package kr.pe.greenthumb.dto.like;
 import kr.pe.greenthumb.domain.like.LikePost;
 import kr.pe.greenthumb.domain.post.Post;
 import kr.pe.greenthumb.domain.user.User;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class LikePostDTO {
 
     @Getter
+    @AllArgsConstructor
     public static class Create {
         private Long postId;
         private Long userId;
-
-        @Builder
-        public Create(Long postId, Long userId) {
-            this.postId = postId;
-            this.userId = userId;
-        }
 
         public LikePost toEntity(Post post, User user) {
             return LikePost.builder()

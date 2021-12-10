@@ -2,7 +2,6 @@ package kr.pe.greenthumb.dto.plant;
 
 import kr.pe.greenthumb.domain.plant.Plant;
 import kr.pe.greenthumb.domain.user.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,17 +15,6 @@ public class PlantDTO {
         private Long water;
         private Long temp;
         private String imageUrl;
-
-        @Builder
-        public Create(Long userId, String plantName, String plantNickname,
-                      Long water, Long temp, String imageUrl) {
-            this.userId = userId;
-            this.plantName = plantName;
-            this.plantNickname = plantNickname;
-            this.water = water;
-            this.temp = temp;
-            this.imageUrl = imageUrl;
-        }
 
         public Plant toEntity(User user, String plantName, String plantNickname, Long water,
                               Long temp, String imageUrl) {

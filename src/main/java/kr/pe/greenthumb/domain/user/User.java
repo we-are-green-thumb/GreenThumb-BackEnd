@@ -39,7 +39,7 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "user_role")
     @NotNull
-    private String userRole = "일반회원";
+    private String userRole = "회원";
 
     @Column(name = "user_delete")
     @NotNull
@@ -93,6 +93,12 @@ public class User extends BaseTimeEntity {
     public User update(String userPassword, String userNickname) {
         this.userPassword = userPassword;
         this.userNickname = userNickname;
+
+        return this;
+    }
+
+    public User updateRole() {
+        this.userRole = "관리자";
 
         return this;
     }
