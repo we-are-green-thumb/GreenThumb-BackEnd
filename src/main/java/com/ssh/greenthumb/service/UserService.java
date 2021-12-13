@@ -41,7 +41,7 @@ public class UserService {
         User user = userDao.findById(userId)
                 .orElseThrow(NotFoundException::new);
 
-        return user.update(dto.getUserPassword(), dto.getUserNickname()).getUserId();
+        return user.update(dto.getUserPassword(), dto.getUserNickname(), dto.getImageUrl()).getUserId();
     }
 
     @Transactional

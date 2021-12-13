@@ -18,7 +18,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -100,25 +99,50 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/test").permitAll()
-                .antMatchers("/**").hasAnyRole(Role.GUEST.name() ,Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/**").hasAnyRole(Role.BLACK.name() ,Role.USER.name(), Role.ADMIN.name())
                 .antMatchers("/auth/**", "/oauth2/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
                 .authorizationEndpoint()
                 // 클라이언트 처음 로그인 시도 URI
-                .baseUri("/oauth2/authorization")
-                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+//                .baseUri("/oauth2/authorization")
+//                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                 .and()
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService)
                 .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler);
+//
+//        // Add our custom Token based authentication filter
+//        // UsernamePasswordAuthenticationFilter 앞에 custom 필터 추가!
+//        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        // Add our custom Token based authentication filter
-        // UsernamePasswordAuthenticationFilter 앞에 custom 필터 추가!
-        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.csrf().disable()
+
+                // exception handling 할 때 우리가 만든 클래스를 추가
+//                .exceptionHandling()
+//                .and()
+//                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//                .accessDeniedHandler(jwtAccessDeniedHandler)
+
+                // 시큐리티는 기본적으로 세션을 사용
+                // 여기서는 세션을 사용하지 않기 때문에 세션 설정을 Stateless 로 설정
+//                .and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+                // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/auth/**").permitAll()
+//                .anyRequest().authenticated();   // 나머지 API 는 전부 인증 필요
+
+                // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
+//                .and()
+//                .apply(new JwtSecurityConfig(tokenProvider));
+
 
 //                .logout()
 //                .logoutSuccessUrl("/index.html")
