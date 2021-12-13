@@ -1,24 +1,59 @@
 package com.ssh.greenthumb.controller;
 
+import com.ssh.greenthumb.dto.login.DefaultRes;
+import com.ssh.greenthumb.dto.login.LoginRequest;
+import com.ssh.greenthumb.dto.login.ResponseMessage;
+import com.ssh.greenthumb.dto.login.StatusCode;
 import com.ssh.greenthumb.dto.user.BlackListDTO;
 import com.ssh.greenthumb.dto.user.UserDTO;
+import com.ssh.greenthumb.security.TokenProvider;
+import com.ssh.greenthumb.service.OAuth2UserService;
 import com.ssh.greenthumb.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/user")
-@CrossOrigin(origins = {"*"})
+//@CrossOrigin(origins = {"*"})
 @RestController
 public class UserController {
 
     private final UserService userService;
+    private final OAuth2UserService oAuth2UserService;
+    private final TokenProvider tokenProvider;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping
     public Long add(@RequestBody UserDTO.Create dto) {
         return userService.add(dto);
+    }
+
+//    @GetMapping
+//    public ApiResponse getUser() {
+//        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//        OAuthUser user = oAuth2UserService.getUser(principal.getUsername());
+//
+//        return new ApiResponse(true, "계정 생성 성공.");
+//    }
+
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = tokenProvider.createToken(authentication);
+
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, token), HttpStatus.OK);
     }
 
     //Q 유저정보 모두 출력할 때, userId도 필요할까?

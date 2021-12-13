@@ -1,6 +1,6 @@
 package com.ssh.greenthumb.security.oauth2.user;
 
-import com.ssh.greenthumb.config.auth.AuthProvider;
+import com.ssh.greenthumb.domain.login.AuthProvider;
 
 import java.util.Map;
 

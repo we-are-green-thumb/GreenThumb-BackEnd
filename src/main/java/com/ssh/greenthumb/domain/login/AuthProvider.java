@@ -1,4 +1,4 @@
-package com.ssh.greenthumb.config.auth;
+package com.ssh.greenthumb.domain.login;
 
 public enum AuthProvider {
     LOCAL,

@@ -1,7 +1,7 @@
 package com.ssh.greenthumb.security.oauth2;
 
 import com.ssh.greenthumb.common.exception.OAuth2AuthenticationProcessingException;
-import com.ssh.greenthumb.config.auth.AuthProvider;
+import com.ssh.greenthumb.domain.login.AuthProvider;
 import com.ssh.greenthumb.dao.login.OAuthUserRepository;
 import com.ssh.greenthumb.domain.login.OAuthUser;
 import com.ssh.greenthumb.security.UserPrincipal;

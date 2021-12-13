@@ -1,18 +1,28 @@
 package com.ssh.greenthumb;
 
-//@SpringBootTest
-//class GreenthumbApplicationTests {
+import com.ssh.greenthumb.dao.plant.PlantRepository;
+import com.ssh.greenthumb.dao.post.CommentRepository;
+import com.ssh.greenthumb.dao.post.PostRepository;
+import com.ssh.greenthumb.dao.user.FollowRepository;
+import com.ssh.greenthumb.dao.user.UserRepository;
+import com.ssh.greenthumb.domain.user.User;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-//    @Autowired
-//    private CommentRepository commentDao;
-//    @Autowired
-//    private UserRepository userDao;
-//    @Autowired
-//    private PostRepository postDao;
-//    @Autowired
-//    private PlantRepository plantDao;
-//    @Autowired
-//    private FollowRepository followDao;
+@SpringBootTest
+class GreenthumbApplicationTests {
+
+    @Autowired
+    private CommentRepository commentDao;
+    @Autowired
+    private UserRepository userDao;
+    @Autowired
+    private PostRepository postDao;
+    @Autowired
+    private PlantRepository plantDao;
+    @Autowired
+    private FollowRepository followDao;
 
 //    @Test
 //    public void insertBaseTimeEntity() {
@@ -59,23 +69,23 @@ package com.ssh.greenthumb;
 
 //    }
 
-    // follow test
-//     @Test
-//    public void follow() {
 
-//        User follower = User.builder().userName("follower").userPassword("aa").userNickName("팔로워").build();
-//        userDao.save(follower);
-//
-//        User followee = User.builder().userName("followee").userPassword("aa").userNickName("팔로위").build();
-//        userDao.save(followee);
+    @Test
+    public void follow() {
+
+        User follower = User.builder().userName("follower").userPassword("aa").userNickName("팔로워").build();
+        userDao.save(follower);
+
+        User followee = User.builder().userName("followee").userPassword("aa").userNickName("팔로위").build();
+        userDao.save(followee);
 
 //         User follower = userDao.findById(2L).get();
 //         User followee = userDao.findById(1L).get();
-
+//
 //         followDao.save(Follow.builder()
 //                         .follower(follower)
 //                         .followee(followee)
 //                         .build());
-//     }
+     }
 
-//    }
+    }

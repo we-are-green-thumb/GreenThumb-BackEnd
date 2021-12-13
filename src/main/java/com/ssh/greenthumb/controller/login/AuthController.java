@@ -1,9 +1,9 @@
 package com.ssh.greenthumb.controller.login;
 
-import com.ssh.greenthumb.dao.login.OAuthUserRepository;
 import com.ssh.greenthumb.common.exception.BadRequestException;
-import com.ssh.greenthumb.config.auth.AuthProvider;
-import com.ssh.greenthumb.domain.login.OAuthUser;
+import com.ssh.greenthumb.dao.user.UserRepository;
+import com.ssh.greenthumb.domain.login.AuthProvider;
+import com.ssh.greenthumb.domain.user.User;
 import com.ssh.greenthumb.dto.login.ApiResponse;
 import com.ssh.greenthumb.dto.login.AuthResponse;
 import com.ssh.greenthumb.dto.login.LoginRequest;
@@ -30,18 +30,13 @@ import java.net.URI;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
-
-    private final OAuthUserRepository userRepository;
-
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final TokenProvider tokenProvider;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()
-                )
-        );
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -52,21 +47,21 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new BadRequestException("이미 해당 이메일을 사용하고 있습니다.");
+        if(userRepository.existsByUserName(signUpRequest.getName())) {
+            throw new BadRequestException("이미 해당 아이디를 사용하고 있습니다.");
         }
 
-        OAuthUser result = userRepository.save(OAuthUser.builder()
-                .name(signUpRequest.getName())
-                .email(signUpRequest.getEmail())
-                .password(passwordEncoder.encode(signUpRequest.getPassword()))
+        User result = userRepository.save(User.builder()
+                .userName(signUpRequest.getName())
+//                .email(signUpRequest.getEmail())
+                .userPassword(passwordEncoder.encode(signUpRequest.getPassword()))
                 .provider(AuthProvider.LOCAL)
                 .build()
         );
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
-                .buildAndExpand(result.getId()).toUri();
+                .buildAndExpand(result.getUserName()).toUri();
 
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "계정 생성 성공"));

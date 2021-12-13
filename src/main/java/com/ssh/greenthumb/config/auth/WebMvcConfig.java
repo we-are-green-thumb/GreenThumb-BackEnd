@@ -23,6 +23,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 //쿠키 허용
                 .allowCredentials(true)
                 .maxAge(MAX_AGE_SECS);
-
     }
+
 }
