@@ -62,7 +62,7 @@ public class User extends BaseTimeEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private AuthProvider provider;
+    private AuthProvider provider = AuthProvider.LOCAL;
 
     //    @Column
     private String providerId;

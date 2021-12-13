@@ -1,6 +1,5 @@
 package com.ssh.greenthumb.config.auth;
 
-import com.ssh.greenthumb.domain.login.Role;
 import com.ssh.greenthumb.security.CustomUserDetailsService;
 import com.ssh.greenthumb.security.TokenAuthenticationFilter;
 import com.ssh.greenthumb.security.oauth2.CustomOAuth2UserService;
@@ -12,21 +11,30 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.config.BeanIds;
+//import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+//import org.springframework.security.config.http.SessionCreationPolicy;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//
 
 @Configuration
 @RequiredArgsConstructor
-//@EnableWebSecurity
-//@EnableMethodSecurity(
-//        securedEnabled = true,
-//        jsr250Enabled = true,
-//        prePostEnabled = true
-//)
+@EnableWebSecurity
+@EnableMethodSecurity(
+        securedEnabled = true,
+        jsr250Enabled = true,
+        prePostEnabled = true
+)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailsService;
@@ -58,29 +66,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     // Authorization에 사용할 userDetailService와 password Encoder 정의
-    @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
-                .userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
+//    @Override
+//    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+//        authenticationManagerBuilder
+//                .userDetailsService(customUserDetailsService)
+//                .passwordEncoder(passwordEncoder());
+//    }
 
     // SecurityConfig에서 사용할 password encoder를 BCryptPasswordEncoder로 정의
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-    /*
-      AuthenticationManager를 외부에서 사용하기 위해 AuthenticationManager Bean을 통해
-      @Autowired가 아닌 @Bean 설정으로 Spring Security 밖으로 Authentication 추출
-     */
+    //
+//    /*
+//      AuthenticationManager를 외부에서 사용하기 위해 AuthenticationManager Bean을 통해
+//      @Autowired가 아닌 @Bean 설정으로 Spring Security 밖으로 Authentication 추출
+//     */
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
+//
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -98,22 +106,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 기본 로그인 창 비활성화
                 .httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/test").permitAll()
-                .antMatchers("/**").hasAnyRole(Role.BLACK.name() ,Role.USER.name(), Role.ADMIN.name())
-                .antMatchers("/auth/**", "/oauth2/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2Login()
-                .authorizationEndpoint()
-                // 클라이언트 처음 로그인 시도 URI
-//                .baseUri("/oauth2/authorization")
-//                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
-                .and()
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService)
-                .and()
-                .successHandler(oAuth2AuthenticationSuccessHandler)
-                .failureHandler(oAuth2AuthenticationFailureHandler);
+                .antMatchers("/**", "/test").permitAll()
+//                .antMatchers("/**").hasAnyRole(Role.BLACK.name() ,Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/auth/**", "/oauth2/**").permitAll();
+//                .anyRequest().authenticated()
+//                .and()
+//                .oauth2Login()
+//                .authorizationEndpoint()
+//                // 클라이언트 처음 로그인 시도 URI
+////                .baseUri("/oauth2/authorization")
+////                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+//                .and()
+//                .userInfoEndpoint()
+//                .userService(customOAuth2UserService)
+//                .and()
+//                .successHandler(oAuth2AuthenticationSuccessHandler)
+//                .failureHandler(oAuth2AuthenticationFailureHandler);
 //
 //        // Add our custom Token based authentication filter
 //        // UsernamePasswordAuthenticationFilter 앞에 custom 필터 추가!
@@ -184,4 +192,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                // 리소스 서버(소셜 서비스들)에서 사용자 정보를 가져온 상태에서 추가로 진행하고자하는 기능을 명시할 수 있다.
 //                .userService(customOAuth2UserService);
     }
+
 }

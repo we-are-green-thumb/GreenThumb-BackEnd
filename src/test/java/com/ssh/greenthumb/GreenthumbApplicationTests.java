@@ -9,6 +9,7 @@ import com.ssh.greenthumb.domain.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootTest
 class GreenthumbApplicationTests {
@@ -23,6 +24,15 @@ class GreenthumbApplicationTests {
     private PlantRepository plantDao;
     @Autowired
     private FollowRepository followDao;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Test
+    public void test(){
+        System.out.println("test");
+        System.out.println(passwordEncoder.encode("aa"));
+    }
 
 //    @Test
 //    public void insertBaseTimeEntity() {
