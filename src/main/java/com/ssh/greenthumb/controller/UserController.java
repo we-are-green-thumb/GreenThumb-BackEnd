@@ -44,7 +44,7 @@ public class UserController {
 //        return new ApiResponse(true, "계정 생성 성공.");
 //    }
 
-    @CrossOrigin
+//    @CrossOrigin
     @PostMapping("/login")
     public Object login(@RequestBody LoginRequest loginRequest) {
         System.out.println(1);

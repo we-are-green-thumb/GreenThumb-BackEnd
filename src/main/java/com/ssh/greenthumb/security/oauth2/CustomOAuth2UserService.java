@@ -1,4 +1,9 @@
-//package com.ssh.greenthumb.security.oauth2;
+package com.ssh.greenthumb.security.oauth2;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.stereotype.Service;
+
 //
 //import com.ssh.greenthumb.common.exception.OAuth2AuthenticationProcessingException;
 //import com.ssh.greenthumb.dao.user.UserRepository;
@@ -17,9 +22,9 @@
 //import org.springframework.security.oauth2.core.user.OAuth2User;
 //import org.springframework.stereotype.Service;
 //
-//@RequiredArgsConstructor
-//@Service
-//public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+@RequiredArgsConstructor
+@Service
+public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 //
 //    @Autowired
 //    private UserRepository userDao;
@@ -78,4 +83,4 @@
 //
 //    }
 //
-//}
+}
