@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
 @Service
@@ -40,37 +41,52 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     // 사용자 정보 추출
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
-        AuthProvider authProvider = AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId());
-//        if(StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
-//            throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
-//        }
+        System.out.println(oAuth2UserRequest.getClientRegistration().getRegistrationId());
+        System.out.println(oAuth2User.getAttributes());
+        System.out.println(1);
+//        OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()), oAuth2User.getAttributes());
+        OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
+        System.out.println(2);
 
-        OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(authProvider, oAuth2User.getAttributes());
-        User savedUser = userRepository.findByProviderId(userInfo.getId());
-        if(savedUser != null) {
-            if(!savedUser.getProvider().equals(authProvider)) {
-                throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
-                        savedUser.getProvider() + " account. Please use your " + savedUser.getProvider() +
-                        " account to login.");
-            }
-            updateExistingUser(savedUser, userInfo);
-        } else {
-            registerNewUser(userInfo, authProvider);
+        System.out.println(oAuth2UserInfo.getId());
+
+
+        if(StringUtils.isEmpty(oAuth2UserInfo.getId())) {
+            throw new OAuth2AuthenticationProcessingException("ProviderId not found from OAuth2 provider");
         }
 
-        return UserPrincipal.create(savedUser, oAuth2User.getAttributes());
+        System.out.println(3);
+        User userOptional = userRepository.findByProviderId(oAuth2UserInfo.getId());
+        System.out.println(4);
+        User user;
+
+        if(userOptional != null) {
+            user = userOptional;
+            System.out.println(5);
+            if(!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
+                throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
+                        user.getProvider() + " account. Please use your " + user.getProvider() +
+                        " account to login.");
+            }
+            System.out.println(6);
+            user = updateExistingUser(user, oAuth2UserInfo);
+        } else {
+            System.out.println(7);
+            user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
+        }
+
+        return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
 
-    private User registerNewUser(OAuth2UserInfo oAuth2UserInfo, AuthProvider authProvider) {
+    private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
         return userRepository.save(User.builder()
-                .provider(authProvider)
+                .provider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))
                 .providerId(oAuth2UserInfo.getId())
                 .nickName(oAuth2UserInfo.getName())
                 .email(oAuth2UserInfo.getEmail())
                 .imageUrl(oAuth2UserInfo.getImageUrl())
                 .build());
     }
-
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
         return userRepository.save(existingUser.builder()
                 .nickName(oAuth2UserInfo.getName())

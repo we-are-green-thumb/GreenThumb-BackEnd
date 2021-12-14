@@ -13,9 +13,9 @@ public class UserDTO {
         private String password;
         private String nickName;
         private String imageUrl;
-        private String providerId;
+        private int providerId;
 
-        public User toEntity(String email, String password, String nickName, String imageUrl, String providerId) {
+        public User toEntity(String email, String password, String nickName, String imageUrl, int providerId) {
             return User.builder()
                     .email(email)
                     .password(password)
@@ -59,7 +59,7 @@ public class UserDTO {
         private String deleteReason;
         private LocalDateTime deleteDate;
         private String isBlack;
-        private String providerId;
+        private int providerId;
 
         public GetFromAdmin(User entity) {
             this.email = entity.getEmail();
