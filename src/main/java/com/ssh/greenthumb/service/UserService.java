@@ -8,6 +8,7 @@ import com.ssh.greenthumb.dao.user.BlackListRepository;
 import com.ssh.greenthumb.dao.user.UserRepository;
 import com.ssh.greenthumb.domain.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +21,11 @@ public class UserService {
 
     private final UserRepository userDao;
     private final BlackListRepository blackListDao;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Long add(UserDTO.Create dto) {
-        return userDao.save(dto.toEntity(dto.getUserName(), dto.getUserPassword(), dto.getUserNickname())).getUserId();
+        return userDao.save(dto.toEntity(dto.getEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNickName(), dto.getImageUrl(), dto.getProviderId())).getId();
     }
 
     @Transactional
@@ -41,7 +43,7 @@ public class UserService {
         User user = userDao.findById(userId)
                 .orElseThrow(NotFoundException::new);
 
-        return user.update(dto.getUserPassword(), dto.getUserNickname(), dto.getImageUrl()).getUserId();
+        return user.update(dto.getUserPassword(), dto.getUserNickname(), dto.getImageUrl()).getId();
     }
 
     @Transactional
@@ -49,7 +51,7 @@ public class UserService {
         User user = userDao.findById(userId)
                 .orElseThrow(NotFoundException::new);
 
-        return user.updateRole().getUserId();
+        return user.updateRole().getId();
     }
 
     @Transactional
@@ -74,7 +76,7 @@ public class UserService {
         // User entity의 isBlack값 변경
         user.blackUser();
 
-        return blackListDao.save(dto.toEntity(user, dto.getBlackReason())).getBlackId();
+        return blackListDao.save(dto.toEntity(user, dto.getReason())).getId();
     }
 
     // 블랙리스트 전체 검색
@@ -95,12 +97,12 @@ public class UserService {
     // 블랙리스트 사유 수정
     @Transactional
     public Long updateBlack(BlackListDTO.Update dto) {
-        BlackList blackList = blackListDao.findById(dto.getBlackId()).
+        BlackList blackList = blackListDao.findById(dto.getId()).
                 orElseThrow(NotFoundException::new);
 
-        blackList.update(dto.getBlackReason());
+        blackList.update(dto.getReason());
 
-        return blackList.getBlackId();
+        return blackList.getId();
     }
 
     // 블랙리스트 삭제

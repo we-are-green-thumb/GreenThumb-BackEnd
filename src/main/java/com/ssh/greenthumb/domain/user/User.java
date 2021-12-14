@@ -22,31 +22,25 @@ import java.util.Set;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//@Table(name = "user", uniqueConstraints = {
-//        @UniqueConstraint(columnNames = "email")
-//})
 @Entity
 public class User extends BaseTimeEntity {
 
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
-//    @Column(nullable = false)
-//    private String email;
-
-    @Column(name = "user_name")
+    @Column
     @NotNull
-    private String userName;
+    private String email;
 
     @Column(name = "user_password")
     @NotNull
-    private String userPassword;
+    private String password;
 
     @Column(name = "user_nickname")
 //    @NotNull
-    private String userNickname;
+    private String nickName;
 
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -60,28 +54,28 @@ public class User extends BaseTimeEntity {
     @NotNull
     private String isBlack = "n";
 
-    @NotNull
     @Enumerated(EnumType.STRING)
+    @NotNull
     private AuthProvider provider = AuthProvider.LOCAL;
 
-//    @Column
+    @Column
     private String providerId;
 
     @Column
     private String imageUrl;
 
-//    @Column(nullable = false)
-    private Boolean nameVerified = false;
+    @NotNull
+    private Boolean emailVerified = false;
 
     // @LastModifiedDate
     @Column(name = "user_delete_date")
-    private LocalDateTime userDeleteDate;
+    private LocalDateTime deleteDate;
 
     @Column(name = "user_profile", columnDefinition = "varchar(900)")
-    private String userProfile;
+    private String profile;
 
     @Column(name = "user_delete_reason", columnDefinition = "varchar(900)")
-    private String userDeleteReason;
+    private String deleteReason;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
@@ -108,20 +102,20 @@ public class User extends BaseTimeEntity {
 
     //Q 마이페이지에서 유저정보 가져올 때 비밀번호 가져올까?
     @Builder
-    public User(String userName, String userPassword, String userNickName, String imageUrl) {
-        this.userName = userName;
-        this.userPassword = userPassword;
-        this.userNickname = userNickName;
+    public User(String email, String password, String nickName, String imageUrl, Role role, AuthProvider provider, String providerId) {
+        this.email = email;
+        this.password = password;
+        this.nickName = nickName;
         this.imageUrl = imageUrl;
-//        this.role = role;
-//        this.nameVerified = nameVerified;
-//        this.providerId = providerId;
+        this.role = Role.USER;
+        this.provider = AuthProvider.LOCAL;
+        this.providerId = providerId;
 
     }
 
-    public User update(String userPassword, String userNickname, String imageUrl) {
-        this.userPassword = userPassword;
-        this.userNickname = userNickname;
+    public User update(String password, String nickName, String imageUrl) {
+        this.password = password;
+        this.nickName = nickName;
         this.imageUrl = imageUrl;
 
         return this;

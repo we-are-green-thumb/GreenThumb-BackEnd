@@ -18,21 +18,21 @@ public class Plant {
     @Id
     @Column(name = "plant_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long plantId;
+    private Long id;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user")
     @NotNull
     private User user;
 
     @Column(name = "plant_name")
     @NotNull
-    private String plantName;
+    private String name;
 
     @Column(name = "plant_nickname")
     @NotNull
-    private String plantNickname;
+    private String nickName;
 
     @Column(name = "water")
     @NotNull
@@ -47,20 +47,20 @@ public class Plant {
     private String imageUrl;
 
     @Builder
-    public Plant(User user, String plantName, String plantNickname,
+    public Plant(User user, String name, String nickName,
                  Long water, Long temp, String imageUrl) {
         this.user = user;
-        this.plantName = plantName;
-        this.plantNickname = plantNickname;
+        this.name = name;
+        this.nickName = nickName;
         this.water = water;
         this.temp = temp;
         this.imageUrl = imageUrl;
     }
 
-    public Plant update(String plantName, String plantNickname,
+    public Plant update(String name, String nickName,
                         Long water, Long temp, String imageUrl) {
-        this.plantName = plantName;
-        this.plantNickname = plantNickname;
+        this.name = name;
+        this.nickName = nickName;
         this.water = water;
         this.temp = temp;
         this.imageUrl = imageUrl;
@@ -68,8 +68,8 @@ public class Plant {
         return this;
     }
 
-    public Plant patch(String plantName) {
-        this.plantName = plantName;
+    public Plant patch(String name) {
+        this.name = name;
 
         return this;
     }

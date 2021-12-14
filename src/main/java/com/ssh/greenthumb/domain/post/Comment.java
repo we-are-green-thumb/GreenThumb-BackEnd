@@ -23,23 +23,23 @@ public class Comment extends BaseTimeEntity {
     @Id
     @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
+    private Long id;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post")
     @NotNull
     private Post post;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user")
     @NotNull
     private User user;
 
     @JoinColumn(name = "comment_content", columnDefinition = "varchar(1500)")
     @NotNull
-    private String commentContent;
+    private String content;
 
     @JoinColumn(name = "comment_delete")
     @NotNull
@@ -50,14 +50,14 @@ public class Comment extends BaseTimeEntity {
     private List<LikeComment> likeCommentList = new ArrayList<>();
 
     @Builder
-    public Comment(Post post, User user, String commentContent) {
+    public Comment(Post post, User user, String content) {
         this.post = post;
         this.user = user;
-        this.commentContent = commentContent;
+        this.content = content;
     }
 
-    public Comment update(String commentContent) {
-        this.commentContent = commentContent;
+    public Comment update(String content) {
+        this.content = content;
 
         return this;
     }

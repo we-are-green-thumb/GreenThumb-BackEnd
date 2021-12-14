@@ -21,7 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-@CrossOrigin(origins = {"*"})
+//@CrossOrigin(origins = {"*"})
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 @RestController
@@ -46,21 +46,21 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
-        if(userDao.existsByUserName(signUpRequest.getName())) {
-            throw new BadRequestException("이미 해당 아이디를 사용하고 있습니다.");
+        if(userDao.existsByEmail(signUpRequest.getEmail())) {
+            throw new BadRequestException("이미 해당 이메일을 사용하고 있습니다.");
         }
 
         User result = userDao.save(User.builder()
-                .userName(signUpRequest.getName())
+                .email(signUpRequest.getEmail())
 //                .email(signUpRequest.getEmail())
-                .userPassword(passwordEncoder.encode(signUpRequest.getPassword()))
+                .password(passwordEncoder.encode(signUpRequest.getPassword()))
 //                .provi/der(AuthProvider.LOCAL)
                 .build()
         );
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
-                .buildAndExpand(result.getUserName()).toUri();
+                .buildAndExpand(result.getEmail()).toUri();
 
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "계정 생성 성공"));
