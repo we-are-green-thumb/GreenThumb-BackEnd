@@ -3,6 +3,7 @@ package com.ssh.greenthumb.security.oauth2;
 import com.ssh.greenthumb.common.exception.OAuth2AuthenticationProcessingException;
 import com.ssh.greenthumb.dao.user.UserRepository;
 import com.ssh.greenthumb.domain.login.AuthProvider;
+import com.ssh.greenthumb.domain.login.Role;
 import com.ssh.greenthumb.domain.user.User;
 import com.ssh.greenthumb.security.UserPrincipal;
 import com.ssh.greenthumb.security.oauth2.user.OAuth2UserInfo;
@@ -85,6 +86,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .nickName(oAuth2UserInfo.getName())
                 .email(oAuth2UserInfo.getEmail())
                 .imageUrl(oAuth2UserInfo.getImageUrl())
+                .role(Role.USER)
                 .build());
     }
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {

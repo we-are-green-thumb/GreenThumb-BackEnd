@@ -59,7 +59,7 @@ public class User extends BaseTimeEntity {
     private AuthProvider provider;
 
     @Column
-    private int providerId;
+    private String providerId;
 
     @Column
     private String imageUrl;
@@ -102,12 +102,12 @@ public class User extends BaseTimeEntity {
 
     //Q 마이페이지에서 유저정보 가져올 때 비밀번호 가져올까?
     @Builder
-    public User(String email, String password, String nickName, String imageUrl, Role role, AuthProvider provider, int providerId) {
+    public User(String email, String password, String nickName, String imageUrl, Role role, AuthProvider provider, String providerId) {
         this.email = email;
         this.password = password;
         this.nickName = nickName;
         this.imageUrl = imageUrl;
-        this.role = Role.USER;
+        this.role = role;
         this.provider = provider;
         this.providerId = providerId;
 
