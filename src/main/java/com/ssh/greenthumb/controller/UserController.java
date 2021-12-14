@@ -6,11 +6,15 @@ import com.ssh.greenthumb.dto.login.AuthResponse;
 import com.ssh.greenthumb.dto.login.LoginRequest;
 import com.ssh.greenthumb.dto.user.BlackListDTO;
 import com.ssh.greenthumb.dto.user.UserDTO;
+import com.ssh.greenthumb.security.CurrentUser;
 import com.ssh.greenthumb.security.TokenProvider;
+import com.ssh.greenthumb.security.UserPrincipal;
 import com.ssh.greenthumb.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -82,6 +86,13 @@ public class UserController {
     @GetMapping("/{userId}")
     public UserDTO.Get getOne(@PathVariable Long userId) {
         return userService.getOne(userId);
+    }
+
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('USER')")
+    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+        return userDao.findById(userPrincipal.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
     //Q 업데이트한 항목 확인하는 게 좋을 것 같은데.. dto map에러 발생해서 그냥 둠

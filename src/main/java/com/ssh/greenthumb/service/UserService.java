@@ -37,7 +37,7 @@ public class UserService {
     // 이메일 중복 체크
     public boolean checkEmail(String email) {
         boolean result = false;
-        User user = userDao.findByEmail(email);
+        User user = userDao.findByEmailAndIsDeleted(email, "n");
 
         if (user == null) {
             result = true;

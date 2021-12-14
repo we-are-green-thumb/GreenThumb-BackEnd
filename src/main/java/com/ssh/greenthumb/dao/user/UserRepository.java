@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByEmail(String email);
-
     User findByEmailAndIsDeleted(String email, String isDeleted);
 
     List<User> findAllByIsDeleted(String isDeleted);
@@ -16,5 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByEmail(String userName);
 
     User findByNickName(String nickName);
+
+    User findByProviderId(String provideId);
 
 }
