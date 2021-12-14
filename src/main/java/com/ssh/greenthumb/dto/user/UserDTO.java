@@ -3,13 +3,9 @@ package com.ssh.greenthumb.dto.user;
 import com.ssh.greenthumb.domain.user.User;
 import lombok.Getter;
 
-public class UserDTO {
+import java.time.LocalDateTime;
 
-    @Getter   // (실무에서) '@Data' 사용을 지양하라고 하던데 이유는?, 일단 '@Data' 만듭니다!
-    public static class Login {     // 로그인 정보
-        private String userName;
-        private String userPassword;
-    }
+public class UserDTO {
 
     @Getter
     public static class Create {    // 회원가입 필요 정보
@@ -41,6 +37,30 @@ public class UserDTO {
             this.email = entity.getEmail();
             this.password = entity.getPassword();
             this.nickName = entity.getNickName();
+        }
+    }
+
+    @Getter
+    public static class GetFromAdmin {
+        private String email;
+        private String nickName;
+        private String role;
+        private String isDeleted;
+        private String deleteReason;
+        private LocalDateTime deleteDate;
+        private String isBlack;
+        private String providerId;
+
+        public GetFromAdmin(User entity) {
+            this.email = entity.getEmail();
+            this.nickName = entity.getNickName();
+            this.role = entity.getRole().getDisplayName();
+            this.isDeleted = entity.getIsDeleted();
+            this.deleteReason = entity.getDeleteReason();
+//        String formatDate = LocalDateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            this.deleteDate = entity.getDeleteDate();
+            this.isBlack = entity.getIsBlack();
+            this.providerId = entity.getProviderId();
         }
     }
 

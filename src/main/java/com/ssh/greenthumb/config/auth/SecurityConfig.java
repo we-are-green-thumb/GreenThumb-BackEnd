@@ -1,6 +1,5 @@
 package com.ssh.greenthumb.config.auth;
 
-import com.ssh.greenthumb.domain.login.Role;
 import com.ssh.greenthumb.security.CustomUserDetailsService;
 import com.ssh.greenthumb.security.TokenAuthenticationFilter;
 import com.ssh.greenthumb.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
@@ -118,8 +117,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ////                // 기본 로그인 창 비활성화
                 .httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/test").permitAll()
-                .antMatchers("/**").hasAnyRole(Role.BLACK.name() ,Role.USER.name(), Role.ADMIN.name());
+                .antMatchers("/", "/test").permitAll();
+//                .antMatchers("/**").hasAnyRole(Role.BLACK.name() ,Role.USER.name(), Role.ADMIN.name());
 //                .web.ignoring().antMatchers("/assets/**")
 //                .web.ignoring().antMatchers("/favicon.ico");
 //                .antMatchers("/auth/**", "/oauth2/**").permitAll()

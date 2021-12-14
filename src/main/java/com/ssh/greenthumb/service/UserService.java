@@ -28,6 +28,7 @@ public class UserService {
         return userDao.save(dto.toEntity(dto.getEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNickName(), dto.getImageUrl(), dto.getProviderId())).getId();
     }
 
+    //Q 단순 get은 transactional 뺄까?
     @Transactional
     public List<UserDTO.Get> getAll() {
         return userDao.findAllByIsDeleted("n").stream().map(UserDTO.Get::new).collect(Collectors.toList());
@@ -60,6 +61,10 @@ public class UserService {
                 .orElseThrow(NotFoundException::new);
 
         user.delete();
+    }
+
+    public List<UserDTO.GetFromAdmin> getAllFromAdmin(){
+        return userDao.findAll().stream().map(UserDTO.GetFromAdmin::new).collect(Collectors.toList());
     }
 
     // 블랙리스트 등록

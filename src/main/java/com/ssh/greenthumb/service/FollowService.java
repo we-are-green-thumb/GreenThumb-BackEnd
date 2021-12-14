@@ -37,9 +37,9 @@ public class FollowService {
 
     // 유저 한명의 팔로워 목록 조회
     @Transactional
-    public List<String> getFollwers(Long followeeId) {
+    public List<String> getFollwers(Long userId) {
 
-        User followee = userDao.findById(followeeId).
+        User followee = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
         List<Follow> followList = followDao.findFollowerByfollowee(followee);
@@ -55,9 +55,9 @@ public class FollowService {
 
     // 유저 한명의 팔로잉 목록 조회
     @Transactional
-    public List<String> getFollowees(Long followerId) {
+    public List<String> getFollowees(Long userId) {
 
-        User follower = userDao.findById(followerId).
+        User follower = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
         List<Follow> followList = followDao.findFolloweeByfollower(follower);
@@ -69,6 +69,24 @@ public class FollowService {
         }
 
         return nickNameList;
+    }
+
+    public int getFollwersCount(Long userId) {
+        User followee = userDao.findById(userId).
+                orElseThrow(NotFoundException::new);
+
+        List<Follow> followList = followDao.findFollowerByfollowee(followee);
+
+        return followList.size();
+    }
+
+    public int getFollweesCount(Long userId) {
+        User follower = userDao.findById(userId).
+                orElseThrow(NotFoundException::new);
+
+        List<Follow> followList = followDao.findFolloweeByfollower(follower);
+
+        return followList.size();
     }
 
     // 언팔로우
