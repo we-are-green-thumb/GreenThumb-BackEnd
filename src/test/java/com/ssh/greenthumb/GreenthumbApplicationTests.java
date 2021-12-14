@@ -1,18 +1,43 @@
 package com.ssh.greenthumb;
 
-//@SpringBootTest
-//class GreenthumbApplicationTests {
+import com.ssh.greenthumb.dao.login.OAuthUserRepository;
+import com.ssh.greenthumb.dao.plant.PlantRepository;
+import com.ssh.greenthumb.dao.post.CommentRepository;
+import com.ssh.greenthumb.dao.post.PostRepository;
+import com.ssh.greenthumb.dao.user.FollowRepository;
+import com.ssh.greenthumb.dao.user.UserRepository;
+import com.ssh.greenthumb.domain.login.AuthProvider;
+import com.ssh.greenthumb.domain.login.OAuthUser;
+import com.ssh.greenthumb.domain.login.Role;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-//    @Autowired
-//    private CommentRepository commentDao;
-//    @Autowired
-//    private UserRepository userDao;
-//    @Autowired
-//    private PostRepository postDao;
-//    @Autowired
-//    private PlantRepository plantDao;
-//    @Autowired
-//    private FollowRepository followDao;
+@SpringBootTest
+class GreenthumbApplicationTests {
+
+    @Autowired
+    private CommentRepository commentDao;
+    @Autowired
+    private UserRepository userDao;
+    @Autowired
+    private PostRepository postDao;
+    @Autowired
+    private PlantRepository plantDao;
+    @Autowired
+    private FollowRepository followDao;
+    @Autowired
+    private OAuthUserRepository oAuthUserDao;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Test
+    public void test(){
+        System.out.println("test");
+        System.out.println(passwordEncoder.encode("aa"));
+    }
 
 //    @Test
 //    public void insertBaseTimeEntity() {
@@ -59,9 +84,9 @@ package com.ssh.greenthumb;
 
 //    }
 
-    // follow test
-//     @Test
-//    public void follow() {
+
+    @Test
+    public void follow() {
 
 //        User follower = User.builder().userName("follower").userPassword("aa").userNickName("팔로워").build();
 //        userDao.save(follower);
@@ -69,13 +94,17 @@ package com.ssh.greenthumb;
 //        User followee = User.builder().userName("followee").userPassword("aa").userNickName("팔로위").build();
 //        userDao.save(followee);
 
+        OAuthUser oAuthUser = OAuthUser.builder().name("aaa").email("aaa@aaa.com").password("1234").imageUrl("aa").provider(AuthProvider.LOCAL).role(Role.USER).emailVerified(true).providerId("1111").build();
+        oAuthUserDao.save(oAuthUser);
+
 //         User follower = userDao.findById(2L).get();
 //         User followee = userDao.findById(1L).get();
-
+//
 //         followDao.save(Follow.builder()
 //                         .follower(follower)
 //                         .followee(followee)
 //                         .build());
-//     }
 
-//    }
+     }
+
+    }

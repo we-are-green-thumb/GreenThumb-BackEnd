@@ -10,7 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/plant")
 @RestController
-@CrossOrigin(origins = {"*"})
+//@CrossOrigin(origins = {"*"})
 public class PlantController {
 
     private final PlantService plantService;

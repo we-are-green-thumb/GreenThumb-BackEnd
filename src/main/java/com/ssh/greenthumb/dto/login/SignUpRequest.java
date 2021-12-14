@@ -7,13 +7,13 @@ import lombok.Getter;
 public class SignUpRequest {
 
     private String name;
-    private String email;
+    private String userName;
     private String password;
 
     @Builder
-    public SignUpRequest(String name, String email, String password) {
+    public SignUpRequest(String name, String userName, String password) {
         this.name = name;
-        this.email = email;
+        this.userName = userName;
         this.password = password;
     }
 

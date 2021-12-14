@@ -1,8 +1,8 @@
 package com.ssh.greenthumb.security.oauth2;
 
 import com.ssh.greenthumb.common.exception.OAuth2AuthenticationProcessingException;
-import com.ssh.greenthumb.config.auth.AuthProvider;
 import com.ssh.greenthumb.dao.login.OAuthUserRepository;
+import com.ssh.greenthumb.domain.login.AuthProvider;
 import com.ssh.greenthumb.domain.login.OAuthUser;
 import com.ssh.greenthumb.security.UserPrincipal;
 import com.ssh.greenthumb.security.oauth2.user.OAuth2UserInfo;
@@ -43,7 +43,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
         AuthProvider authProvider = AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId().toUpperCase());
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(authProvider, oAuth2User.getAttributes());
-        Optional<OAuthUser> savedUser = userRepository.findByEmail(oAuth2UserInfo.getEmail());
+        Optional<OAuthUser> savedUser = Optional.ofNullable(userRepository.findByName(oAuth2UserInfo.getName()));
         OAuthUser user;
 
         if(savedUser.isPresent()) {

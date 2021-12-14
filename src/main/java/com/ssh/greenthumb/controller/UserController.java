@@ -1,24 +1,70 @@
 package com.ssh.greenthumb.controller;
 
+import com.ssh.greenthumb.dao.user.UserRepository;
+import com.ssh.greenthumb.domain.user.User;
+import com.ssh.greenthumb.dto.login.AuthResponse;
+import com.ssh.greenthumb.dto.login.LoginRequest;
 import com.ssh.greenthumb.dto.user.BlackListDTO;
 import com.ssh.greenthumb.dto.user.UserDTO;
+import com.ssh.greenthumb.security.TokenProvider;
 import com.ssh.greenthumb.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/user")
-@CrossOrigin(origins = {"*"})
+//@CrossOrigin(origins = {"*"})
 @RestController
 public class UserController {
 
     private final UserService userService;
+    private final TokenProvider tokenProvider;
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userDao;
 
     @PostMapping
     public Long add(@RequestBody UserDTO.Create dto) {
         return userService.add(dto);
+    }
+
+//    @GetMapping
+//    public ApiResponse getUser() {
+//        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//        OAuthUser user = oAuth2UserService.getUser(principal.getUsername());
+//
+//        return new ApiResponse(true, "계정 생성 성공.");
+//    }
+
+    @CrossOrigin
+    @PostMapping("/login")
+    public Object login(@RequestBody LoginRequest loginRequest) {
+        System.out.println(1);
+        User user = userDao.findByUserNameAndIsDeleted(loginRequest.getUserName(), "n");
+        System.out.println(2);
+//        if(user.getUserName().equals(loginRequest.getUserName()) && user.getUserPassword().equals(loginRequest.getPassword()) && user.getIsDeleted().equals("n")) {
+            System.out.println(3);
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String token = tokenProvider.createToken(authentication);
+
+            return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
+//        }else {
+//            System.out.println(4);
+//            return new NotFoundException();
+//        }
+
+
+
+
     }
 
     //Q 유저정보 모두 출력할 때, userId도 필요할까?

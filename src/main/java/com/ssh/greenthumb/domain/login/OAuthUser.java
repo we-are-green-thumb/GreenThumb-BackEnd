@@ -1,7 +1,6 @@
 package com.ssh.greenthumb.domain.login;
 
 import com.ssh.greenthumb.common.domain.BaseTimeEntity;
-import com.ssh.greenthumb.config.auth.AuthProvider;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -69,7 +68,7 @@ public class OAuthUser extends BaseTimeEntity {
     }
 
     public String getRoleKey() {
-        return this.role.getKey();
+        return this.role.getCode();
     }
 
 }

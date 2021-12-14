@@ -1,7 +1,7 @@
 package com.ssh.greenthumb.security;
 
-import io.jsonwebtoken.*;
 import com.ssh.greenthumb.config.auth.AppProperties;
+import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -51,8 +51,8 @@ public class TokenProvider {
             logger.error("유효하지 않은 JWT 서명");
         } catch (MalformedJwtException ex) {
             logger.error("유효하지 않은 JWT 토큰");
-//        } catch (ExpiredJwtException ex) {
-//            logger.error("만료된 JWT 토큰");
+        } catch (ExpiredJwtException ex) {
+            logger.error("만료된 JWT 토큰");
         } catch (UnsupportedJwtException ex) {
             logger.error("지원하지 않는 JWT 토큰");
         } catch (IllegalArgumentException ex) {
