@@ -42,10 +42,20 @@ public class LikeService {
     }
 
     // 게시글 좋아요 취소
+<<<<<<< HEAD
     @Transactional
     public void unLikePost(Long likePostId) {
         LikePost likePost = likePostDao.findById(likePostId).
+=======
+    public void unLikePost(Long postId, Long userId) {
+        Post post = postDao.findById(postId).
+>>>>>>> c18116ba57b6abd0a279f4167146da1d48e1b720
                 orElseThrow(NotFoundException::new);
+
+        User user = userDao.findById(userId).
+                orElseThrow(NotFoundException::new);
+
+        LikePost likePost = likePostDao.findByPost(post);
 
         likePostDao.delete(likePost);
     }
@@ -69,10 +79,20 @@ public class LikeService {
     }
 
     // 댓글 좋아요 취소
+<<<<<<< HEAD
     @Transactional
     public void unLikeComment(Long likeCommentId) {
         LikeComment likeComment = likeCommentDao.findById(likeCommentId).
+=======
+    public void unLikeComment(Long commentId, Long userId) {
+        Comment comment = commentDao.findById(commentId).
+>>>>>>> c18116ba57b6abd0a279f4167146da1d48e1b720
                 orElseThrow(NotFoundException::new);
+
+        User user = userDao.findById(userId).
+                orElseThrow(NotFoundException::new);
+
+        LikeComment likeComment = likeCommentDao.findByCommentAndUser(comment, user);
 
         likeCommentDao.delete(likeComment);
     }

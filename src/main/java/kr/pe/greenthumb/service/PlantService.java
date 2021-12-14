@@ -30,10 +30,16 @@ public class PlantService {
                 dto.getWater(), dto.getTemp(), dto.getImageUrl())).getPlantId();
     }
 
+    // 전체 식물 조회
+    @Transactional
+    public List<PlantDTO.Get> getAll() {
+        return plantDao.findAll().stream().map(PlantDTO.Get::new).collect(Collectors.toList());
+    }
+
     // 유저별 식물 조회(전체)
     @Transactional
-    public List<PlantDTO.Get> getAll(PlantDTO.Get dto) {
-        User user = userDao.findById(dto.getUserId()).
+    public List<PlantDTO.Get> getAllByUser(Long userId) {
+        User user = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
         return plantDao.findAllByUser(user).stream().map(PlantDTO.Get::new).collect(Collectors.toList());
@@ -42,32 +48,29 @@ public class PlantService {
 
     // 유저별 식물 조회(하나)
     @Transactional
-    public PlantDTO.Get getOne(PlantDTO.Get dto) {
-        return plantDao.findById(dto.getPlantId()).map(PlantDTO.Get::new).get();
+    public PlantDTO.Get getOneByUser(Long plantId) {
+        return plantDao.findById(plantId).map(PlantDTO.Get::new).get();
     }
 
     // 식물 수정
     @Transactional
-    public Long update(PlantDTO.Update dto) {
-        Plant plant = plantDao.findById(dto.getPlantId()).
+    public Long update(Long plantId, PlantDTO.Update dto) {
+        Plant plant = plantDao.findById(plantId).
                 orElseThrow(NotFoundException::new);
 
         plant.update(dto.getPlantName(), dto.getPlantNickname(), dto.getWater(),
                 dto.getTemp(), dto.getImageUrl());
 
-        plantDao.save(plant);
-
-        return dto.getPlantId();
+        return plantId;
     }
 
     // 식물 삭제
     @Transactional
-    public void delete(PlantDTO.Delete dto) {
-        Plant plant = plantDao.findById(dto.getPlantId()).
+    public void delete(Long plantId) {
+        Plant plant = plantDao.findById(plantId).
                 orElseThrow(NotFoundException::new);
 
         plantDao.delete(plant);
-
     }
 
 }

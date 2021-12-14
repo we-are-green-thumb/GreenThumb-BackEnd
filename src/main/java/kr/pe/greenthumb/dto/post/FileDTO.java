@@ -12,12 +12,6 @@ public class FileDTO {
         private Long postId;
         private String fileUrl;
 
-        @Builder
-        public Create(Long postId, String fileUrl) {
-            this.postId = postId;
-            this.fileUrl = fileUrl;
-        }
-
         public File toEntity(Post post, String fileUrl) {
             return File.builder()
                     .post(post)

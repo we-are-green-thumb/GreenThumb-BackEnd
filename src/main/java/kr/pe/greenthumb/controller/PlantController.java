@@ -8,39 +8,45 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequiredArgsConstructor
+@RequestMapping("/plant")
 @RestController
 public class PlantController {
 
     private final PlantService plantService;
 
     // 식물 생성
-    @PostMapping("/plant/{plandId}")
+    @PostMapping
     public Long add(@RequestBody PlantDTO.Create dto) {
         return plantService.add(dto);
     }
 
+    @GetMapping("/all")
+    public List<PlantDTO.Get> getAll() {
+        return plantService.getAll();
+    }
+
     // 유저별 식물 조회(전체)
     @GetMapping("/user/{userId}/plants")
-    public List<PlantDTO.Get> getAll(@RequestBody PlantDTO.Get dto) {
-        return plantService.getAll(dto);
+    public List<PlantDTO.Get> getAllByUser(@PathVariable Long userId) {
+        return plantService.getAllByUser(userId);
     }
 
     // 유저별 식물 조회(하나)
-    @GetMapping("/user/{userId}/plant")
-    public PlantDTO.Get getOne(@RequestBody PlantDTO.Get dto) {
-        return plantService.getOne(dto);
+    @GetMapping("/{plantId}")
+    public PlantDTO.Get getOneByUser(@PathVariable Long plantId) {
+        return plantService.getOneByUser(plantId);
     }
 
     // 식물 수정
-    @PutMapping("/user/{userId}/plant/{plantId}")
-    public Long update(@RequestBody PlantDTO.Update dto) {
-        return plantService.update(dto);
+    @PutMapping("/{plantId}")
+    public Long update(@PathVariable Long plantId, @RequestBody PlantDTO.Update dto) {
+        return plantService.update(plantId, dto);
     }
 
     // 식물 삭제
-    @DeleteMapping("/user/{userId}/plant/{plantId}")
-    public void delete(@RequestBody PlantDTO.Delete dto) {
-        plantService.delete(dto);
+    @DeleteMapping("/{plantId}")
+    public void delete(@PathVariable Long plantId) {
+        plantService.delete(plantId);
     }
   
 }

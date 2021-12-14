@@ -68,4 +68,10 @@ public class Plant {
         return this;
     }
 
+    public Plant patch(String plantName) {
+        this.plantName = plantName;
+
+        return this;
+    }
+
 }

@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequiredArgsConstructor
+@RequestMapping("/comment")
 @RestController
 public class CommentController {
 
     private final CommentService commentService;
 
     // 댓글 생성
-    @PostMapping("/post")
+    @PostMapping
     public Long add(@RequestBody CommentDTO.Create dto) {
         return commentService.add(dto);
     }
@@ -32,15 +33,15 @@ public class CommentController {
     }
 
     // 댓글 수정
-    @PutMapping("/comment/{commentId}")
+    @PutMapping("/{commentId}")
     public Long update(@PathVariable Long commentId, @RequestBody CommentDTO.Update dto) {
         return commentService.update(commentId, dto);
     }
 
     // 댓글 삭제
-    @DeleteMapping("/comment/{commentId}")
-    public void delete(@PathVariable Long commentId) {
-        commentService.delete(commentId);
+    @DeleteMapping("/{commentId}")
+    public String delete(@PathVariable Long commentId) {
+        return commentService.delete(commentId);
     }
 
 }

@@ -72,9 +72,15 @@ public class UserService {
         User user = userDao.findById(userId)
                 .orElseThrow(NotFoundException::new);
 
-        user.Update(dto.getUserPassword(), dto.getUserNickname());
+        return user.update(dto.getUserPassword(), dto.getUserNickname()).getUserId();
+    }
 
-        return userId;
+    @Transactional
+    public Long updateRole(Long userId) {
+        User user = userDao.findById(userId)
+                .orElseThrow(NotFoundException::new);
+
+        return user.updateRole().getUserId();
     }
 
     // 유저 삭제
@@ -92,6 +98,14 @@ public class UserService {
         User user = userDao.findById(dto.getUserId()).
                 orElseThrow(NotFoundException::new);
 
+        //Q 이미 블랙리스트일 경우 추가 할? 말?
+        if (user.getIsBlack().equals("y")) {
+
+        }
+
+        // User entity의 isBlack값 변경
+        user.blackUser();
+
         return blackListDao.save(dto.toEntity(user, dto.getBlackReason())).getBlackId();
     }
 
@@ -103,11 +117,11 @@ public class UserService {
 
     // 해당 유저가 블랙리스트인지 조회
     @Transactional
-    public String isBlack(BlackListDTO.Get dto) {
-        User user = userDao.findById(dto.getUserId()).
+    public String isBlack(Long userId) {
+        User user = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
-        return blackListDao.findByUserAndBlackStatus(user, "y").getBlackStatus();
+        return user.getIsBlack();
     }
 
     // 블랙리스트 사유 수정
@@ -118,21 +132,18 @@ public class UserService {
 
         blackList.update(dto.getBlackReason());
 
-        blackListDao.save(blackList);
-
         return blackList.getBlackId();
     }
 
     // 블랙리스트 삭제
-    @Transactional
+//    @Transactional save 안해도 delete하니까 세이브 되네 !?..... userDao 세이브 안해줘도.. 되네?
     public void deleteBlack(Long blackId) {
         BlackList blackList = blackListDao.findById(blackId).
                 orElseThrow(NotFoundException::new);
 
+        blackList.getUser().nonBlackUser();
 
-        blackList.delete();
-
-        blackListDao.save(blackList);
+        blackListDao.delete(blackList);
     }
 
 }

@@ -13,13 +13,6 @@ public class CommentDTO {
         private Long userId;
         private String commentContent;
 
-//        @Builder
-//        public Create(Long postId, Long userId, String commentContent) {
-//            this.postId = postId;
-//            this.userId = userId;
-//            this.commentContent = commentContent;
-//        }
-
         public Comment toEntity(Post post, User user, String commentContent) {
             return Comment.builder()
                     .post(post)

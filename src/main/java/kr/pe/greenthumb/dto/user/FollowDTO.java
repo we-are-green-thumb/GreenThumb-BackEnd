@@ -13,12 +13,6 @@ public class FollowDTO {
         private Long followerId;
         private Long followeeId;
 
-        @Builder
-        public Create(Long followerId, Long followeeId) {
-            this.followerId = followerId;
-            this.followeeId = followeeId;
-        }
-
         public Follow toEntity(User follower, User followee) {
             return Follow.builder()
                     .follower(follower)
