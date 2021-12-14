@@ -133,6 +133,7 @@ public class User extends BaseTimeEntity {
 
     public String blackUser() {
         this.isBlack = "y";
+        this.role = Role.BLACK;
 
         return this.isBlack;
     }

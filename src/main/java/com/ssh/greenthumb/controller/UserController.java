@@ -56,14 +56,11 @@ public class UserController {
         return userService.checkNickName(dto.getNickName());
     }
 
-    @CrossOrigin
+//    @CrossOrigin
     @PostMapping("/login")
     public Object login(@RequestBody LoginRequest loginRequest) {
-        System.out.println(1);
         User user = userDao.findByEmailAndIsDeleted(loginRequest.getUserName(), "n");
-        System.out.println(2);
 //        if(user.getUserName().equals(loginRequest.getUserName()) && user.getUserPassword().equals(loginRequest.getPassword()) && user.getIsDeleted().equals("n")) {
-        System.out.println(3);
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenProvider.createToken(authentication);
@@ -73,8 +70,6 @@ public class UserController {
 //            System.out.println(4);
 //            return new NotFoundException();
 //        }
-
-
     }
 
     //Q 유저정보 모두 출력할 때, userId도 필요할까?
