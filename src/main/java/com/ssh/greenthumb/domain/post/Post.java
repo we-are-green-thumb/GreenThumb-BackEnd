@@ -21,11 +21,11 @@ public class Post extends BaseTimeEntity {
     @Id
     @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postId;
+    private Long id;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user")
     @NotNull
     private User user;
 
@@ -35,11 +35,11 @@ public class Post extends BaseTimeEntity {
 
     @Column(name = "post_content", columnDefinition = "varchar(1500)")
     @NotNull
-    private String postContent;
+    private String content;
 
     @Column(name = "post_category")
     @NotNull
-    private String postCategory;
+    private String category;
 
     @Column(name = "post_delete")
     @NotNull
@@ -47,7 +47,7 @@ public class Post extends BaseTimeEntity {
 
     @Column(name = "post_hits")
     @NotNull
-    private Long postHits = 0L;
+    private Long hits = 0L;
 
     // 자유게시판을 제외한 질문, 거래 게시판 완료 여부 체크
     @Column(name = "post_check")
@@ -62,17 +62,17 @@ public class Post extends BaseTimeEntity {
     private List<File> fileList = new ArrayList<>();
 
     @Builder
-    public Post(User user, String title, String postContent, String postCategory) {
+    public Post(User user, String title, String content, String category) {
         this.user = user;
         this.title = title;
-        this.postContent = postContent;
-        this.postCategory = postCategory;
+        this.content = content;
+        this.category = category;
     }
 
-    public Post update(String title, String postContent, String postCategory) {
+    public Post update(String title, String content, String category) {
         this.title = title;
-        this.postContent = postContent;
-        this.postCategory = postCategory;
+        this.content = content;
+        this.category = category;
 
         return this;
     }

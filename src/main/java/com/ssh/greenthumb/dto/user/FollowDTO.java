@@ -26,8 +26,8 @@ public class FollowDTO {
         private Long followeeId;
 
         public Get(Follow entity) {
-            this.followerId = entity.getFollower().getUserId();
-            this.followeeId = entity.getFollowee().getUserId();
+            this.followerId = entity.getFollower().getId();
+            this.followeeId = entity.getFollowee().getId();
         }
     }
 

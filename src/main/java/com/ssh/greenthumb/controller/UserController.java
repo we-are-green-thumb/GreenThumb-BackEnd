@@ -48,7 +48,7 @@ public class UserController {
     @PostMapping("/login")
     public Object login(@RequestBody LoginRequest loginRequest) {
         System.out.println(1);
-        User user = userDao.findByUserNameAndIsDeleted(loginRequest.getUserName(), "n");
+        User user = userDao.findByEmailAndIsDeleted(loginRequest.getUserName(), "n");
         System.out.println(2);
 //        if(user.getUserName().equals(loginRequest.getUserName()) && user.getUserPassword().equals(loginRequest.getPassword()) && user.getIsDeleted().equals("n")) {
             System.out.println(3);

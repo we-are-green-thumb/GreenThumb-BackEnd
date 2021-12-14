@@ -30,7 +30,7 @@ public class FollowService {
                 orElseThrow(NotFoundException::new);
 
         if(following.getIsBlack().equals("n") && following.getIsDeleted().equals("n")) {
-            followDao.save(dto.toEntity(follower, following)).getFollowId();
+            followDao.save(dto.toEntity(follower, following)).getId();
             return "팔로우 요청 완료";
         } else return "해당 회원은 요청 불가";
     }
@@ -47,7 +47,7 @@ public class FollowService {
 
         for(Follow f : followList) {
             if(f.getFollower().getIsBlack().equals("y")) followDao.delete(f);
-            else nickNameList.add(f.getFollower().getUserNickname());
+            else nickNameList.add(f.getFollower().getNickName());
         }
 
         return nickNameList;
@@ -65,7 +65,7 @@ public class FollowService {
 
         for(Follow f : followList) {
             if(f.getFollowee().getIsBlack().equals("y")) followDao.delete(f);
-            else nickNameList.add(f.getFollower().getUserNickname());
+            else nickNameList.add(f.getFollower().getNickName());
         }
 
         return nickNameList;

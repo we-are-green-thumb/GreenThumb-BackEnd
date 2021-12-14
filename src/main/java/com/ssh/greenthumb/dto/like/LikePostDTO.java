@@ -34,8 +34,8 @@ public class LikePostDTO {
         private Long userId;
 
         public Get(LikePost entity) {
-            this.postId = entity.getPost().getPostId();
-            this.userId = entity.getUser().getUserId();
+            this.postId = entity.getPost().getId();
+            this.userId = entity.getUser().getId();
         }
     }
 
