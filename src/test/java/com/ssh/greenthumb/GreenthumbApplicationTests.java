@@ -80,14 +80,14 @@ class GreenthumbApplicationTests {
 //    }
 
 
-    @Test
-    public void follow() {
-
-        User follower = User.builder().userName("follower").userPassword("aa").userNickName("팔로워").build();
-        userDao.save(follower);
-
-        User followee = User.builder().userName("followee").userPassword("aa").userNickName("팔로위").build();
-        userDao.save(followee);
+//    @Test
+//    public void follow() {
+//
+//        User follower = User.builder().userName("follower").userPassword("aa").userNickName("팔로워").build();
+//        userDao.save(follower);
+//
+//        User followee = User.builder().userName("followee").userPassword("aa").userNickName("팔로위").build();
+//        userDao.save(followee);
 
 //         User follower = userDao.findById(2L).get();
 //         User followee = userDao.findById(1L).get();
