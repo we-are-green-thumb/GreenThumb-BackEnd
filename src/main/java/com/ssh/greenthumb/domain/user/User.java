@@ -39,7 +39,7 @@ public class User extends BaseTimeEntity {
     private String password;
 
     @Column(name = "user_nickname")
-//    @NotNull
+    @NotNull
     private String nickName;
 
     @Enumerated(EnumType.STRING)
@@ -133,6 +133,7 @@ public class User extends BaseTimeEntity {
 
     public String blackUser() {
         this.isBlack = "y";
+        this.role = Role.BLACK;
 
         return this.isBlack;
     }
@@ -143,6 +144,8 @@ public class User extends BaseTimeEntity {
         return this.isBlack;
     }
 
-    public void delete() { this.isDeleted = "y"; }
+    public void delete() {
+        this.isDeleted = "y";
+    }
 
 }

@@ -2,9 +2,7 @@ package com.ssh.greenthumb.config.auth;
 
 import com.ssh.greenthumb.security.CustomUserDetailsService;
 import com.ssh.greenthumb.security.TokenAuthenticationFilter;
-import com.ssh.greenthumb.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.ssh.greenthumb.security.oauth2.OAuth2AuthenticationFailureHandler;
-import com.ssh.greenthumb.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.ssh.greenthumb.security.oauth2.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailsService;
 
-//    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
@@ -97,28 +96,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .anyRequest().authenticated().and().formLogin().and().httpBasic();  // 그외 요청은 모두 접근 가능
 
 
-        http
-
-////                // CORS 허용
-                .cors()
-                .and()
-////                // 토큰을 사용하기 위해 sessionCreationPolicy를 STATELESS로 설정 (Session 비활성화)
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-////                // CSRF 비활성화
-                .csrf().disable()
-////                // 로그인폼 비활성화
-//                .formLogin().disable()
-                .formLogin()
-//                .loginPage("localhost:8081/login")
-//                .loginProcessingUrl("/user/login").and()
-                .and()
-////                // 기본 로그인 창 비활성화
-                .httpBasic().disable()
-                .authorizeRequests()
-                .antMatchers("/", "/test").permitAll();
+//        http
+//
+//////                // CORS 허용
+//                .cors()
+//                .and()
+//////                // 토큰을 사용하기 위해 sessionCreationPolicy를 STATELESS로 설정 (Session 비활성화)
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//////                // CSRF 비활성화
+//                .csrf().disable()
+//////                // 로그인폼 비활성화
+////                .formLogin().disable()
+//                .formLogin()
+////                .loginPage("localhost:8081/login")
+////                .loginProcessingUrl("/user/login").and()
+//                .and()
+//////                // 기본 로그인 창 비활성화
+//                .httpBasic().disable()
+//                .authorizeRequests()
+//                .antMatchers("/", "/test").permitAll()
 //                .antMatchers("/**").hasAnyRole(Role.BLACK.name() ,Role.USER.name(), Role.ADMIN.name());
+
 //                .web.ignoring().antMatchers("/assets/**")
 //                .web.ignoring().antMatchers("/favicon.ico");
 //                .antMatchers("/auth/**", "/oauth2/**").permitAll()
@@ -205,6 +205,54 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ////                // 소셜 로그인 성공시 후속 조치를 진행할 UserService 인터페이스의 구현체를 등록한다.
 ////                // 리소스 서버(소셜 서비스들)에서 사용자 정보를 가져온 상태에서 추가로 진행하고자하는 기능을 명시할 수 있다.
 ////                .userService(customOAuth2UserService);
-    }
 
+        http
+                .cors()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .csrf()
+                .disable()
+                .formLogin()
+                .disable()
+                .httpBasic()
+                .disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                .and()
+                .authorizeRequests()
+                .antMatchers("/",
+                        "/error",
+                        "/favicon.ico",
+                        "/**/*.png",
+                        "/**/*.gif",
+                        "/**/*.svg",
+                        "/**/*.jpg",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js")
+                .permitAll()
+                .antMatchers("/auth/**", "/oauth2/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .oauth2Login()
+                .authorizationEndpoint()
+                .baseUri("/oauth2/authorize")
+                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                .and()
+                .redirectionEndpoint()
+                .baseUri("/oauth2/callback/*")
+                .and()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService)
+                .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler);
+
+        // Add our custom Token based authentication filter
+        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
 }

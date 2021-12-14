@@ -1,12 +1,16 @@
 package com.ssh.greenthumb.service;
 
-import com.ssh.greenthumb.domain.user.BlackList;
-import com.ssh.greenthumb.dto.user.BlackListDTO;
-import com.ssh.greenthumb.dto.user.UserDTO;
 import com.ssh.greenthumb.common.exception.NotFoundException;
+import com.ssh.greenthumb.dao.post.CommentRepository;
+import com.ssh.greenthumb.dao.post.PostRepository;
 import com.ssh.greenthumb.dao.user.BlackListRepository;
 import com.ssh.greenthumb.dao.user.UserRepository;
+import com.ssh.greenthumb.domain.post.Comment;
+import com.ssh.greenthumb.domain.post.Post;
+import com.ssh.greenthumb.domain.user.BlackList;
 import com.ssh.greenthumb.domain.user.User;
+import com.ssh.greenthumb.dto.user.BlackListDTO;
+import com.ssh.greenthumb.dto.user.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,13 +26,38 @@ public class UserService {
     private final UserRepository userDao;
     private final BlackListRepository blackListDao;
     private final PasswordEncoder passwordEncoder;
+    private final PostRepository postDao;
+    private final CommentRepository commentDao;
 
     @Transactional
     public Long add(UserDTO.Create dto) {
         return userDao.save(dto.toEntity(dto.getEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNickName(), dto.getImageUrl(), dto.getProviderId())).getId();
     }
 
-    //Q 단순 get은 transactional 뺄까?
+    // 이메일 중복 체크
+    public boolean checkEmail(String email) {
+        boolean result = false;
+        User user = userDao.findByEmail(email);
+
+        if (user == null) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    // 닉네임 중복 체크
+    public boolean checkNickName(String nickName) {
+        boolean result = false;
+        User user = userDao.findByNickName(nickName);
+
+        if (user == null) {
+            result = true;
+        }
+
+        return result;
+    }
+
     @Transactional
     public List<UserDTO.Get> getAll() {
         return userDao.findAllByIsDeleted("n").stream().map(UserDTO.Get::new).collect(Collectors.toList());
@@ -60,7 +89,19 @@ public class UserService {
         User user = userDao.findById(userId)
                 .orElseThrow(NotFoundException::new);
 
+        List<Post> postList = postDao.findByUser(user);
+
         user.delete();
+
+        // 삭제된 회원의 게시물과 댓글 삭제
+        for(Post p : postList) {
+            p.delete();
+
+            List<Comment> commentList = commentDao.findAllByPostAndUserAndIsDeleted(p, user,"y");
+
+            for(Comment c : commentList) c.delete();
+        }
+
     }
 
     public List<UserDTO.GetFromAdmin> getAllFromAdmin(){
@@ -73,13 +114,23 @@ public class UserService {
         User user = userDao.findById(dto.getUserId()).
                 orElseThrow(NotFoundException::new);
 
-        //Q 이미 블랙리스트일 경우 추가 할? 말?
-        if (user.getIsBlack().equals("y")) {
+        List<Post> postList = postDao.findByUser(user);
 
+        //Q 이미 블랙리스트일 경우 추가 할? 말?
+        if(user.getIsBlack().equals("y")) {
+            throw new NotFoundException();
         }
 
         // User entity의 isBlack값 변경
         user.blackUser();
+
+        for(Post p : postList) {
+            p.delete();
+
+            List<Comment> commentList = commentDao.findAllByPostAndUserAndIsDeleted(p, user,"y");
+
+            for(Comment c : commentList) c.delete();
+        }
 
         return blackListDao.save(dto.toEntity(user, dto.getReason())).getId();
     }
