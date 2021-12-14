@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -60,16 +59,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     // Authorization에 사용할 userDetailService와 password Encoder 정의
-    @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+//    @Override
+//    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 //        authenticationManagerBuilder
-        authenticationManagerBuilder
-                // enable in memory based authentication with a user named "user" and "admin"
-//                .inMemoryAuthentication().withUser("user").password("password").roles("USER")
-//                .and().withUser("admin").password("password").roles("USER", "ADMIN")
-                .userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
+//                .userDetailsService(customUserDetailsService)
+//                .passwordEncoder(passwordEncoder());
+//    }
 
     // SecurityConfig에서 사용할 password encoder를 BCryptPasswordEncoder로 정의
     @Bean
@@ -209,4 +204,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ////                // 리소스 서버(소셜 서비스들)에서 사용자 정보를 가져온 상태에서 추가로 진행하고자하는 기능을 명시할 수 있다.
 ////                .userService(customOAuth2UserService);
     }
+
 }
