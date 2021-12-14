@@ -143,6 +143,8 @@ public class User extends BaseTimeEntity {
         return this.isBlack;
     }
 
-    public void delete() { this.isDeleted = "y"; }
+    public void delete() {
+        this.isDeleted = "y";
+    }
 
 }

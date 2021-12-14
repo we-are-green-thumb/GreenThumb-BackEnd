@@ -45,14 +45,13 @@ public class UserController {
 //    }
 
     // 이메일 중복 체크
-    @PostMapping("/user/check")
+    @GetMapping("/checkemail")
     public boolean checkEmail(@RequestBody UserDTO.CheckEmail dto) {
         return userService.checkEmail(dto.getEmail());
     }
 
-
     // 닉네임 중복 체크
-    @PostMapping("/user/check")
+    @GetMapping("/checknickname")
     public boolean checkNickName(@RequestBody UserDTO.CheckNickName dto) {
         return userService.checkNickName(dto.getNickName());
     }
@@ -64,18 +63,16 @@ public class UserController {
         User user = userDao.findByEmailAndIsDeleted(loginRequest.getUserName(), "n");
         System.out.println(2);
 //        if(user.getUserName().equals(loginRequest.getUserName()) && user.getUserPassword().equals(loginRequest.getPassword()) && user.getIsDeleted().equals("n")) {
-            System.out.println(3);
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String token = tokenProvider.createToken(authentication);
+        System.out.println(3);
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = tokenProvider.createToken(authentication);
 
-            return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
 //        }else {
 //            System.out.println(4);
 //            return new NotFoundException();
 //        }
-
-
 
 
     }
