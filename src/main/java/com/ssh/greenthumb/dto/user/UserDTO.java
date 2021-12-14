@@ -3,6 +3,8 @@ package com.ssh.greenthumb.dto.user;
 import com.ssh.greenthumb.domain.user.User;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 public class UserDTO {
 
     @Getter
@@ -45,6 +47,30 @@ public class UserDTO {
             this.email = entity.getEmail();
             this.password = entity.getPassword();
             this.nickName = entity.getNickName();
+        }
+    }
+
+    @Getter
+    public static class GetFromAdmin {
+        private String email;
+        private String nickName;
+        private String role;
+        private String isDeleted;
+        private String deleteReason;
+        private LocalDateTime deleteDate;
+        private String isBlack;
+        private String providerId;
+
+        public GetFromAdmin(User entity) {
+            this.email = entity.getEmail();
+            this.nickName = entity.getNickName();
+            this.role = entity.getRole().getDisplayName();
+            this.isDeleted = entity.getIsDeleted();
+            this.deleteReason = entity.getDeleteReason();
+//        String formatDate = LocalDateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            this.deleteDate = entity.getDeleteDate();
+            this.isBlack = entity.getIsBlack();
+            this.providerId = entity.getProviderId();
         }
     }
 

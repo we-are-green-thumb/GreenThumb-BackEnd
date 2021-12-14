@@ -100,6 +100,11 @@ public class UserController {
         userService.delete(userId);
     }
 
+    @GetMapping("/getAllFromAdmin")
+    public List<UserDTO.GetFromAdmin> getAllFromAdmin() {
+        return userService.getAllFromAdmin();
+    }
+
     // 블랙리스트 등록
     @PostMapping("/blacklist")
     public Long addBlack(@RequestBody BlackListDTO.Create dto) {
