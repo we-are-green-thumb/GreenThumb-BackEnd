@@ -12,15 +12,15 @@ public class PostDTO {
     public static class Create {
         private Long userId;
         private String title;
-        private String postContent;
-        private String postCategory;
+        private String category;
+        private String content;
 
-        public Post toEntity(User user, String title, String postContent, String postCategory) {
+        public Post toEntity(User user, String title, String category, String content) {
             return Post.builder()
                     .user(user)
                     .title(title)
-                    .postContent(postContent)
-                    .postCategory(postCategory)
+                    .category(category)
+                    .content(content)
                     .build();
         }
     }
@@ -28,16 +28,16 @@ public class PostDTO {
     @Getter
     public static class Get {
         private String title;
-        private String postCategory;
-        private String postContent;
-        private Long postHits;
+        private String category;
+        private String content;
+        private Long hits;
         private String isComplete;
 
         public Get(Post entity) {
             this.title = entity.getTitle();
-            this.postCategory = entity.getPostCategory();
-            this.postContent = entity.getPostContent();
-            this.postHits = entity.getPostHits();
+            this.category = entity.getCategory();
+            this.content = entity.getContent();
+            this.hits = entity.getHits();
             this.isComplete = entity.getIsComplete();
         }
     }
@@ -45,8 +45,8 @@ public class PostDTO {
     @Getter
     public static class Update {
         private String title;
-        private String postCategory;
-        private String postContent;
+        private String category;
+        private String content;
     }
 
     @Getter

@@ -36,7 +36,7 @@ public class LikeService {
 
         LikePostDTO.Create likePost = new LikePostDTO.Create(postId, userId);
 
-        return likePostDao.save(likePost.toEntity(post, user)).getLikePostId();
+        return likePostDao.save(likePost.toEntity(post, user)).getId();
     }
 
     // 게시글 좋아요 취소
@@ -62,7 +62,7 @@ public class LikeService {
 
         LikeCommentDTO.Create dto = new LikeCommentDTO.Create(commentId, userId);
 
-        return likeCommentDao.save(dto.toEntity(comment, user)).getLikeCommentId();
+        return likeCommentDao.save(dto.toEntity(comment, user)).getId();
     }
 
     // 댓글 좋아요 취소

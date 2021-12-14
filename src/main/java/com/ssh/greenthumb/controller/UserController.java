@@ -44,11 +44,24 @@ public class UserController {
 //        return new ApiResponse(true, "계정 생성 성공.");
 //    }
 
+    // 이메일 중복 체크
+    @PostMapping("/user/check")
+    public boolean checkEmail(@RequestBody UserDTO.CheckEmail dto) {
+        return userService.checkEmail(dto.getEmail());
+    }
+
+
+    // 닉네임 중복 체크
+    @PostMapping("/user/check")
+    public boolean checkNickName(@RequestBody UserDTO.CheckNickName dto) {
+        return userService.checkNickName(dto.getNickName());
+    }
+
     @CrossOrigin
     @PostMapping("/login")
     public Object login(@RequestBody LoginRequest loginRequest) {
         System.out.println(1);
-        User user = userDao.findByUserNameAndIsDeleted(loginRequest.getUserName(), "n");
+        User user = userDao.findByEmailAndIsDeleted(loginRequest.getUserName(), "n");
         System.out.println(2);
 //        if(user.getUserName().equals(loginRequest.getUserName()) && user.getUserPassword().equals(loginRequest.getPassword()) && user.getIsDeleted().equals("n")) {
             System.out.println(3);

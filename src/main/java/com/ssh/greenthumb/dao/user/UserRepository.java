@@ -7,10 +7,14 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByUserNameAndIsDeleted(String userName, String isDeleted);
+    User findByEmail(String email);
+
+    User findByEmailAndIsDeleted(String email, String isDeleted);
 
     List<User> findAllByIsDeleted(String isDeleted);
 
-    Boolean existsByUserName(String userName);
+    Boolean existsByEmail(String userName);
+
+    User findByNickName(String nickName);
 
 }

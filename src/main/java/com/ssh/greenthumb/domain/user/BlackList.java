@@ -16,34 +16,34 @@ public class BlackList {
     @Id
     @Column(name = "black_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long blackId;
+    private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user")
     @NotNull
     private User user;
 
     @Column(name = "black_reason", columnDefinition = "varchar(900)")
     @NotNull
-    private String blackReason;
+    private String reason;
 
     @Column(name = "black_status")
     @NotNull
-    private String blackStatus = "y";
+    private String status = "y";
 
     @Builder
-    public BlackList(User user, String blackReason) {
+    public BlackList(User user, String reason) {
         this.user = user;
-        this.blackReason = blackReason;
+        this.reason = reason;
     }
 
-    public BlackList update(String blackReason) {
-        this.blackReason = blackReason;
+    public BlackList update(String reason) {
+        this.reason = reason;
         return this;
     }
 
     public void delete() {
-        this.blackStatus = "n";
+        this.status = "n";
     }
 
 }

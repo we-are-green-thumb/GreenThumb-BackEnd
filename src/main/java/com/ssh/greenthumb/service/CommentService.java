@@ -32,7 +32,7 @@ public class CommentService {
         User user = userDao.findById(dto.getUserId()).
                 orElseThrow(NotFoundException::new);
 
-        return commentDao.save(dto.toEntity(post, user, dto.getCommentContent())).getCommentId();
+        return commentDao.save(dto.toEntity(post, user, dto.getContent())).getId();
     }
 
     // 게시글별 댓글 조회
@@ -62,7 +62,7 @@ public class CommentService {
         Comment comment = commentDao.findById(commentId).
                 orElseThrow(NotFoundException::new);
 
-        comment.update(dto.getCommentContent());
+        comment.update(dto.getContent());
 
         commentDao.save(comment);
 

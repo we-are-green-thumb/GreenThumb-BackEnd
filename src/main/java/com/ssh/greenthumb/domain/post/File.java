@@ -14,11 +14,11 @@ public class File {
     @Id
     @Column(name = "file_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long fileId;
+    private Long id;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post")
     @NotNull
     private Post post;
 

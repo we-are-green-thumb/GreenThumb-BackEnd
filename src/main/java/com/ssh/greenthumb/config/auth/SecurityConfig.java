@@ -1,9 +1,7 @@
 package com.ssh.greenthumb.config.auth;
 
-import com.ssh.greenthumb.domain.login.Role;
 import com.ssh.greenthumb.security.CustomUserDetailsService;
 import com.ssh.greenthumb.security.TokenAuthenticationFilter;
-import com.ssh.greenthumb.security.oauth2.CustomOAuth2UserService;
 import com.ssh.greenthumb.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ssh.greenthumb.security.oauth2.OAuth2AuthenticationFailureHandler;
 import com.ssh.greenthumb.security.oauth2.OAuth2AuthenticationSuccessHandler;
@@ -12,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailsService;
 
-    private final CustomOAuth2UserService customOAuth2UserService;
+//    private final CustomOAuth2UserService customOAuth2UserService;
 
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
@@ -59,12 +58,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     // Authorization에 사용할 userDetailService와 password Encoder 정의
-//    @Override
-//    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//        authenticationManagerBuilder
-//                .userDetailsService(customUserDetailsService)
-//                .passwordEncoder(passwordEncoder());
-//    }
+    @Override
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder
+                .userDetailsService(customUserDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
 
     // SecurityConfig에서 사용할 password encoder를 BCryptPasswordEncoder로 정의
     @Bean
@@ -111,12 +110,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
 ////                // 로그인폼 비활성화
 //                .formLogin().disable()
-                .formLogin().and()
+                .formLogin()
+//                .loginPage("localhost:8081/login")
+//                .loginProcessingUrl("/user/login").and()
+                .and()
 ////                // 기본 로그인 창 비활성화
                 .httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/test").permitAll()
-                .antMatchers("/**").hasAnyRole(Role.BLACK.name() ,Role.USER.name(), Role.ADMIN.name());
+                .antMatchers("/", "/test").permitAll();
+//                .antMatchers("/**").hasAnyRole(Role.BLACK.name() ,Role.USER.name(), Role.ADMIN.name());
 //                .web.ignoring().antMatchers("/assets/**")
 //                .web.ignoring().antMatchers("/favicon.ico");
 //                .antMatchers("/auth/**", "/oauth2/**").permitAll()

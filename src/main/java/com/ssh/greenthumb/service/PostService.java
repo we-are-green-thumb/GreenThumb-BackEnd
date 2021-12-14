@@ -29,12 +29,12 @@ public class PostService {
         User user = userDao.findById(dto.getUserId()).
                 orElseThrow(NotFoundException::new);
 
-        return postDao.save(dto.toEntity(user, dto.getTitle(), dto.getPostContent(), dto.getPostCategory())).getPostId();
+        return postDao.save(dto.toEntity(user, dto.getTitle(), dto.getContent(), dto.getCategory())).getId();
     }
 
     @Transactional
     public List<PostDTO.Get> getAll(String postCategory) {
-        return postDao.findAllPostByPostCategoryAndIsDeleted(postCategory, "n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
+        return postDao.findAllPostByCategoryAndIsDeleted(postCategory, "n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
     }
 
     @Transactional
@@ -47,9 +47,9 @@ public class PostService {
         Post post = postDao.findById(postId).
                 orElseThrow(NotFoundException::new);
 
-        post.update(dto.getTitle(), dto.getPostCategory(), dto.getPostContent());
+        post.update(dto.getTitle(), dto.getCategory(), dto.getContent());
 
-        return post.getPostId();
+        return post.getId();
     }
 
     @Transactional
@@ -59,7 +59,7 @@ public class PostService {
 
         post.updateCheck(post.getIsComplete());
 
-        return post.getPostId();
+        return post.getId();
     }
 
     @Transactional
@@ -76,7 +76,7 @@ public class PostService {
         Post post = postDao.findById(postId).
                 orElseThrow(NotFoundException::new);
 
-        return fileDao.save(dto.toEntity(post, dto.getFileUrl())).getFileId();
+        return fileDao.save(dto.toEntity(post, dto.getFileUrl())).getId();
     }
 
     // 파일 삭제
