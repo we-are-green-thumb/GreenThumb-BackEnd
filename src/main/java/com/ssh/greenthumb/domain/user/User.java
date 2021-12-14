@@ -31,7 +31,7 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @Column
-    @NotNull
+//    @NotNull
     private String email;
 
     @Column(name = "user_password")

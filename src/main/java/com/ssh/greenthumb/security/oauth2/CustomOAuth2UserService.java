@@ -16,7 +16,6 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
 @Service
@@ -39,32 +38,32 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
     }
 
+    // 사용자 정보 추출
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
-        OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
-        if(StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
-            throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
-        }
+        AuthProvider authProvider = AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId());
+//        if(StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
+//            throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
+//        }
 
-        User userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
-        User user;
-        if(userOptional != null) {
-            user = userOptional;
-            if(!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
+        OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(authProvider, oAuth2User.getAttributes());
+        User savedUser = userRepository.findByProviderId(userInfo.getId());
+        if(savedUser != null) {
+            if(!savedUser.getProvider().equals(authProvider)) {
                 throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
-                        user.getProvider() + " account. Please use your " + user.getProvider() +
+                        savedUser.getProvider() + " account. Please use your " + savedUser.getProvider() +
                         " account to login.");
             }
-            user = updateExistingUser(user, oAuth2UserInfo);
+            updateExistingUser(savedUser, userInfo);
         } else {
-            user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
+            registerNewUser(userInfo, authProvider);
         }
 
-        return UserPrincipal.create(user, oAuth2User.getAttributes());
+        return UserPrincipal.create(savedUser, oAuth2User.getAttributes());
     }
 
-    private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
+    private User registerNewUser(OAuth2UserInfo oAuth2UserInfo, AuthProvider authProvider) {
         return userRepository.save(User.builder()
-                .provider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))
+                .provider(authProvider)
                 .providerId(oAuth2UserInfo.getId())
                 .nickName(oAuth2UserInfo.getName())
                 .email(oAuth2UserInfo.getEmail())

@@ -19,13 +19,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String email)
+    public UserDetails loadUserByUsername(String providerId)
             throws UsernameNotFoundException {
 //        User user = userRepository.findByEmail(email)
 //                .orElseThrow(() ->
 //                        new UsernameNotFoundException(email + "로 된 사용자를 찾을 수 없습니다.")
 //                );
-        User user = userDao.findByEmail(email);
+        User user = userDao.findByProviderId(providerId);
 
         return UserPrincipal.create(user);
     }
