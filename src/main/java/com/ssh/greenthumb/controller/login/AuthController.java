@@ -49,10 +49,12 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
+        System.out.println(1);
         if(userDao.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("이미 해당 이메일을 사용하고 있습니다.");
         }
 
+        System.out.println(2);
         User result = userDao.save(User.builder()
                 .email(signUpRequest.getEmail())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
@@ -60,10 +62,12 @@ public class AuthController {
                 .build()
         );
 
+        System.out.println(3);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
                 .buildAndExpand(result.getEmail()).toUri();
 
+        System.out.println(4);
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "계정 생성 성공"));
     }

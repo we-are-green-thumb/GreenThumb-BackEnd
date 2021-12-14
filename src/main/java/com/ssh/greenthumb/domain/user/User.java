@@ -35,7 +35,7 @@ public class User extends BaseTimeEntity {
     private String email;
 
     @Column(name = "user_password")
-    @NotNull
+//    @NotNull
     private String password;
 
     @Column(name = "user_nickname")
@@ -56,7 +56,7 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private AuthProvider provider = AuthProvider.LOCAL;
+    private AuthProvider provider = AuthProvider.local;
 
     @Column
     private String providerId;
@@ -108,7 +108,7 @@ public class User extends BaseTimeEntity {
         this.nickName = nickName;
         this.imageUrl = imageUrl;
         this.role = Role.USER;
-        this.provider = AuthProvider.LOCAL;
+        this.provider = AuthProvider.local;
         this.providerId = providerId;
 
     }
