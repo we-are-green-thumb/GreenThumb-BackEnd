@@ -21,6 +21,27 @@ public class OAuth2UserInfoFactory {
             case GOOGLE: return new GoogleOAuth2UserInfo(attributes);
             case NAVER: return new NaverOAuth2UserInfo(attributes);
             case KAKAO: return new KakaoOAuth2UserInfo(attributes);
+            case LOCAL: return new OAuth2UserInfo(attributes) {
+                @Override
+                public String getId() {
+                    return null;
+                }
+
+                @Override
+                public String getName() {
+                    return null;
+                }
+
+                @Override
+                public String getEmail() {
+                    return null;
+                }
+
+                @Override
+                public String getImageUrl() {
+                    return null;
+                }
+            };
             default: throw new IllegalArgumentException("Invalid Provider Type.");
         }
     }

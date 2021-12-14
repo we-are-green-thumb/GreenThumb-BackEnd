@@ -45,11 +45,11 @@ public class User extends BaseTimeEntity {
     private String userPassword;
 
     @Column(name = "user_nickname")
-    @NotNull
+//    @NotNull
     private String userNickname;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @NotNull
     private Role role = Role.USER;
 
     @Column(name = "user_delete")
@@ -62,15 +62,15 @@ public class User extends BaseTimeEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private AuthProvider provider;
+    private AuthProvider provider = AuthProvider.LOCAL;
 
-    //    @Column
+//    @Column
     private String providerId;
 
     @Column
     private String imageUrl;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private Boolean nameVerified = false;
 
     // @LastModifiedDate
@@ -108,15 +108,14 @@ public class User extends BaseTimeEntity {
 
     //Q 마이페이지에서 유저정보 가져올 때 비밀번호 가져올까?
     @Builder
-    public User(String userName, String userPassword, String userNickName, String imageUrl, Role role, Boolean nameVerified, AuthProvider provider, String providerId) {
+    public User(String userName, String userPassword, String userNickName, String imageUrl) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userNickname = userNickName;
         this.imageUrl = imageUrl;
-        this.role = role;
-        this.nameVerified = nameVerified;
-        this.provider = provider;
-        this.providerId = providerId;
+//        this.role = role;
+//        this.nameVerified = nameVerified;
+//        this.providerId = providerId;
 
     }
 

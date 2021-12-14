@@ -1,7 +1,6 @@
 package com.ssh.greenthumb.config.auth.dto;
 
-import com.ssh.greenthumb.domain.login.OAuthUser;
-import com.ssh.greenthumb.domain.login.Role;
+import com.ssh.greenthumb.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -67,12 +66,12 @@ public class OAuthAttributes {
                 .build();
     }
 
-    public OAuthUser toEntity() {
-        return OAuthUser.builder()
-                .name(name)
-                .email(email)
+    public User toEntity() {
+        return User.builder()
+                .userName(name)
+//                .email(email)
                 .imageUrl(picture)
-                .role(Role.USER)
+//                .role(Role.USER)
                 .build();
     }
 

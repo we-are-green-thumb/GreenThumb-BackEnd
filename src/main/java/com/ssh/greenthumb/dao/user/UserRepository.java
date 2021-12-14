@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    User findByUserNameAndIsDeleted(String userName, String isDeleted);
+
     List<User> findAllByIsDeleted(String isDeleted);
 
     Boolean existsByUserName(String userName);

@@ -1,13 +1,12 @@
 package com.ssh.greenthumb.controller;
 
-import com.ssh.greenthumb.dto.login.DefaultRes;
+import com.ssh.greenthumb.dao.user.UserRepository;
+import com.ssh.greenthumb.domain.user.User;
+import com.ssh.greenthumb.dto.login.AuthResponse;
 import com.ssh.greenthumb.dto.login.LoginRequest;
-import com.ssh.greenthumb.dto.login.ResponseMessage;
-import com.ssh.greenthumb.dto.login.StatusCode;
 import com.ssh.greenthumb.dto.user.BlackListDTO;
 import com.ssh.greenthumb.dto.user.UserDTO;
 import com.ssh.greenthumb.security.TokenProvider;
-import com.ssh.greenthumb.service.OAuth2UserService;
 import com.ssh.greenthumb.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,9 +26,9 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final OAuth2UserService oAuth2UserService;
     private final TokenProvider tokenProvider;
     private final AuthenticationManager authenticationManager;
+    private final UserRepository userDao;
 
     @PostMapping
     public Long add(@RequestBody UserDTO.Create dto) {
@@ -45,15 +44,27 @@ public class UserController {
 //        return new ApiResponse(true, "계정 생성 성공.");
 //    }
 
+    @CrossOrigin
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
+    public Object login(@RequestBody LoginRequest loginRequest) {
+        System.out.println(1);
+        User user = userDao.findByUserNameAndIsDeleted(loginRequest.getUserName(), "n");
+        System.out.println(2);
+//        if(user.getUserName().equals(loginRequest.getUserName()) && user.getUserPassword().equals(loginRequest.getPassword()) && user.getIsDeleted().equals("n")) {
+            System.out.println(3);
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String token = tokenProvider.createToken(authentication);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
+//        }else {
+//            System.out.println(4);
+//            return new NotFoundException();
+//        }
 
-        String token = tokenProvider.createToken(authentication);
 
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, token), HttpStatus.OK);
+
+
     }
 
     //Q 유저정보 모두 출력할 때, userId도 필요할까?
