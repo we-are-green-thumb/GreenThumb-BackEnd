@@ -9,12 +9,12 @@ public class BlackListDTO {
     @Getter
     public static class Create {
         private Long userId;
-        private String blackReason;
+        private String reason;
 
-        public BlackList toEntity(User user, String blackReason) {
+        public BlackList toEntity(User user, String reason) {
             return BlackList.builder()
                     .user(user)
-                    .blackReason(blackReason)
+                    .reason(reason)
                     .build();
         }
     }
@@ -22,24 +22,24 @@ public class BlackListDTO {
     @Getter
     public static class Get {       // 블랙리스트 가져오기
         private Long userId;
-        private String userNickname;
+        private String nickName;
 
         public Get(BlackList entity) {
-            this.userId = entity.getUser().getUserId();
-            this.userNickname = entity.getUser().getUserNickname();
+            this.userId = entity.getUser().getId();
+            this.nickName = entity.getUser().getNickName();
         }
     }
 
     @Getter
     public static class Update {    // 블랙리스트 수정
-        private Long blackId;
-        private String blackReason;
+        private Long id;
+        private String reason;
     }
 
     @Getter
     public static class Delete {    // 블랙리스트 제외
-        private Long blackId;
-        private Long blackStatus;
+        private Long id;
+        private Long status;
     }
 
 }

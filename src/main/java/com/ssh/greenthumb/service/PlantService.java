@@ -26,8 +26,8 @@ public class PlantService {
         User user = userDao.findById(dto.getUserId()).
                 orElseThrow(NotFoundException::new);
 
-        return plantDao.save(dto.toEntity(user, dto.getPlantName(), dto.getPlantNickname(),
-                dto.getWater(), dto.getTemp(), dto.getImageUrl())).getPlantId();
+        return plantDao.save(dto.toEntity(user, dto.getName(), dto.getNickName(),
+                dto.getWater(), dto.getTemp(), dto.getImageUrl())).getId();
     }
 
     // 전체 식물 조회
@@ -58,7 +58,7 @@ public class PlantService {
         Plant plant = plantDao.findById(plantId).
                 orElseThrow(NotFoundException::new);
 
-        plant.update(dto.getPlantName(), dto.getPlantNickname(), dto.getWater(),
+        plant.update(dto.getName(), dto.getNickName(), dto.getWater(),
                 dto.getTemp(), dto.getImageUrl());
 
         return plantId;

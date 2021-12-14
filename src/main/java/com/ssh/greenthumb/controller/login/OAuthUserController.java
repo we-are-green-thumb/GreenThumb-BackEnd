@@ -1,9 +1,9 @@
 package com.ssh.greenthumb.controller.login;
 
-import com.ssh.greenthumb.dao.login.OAuthUserRepository;
+import com.ssh.greenthumb.dao.user.UserRepository;
+import com.ssh.greenthumb.domain.user.User;
 import com.ssh.greenthumb.security.CurrentUser;
 import com.ssh.greenthumb.security.UserPrincipal;
-import com.ssh.greenthumb.domain.login.OAuthUser;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.ResourceNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OAuthUserController {
 
-    private final OAuthUserRepository userRepository;
+    private final UserRepository userDao;
 
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
-    public OAuthUser getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-        return userRepository.findById(userPrincipal.getId())
+    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+        return userDao.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 

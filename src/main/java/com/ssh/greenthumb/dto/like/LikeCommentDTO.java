@@ -34,8 +34,8 @@ public class LikeCommentDTO {
         private Long userId;
 
         public Get(LikeComment entity) {
-            this.commentId = entity.getComment().getCommentId();
-            this.userId = entity.getUser().getUserId();
+            this.commentId = entity.getComment().getId();
+            this.userId = entity.getUser().getId();
         }
     }
 

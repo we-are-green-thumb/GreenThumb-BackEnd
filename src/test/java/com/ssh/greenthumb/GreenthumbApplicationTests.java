@@ -5,6 +5,8 @@ import com.ssh.greenthumb.dao.post.CommentRepository;
 import com.ssh.greenthumb.dao.post.PostRepository;
 import com.ssh.greenthumb.dao.user.FollowRepository;
 import com.ssh.greenthumb.dao.user.UserRepository;
+import com.ssh.greenthumb.domain.login.AuthProvider;
+import com.ssh.greenthumb.domain.login.Role;
 import com.ssh.greenthumb.domain.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +90,17 @@ class GreenthumbApplicationTests {
 //
 //        User followee = User.builder().userName("followee").userPassword("aa").userNickName("팔로위").build();
 //        userDao.save(followee);
+    @Test
+    public void follow() {
+
+        User follower = User.builder().nickName("follower").password("aa").email("aa@aa.com").role(Role.USER).provider(AuthProvider.LOCAL).build();
+        userDao.save(follower);
+//
+//        User followee = User.builder().userName("followee").userPassword("aa").userNickName("팔로위").build();
+//        userDao.save(followee);
+
+//        OAuthUser oAuthUser = OAuthUser.builder().name("aaa").email("aaa@aaa.com").password("1234").imageUrl("aa").provider(AuthProvider.LOCAL).role(Role.USER).emailVerified(true).providerId("1111").build();
+//        oAuthUserDao.save(oAuthUser);
 
 //         User follower = userDao.findById(2L).get();
 //         User followee = userDao.findById(1L).get();
@@ -96,6 +109,7 @@ class GreenthumbApplicationTests {
 //                         .follower(follower)
 //                         .followee(followee)
 //                         .build());
+
      }
 
     }

@@ -19,16 +19,16 @@ public class LikePost {
     @Id
     @Column(name = "like_post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likePostId;
+    private Long id;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post")
     @NotNull
     private Post post;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user")
     @NotNull
     private User user;
 

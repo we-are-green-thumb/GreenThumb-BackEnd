@@ -3,25 +3,24 @@ package com.ssh.greenthumb.dto.plant;
 import com.ssh.greenthumb.domain.plant.Plant;
 import com.ssh.greenthumb.domain.user.User;
 import lombok.Getter;
-import lombok.Setter;
 
 public class PlantDTO {
 
     @Getter
     public static class Create {    // 식물 작성 필요 정보
         private Long userId;
-        private String plantName;
-        private String plantNickname;
+        private String name;
+        private String nickName;
         private Long water;
         private Long temp;
         private String imageUrl;
 
-        public Plant toEntity(User user, String plantName, String plantNickname, Long water,
+        public Plant toEntity(User user, String name, String nickName, Long water,
                               Long temp, String imageUrl) {
             return Plant.builder()
                     .user(user)
-                    .plantName(plantName)
-                    .plantNickname(plantNickname)
+                    .name(name)
+                    .nickName(nickName)
                     .water(water)
                     .temp(temp)
                     .imageUrl(imageUrl)
@@ -33,17 +32,17 @@ public class PlantDTO {
     public static class Get {       // 식물정보 가져오기
         private Long plantId;
         private Long userId;
-        private String plantName;
-        private String plantNickname;
+        private String name;
+        private String nickName;
         private Long water;
         private Long temp;
         private String imageUrl;
 
         public Get(Plant entity) {
-            this.plantId = entity.getPlantId();
-            this.userId = entity.getUser().getUserId();
-            this.plantName = entity.getPlantName();
-            this.plantNickname = entity.getPlantNickname();
+            this.plantId = entity.getId();
+            this.userId = entity.getUser().getId();
+            this.name = entity.getName();
+            this.nickName = entity.getNickName();
             this.water = entity.getWater();
             this.temp = entity.getTemp();
             this.imageUrl = entity.getImageUrl();
@@ -52,21 +51,11 @@ public class PlantDTO {
 
     @Getter
     public static class Update {    // 식물정보 수정
-        private String plantName;
-        private String plantNickname;
+        private String name;
+        private String nickName;
         private Long water;
         private Long temp;
         private String imageUrl;
-    }
-
-    @Getter
-    @Setter
-    public static class Request {
-        private Long userId;
-
-        public Request(Long userId) {
-            this.userId = userId;
-        }
     }
 
 }
