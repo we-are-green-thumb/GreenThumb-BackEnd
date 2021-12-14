@@ -34,6 +34,30 @@ public class UserService {
         return userDao.save(dto.toEntity(dto.getEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNickName(), dto.getImageUrl(), dto.getProviderId())).getId();
     }
 
+    // 이메일 중복 체크
+    public boolean checkEmail(String email) {
+        boolean result = false;
+        User user = userDao.findByEmail(email);
+
+        if (user == null) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    // 닉네임 중복 체크
+    public boolean checkNickName(String nickName) {
+        boolean result = false;
+        User user = userDao.findByNickName(nickName);
+
+        if (user == null) {
+            result = true;
+        }
+
+        return result;
+    }
+
     @Transactional
     public List<UserDTO.Get> getAll() {
         return userDao.findAllByIsDeleted("n").stream().map(UserDTO.Get::new).collect(Collectors.toList());

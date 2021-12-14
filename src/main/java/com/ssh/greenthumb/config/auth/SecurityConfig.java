@@ -119,6 +119,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/", "/test").permitAll()
 //                .antMatchers("/**").hasAnyRole(Role.BLACK.name() ,Role.USER.name(), Role.ADMIN.name());
 
+
 //                .web.ignoring().antMatchers("/assets/**")
 //                .web.ignoring().antMatchers("/favicon.ico");
 //                .antMatchers("/auth/**", "/oauth2/**").permitAll()

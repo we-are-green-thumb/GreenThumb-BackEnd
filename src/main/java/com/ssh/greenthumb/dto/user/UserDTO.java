@@ -25,6 +25,16 @@ public class UserDTO {
     }
 
     @Getter
+    public static class CheckEmail {
+        private String email;
+    }
+
+    @Getter
+    public static class CheckNickName {
+        private String nickName;
+    }
+
+    @Getter
     public static class Get {
         private String email;
         // Q 마이페이지에서 유저 정보 가져올 떄 패스워드 필요성 여부

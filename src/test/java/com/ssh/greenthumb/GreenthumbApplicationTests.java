@@ -85,7 +85,7 @@ class GreenthumbApplicationTests {
     @Test
     public void follow() {
 
-        User follower = User.builder().nickName("doon").password(passwordEncoder.encode("abc")).email("aa@aa.com").role(Role.USER).provider(AuthProvider.LOCAL).build();
+        User follower = User.builder().nickName("follower").password(passwordEncoder.encode("abc")).email("ab@aa.com").role(Role.USER).provider(AuthProvider.LOCAL).build();
         userDao.save(follower);
 //
 //        User followee = User.builder().userName("followee").userPassword("aa").userNickName("팔로위").build();
