@@ -45,7 +45,9 @@ public class AuthController {
 
         String token = tokenProvider.createToken(authentication);
 
-        return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
+        User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
+
+        return new ResponseEntity(new AuthResponse(token, user.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/signup")
