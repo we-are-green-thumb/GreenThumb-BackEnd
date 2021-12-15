@@ -21,7 +21,7 @@ public class PostController {
         return postService.add(dto);
     }
 
-    @GetMapping("/posts/{postCategory}")
+    @GetMapping("/{postCategory}")
     public List<PostDTO.Get> getAll(@PathVariable String postCategory) {
         return postService.getAll(postCategory);
     }

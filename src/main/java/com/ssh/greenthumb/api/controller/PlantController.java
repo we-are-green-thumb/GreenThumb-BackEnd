@@ -27,7 +27,7 @@ public class PlantController {
     }
 
     // 유저별 식물 조회(전체)
-    @GetMapping("/user/{userId}/plants")
+    @GetMapping("/user/{userId}")
     public List<PlantDTO.Get> getAllByUser(@PathVariable Long userId) {
         return plantService.getAllByUser(userId);
     }

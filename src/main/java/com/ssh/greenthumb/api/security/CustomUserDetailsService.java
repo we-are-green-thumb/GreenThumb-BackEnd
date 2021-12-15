@@ -22,10 +22,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
         User user = userDao.findByEmailAndIsDeleted(email, "n");
-//                .orElseThrow(() ->
-//                        new UsernameNotFoundException(email + "로 된 사용자를 찾을 수 없습니다.")
-//                );
-//        User user = userDao.findByProviderId(providerId);
 
         return UserPrincipal.create(user);
     }

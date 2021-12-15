@@ -1,12 +1,14 @@
 package com.ssh.greenthumb.api.service;
 
-import com.ssh.greenthumb.api.dto.plant.PlantDTO;
 import com.ssh.greenthumb.api.common.exception.NotFoundException;
 import com.ssh.greenthumb.api.dao.plant.PlantRepository;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.plant.Plant;
 import com.ssh.greenthumb.api.domain.user.User;
+import com.ssh.greenthumb.api.dto.plant.PlantDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +41,16 @@ public class PlantService {
     // 유저별 식물 조회(전체)
     @Transactional
     public List<PlantDTO.Get> getAllByUser(Long userId) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication);
+        System.out.println(authentication.getPrincipal());
+        System.out.println(authentication.getDetails());
+        System.out.println(authentication.isAuthenticated());
+        System.out.println(authentication.getName());
+        System.out.println(authentication.getAuthorities());
+        System.out.println(authentication.getCredentials());
+
         User user = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
