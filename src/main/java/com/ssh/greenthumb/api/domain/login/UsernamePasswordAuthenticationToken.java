@@ -12,14 +12,14 @@ public class UsernamePasswordAuthenticationToken extends AbstractAuthenticationT
 
     public UsernamePasswordAuthenticationToken(Object principal, Object credentials) {
         super(null);
-        this.principal = principal;
+        this.principal = principal.toString();
         this.credentials = credentials;
         setAuthenticated(false);
     }
 
     public UsernamePasswordAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
-        this.principal = principal;
+        this.principal = principal.toString();
         this.credentials = credentials;
         super.setAuthenticated(true);
 
@@ -32,7 +32,7 @@ public class UsernamePasswordAuthenticationToken extends AbstractAuthenticationT
 
     @Override
     public Object getPrincipal() {
-        return null;
+        return principal;
     }
 
 }

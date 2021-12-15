@@ -111,6 +111,8 @@ public class UserService {
     // 블랙리스트 등록
     @Transactional
     public Long addBlack(BlackListDTO.Create dto) {
+
+
         User user = userDao.findById(dto.getUserId()).
                 orElseThrow(NotFoundException::new);
 

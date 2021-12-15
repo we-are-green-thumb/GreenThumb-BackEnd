@@ -21,6 +21,7 @@ public class PlantService {
 
     private final UserRepository userDao;
     private final PlantRepository plantDao;
+//    private final TokenProvider tokenProvider;
 
     // 식물 생성
     @Transactional
@@ -41,20 +42,21 @@ public class PlantService {
     // 유저별 식물 조회(전체)
     @Transactional
     public List<PlantDTO.Get> getAllByUser(Long userId) {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication);
+//        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         System.out.println(authentication.getPrincipal());
-        System.out.println(authentication.getDetails());
-        System.out.println(authentication.isAuthenticated());
-        System.out.println(authentication.getName());
-        System.out.println(authentication.getAuthorities());
-        System.out.println(authentication.getCredentials());
 
-        User user = userDao.findById(userId).
-                orElseThrow(NotFoundException::new);
+//        if(userId == principal.getId()) {
+            User user = userDao.findById(userId).
+                    orElseThrow(NotFoundException::new);
 
-        return plantDao.findAllByUser(user).stream().map(PlantDTO.Get::new).collect(Collectors.toList());
+            return plantDao.findAllByUser(user).stream().map(PlantDTO.Get::new).collect(Collectors.toList());
+//        } else {
+//            throw new NotFoundException();
+//        }
+
+        //UsernamePasswordAuthenticationToken [Principal=null, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_USER]]
+//        System.out.println(authentication);
 
     }
 

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 
 @RequiredArgsConstructor
@@ -37,17 +38,21 @@ public class AuthController {
     private final TokenProvider tokenProvider;
 
     @PostMapping("/login")
-    public Object authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public Object authenticateUser(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = tokenProvider.createToken(authentication);
+        response.setHeader("Authorization", token);
 
         User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
 
-        return new ResponseEntity(new AuthResponse(token, user.getId()), HttpStatus.OK);
+        return new ResponseEntity(AuthResponse.builder()
+                .accessToken(token)
+                .id(user.getId())
+                .build(), HttpStatus.OK);
     }
 
     @PostMapping("/signup")
