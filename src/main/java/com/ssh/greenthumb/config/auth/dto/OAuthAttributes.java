@@ -1,7 +1,7 @@
 package com.ssh.greenthumb.config.auth.dto;
 
-import com.ssh.greenthumb.domain.login.Role;
-import com.ssh.greenthumb.domain.user.User;
+import com.ssh.greenthumb.api.domain.login.Role;
+import com.ssh.greenthumb.api.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 
