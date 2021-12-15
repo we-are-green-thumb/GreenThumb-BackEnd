@@ -1,13 +1,13 @@
 package com.ssh.greenthumb;
 
-import com.ssh.greenthumb.dao.plant.PlantRepository;
-import com.ssh.greenthumb.dao.post.CommentRepository;
-import com.ssh.greenthumb.dao.post.PostRepository;
-import com.ssh.greenthumb.dao.user.FollowRepository;
-import com.ssh.greenthumb.dao.user.UserRepository;
-import com.ssh.greenthumb.domain.login.AuthProvider;
-import com.ssh.greenthumb.domain.login.Role;
-import com.ssh.greenthumb.domain.user.User;
+import com.ssh.greenthumb.api.dao.plant.PlantRepository;
+import com.ssh.greenthumb.api.dao.post.CommentRepository;
+import com.ssh.greenthumb.api.dao.post.PostRepository;
+import com.ssh.greenthumb.api.dao.user.FollowRepository;
+import com.ssh.greenthumb.api.dao.user.UserRepository;
+import com.ssh.greenthumb.api.domain.login.AuthProvider;
+import com.ssh.greenthumb.api.domain.login.Role;
+import com.ssh.greenthumb.api.domain.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -85,11 +85,11 @@ class GreenthumbApplicationTests {
     @Test
     public void follow() {
 
-        User follower = User.builder().nickName("follower").password(passwordEncoder.encode("abc")).email("ab@aa.com").role(Role.USER).provider(AuthProvider.local).build();
-        userDao.save(follower);
+//        User follower = User.builder().nickName("follower").password(passwordEncoder.encode("abc")).email("ab@aa.com").role(Role.USER).provider(AuthProvider.local).build();
+//        userDao.save(follower);
 //
-//        User followee = User.builder().userName("followee").userPassword("aa").userNickName("팔로위").build();
-//        userDao.save(followee);
+        User admin = User.builder().nickName("admin").password(passwordEncoder.encode("admin")).email("admin@a.com").role(Role.ADMIN).provider(AuthProvider.local).build();
+        userDao.save(admin);
 
 //        OAuthUser oAuthUser = OAuthUser.builder().name("aaa").email("aaa@aaa.com").password("1234").imageUrl("aa").provider(AuthProvider.LOCAL).role(Role.USER).emailVerified(true).providerId("1111").build();
 //        oAuthUserDao.save(oAuthUser);

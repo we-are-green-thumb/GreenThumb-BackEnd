@@ -1,11 +1,12 @@
 package com.ssh.greenthumb.config.auth;
 
-import com.ssh.greenthumb.security.CustomUserDetailsService;
-import com.ssh.greenthumb.security.TokenAuthenticationFilter;
-import com.ssh.greenthumb.security.oauth2.CustomOAuth2UserService;
-import com.ssh.greenthumb.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.ssh.greenthumb.security.oauth2.OAuth2AuthenticationFailureHandler;
-import com.ssh.greenthumb.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.ssh.greenthumb.api.domain.login.Role;
+import com.ssh.greenthumb.api.security.CustomUserDetailsService;
+import com.ssh.greenthumb.api.security.TokenAuthenticationFilter;
+import com.ssh.greenthumb.api.security.oauth2.CustomOAuth2UserService;
+import com.ssh.greenthumb.api.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.ssh.greenthumb.api.security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.ssh.greenthumb.api.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -117,16 +119,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
 ////                // 기본 로그인 창 비활성화
                 .httpBasic().disable()
+                .authorizeRequests()
+                .antMatchers("/",
+                        "/error",
+                        "/favicon.ico",
+                        "/**/*.png",
+                        "/**/*.gif",
+                        "/**/*.svg",
+                        "/**/*.jpg",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js")
+                .permitAll()
+                .antMatchers("/auth/**", "/oauth2/**").permitAll()
+                .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
+                .antMatchers("/user/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                .anyRequest().authenticated()
+                .and()
                 .oauth2Login()
                 .defaultSuccessUrl("/index.html")
                 .userInfoEndpoint()
-                .userService(customOAuth2UserService);
+                .userService(customOAuth2UserService)
+                .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler);
+        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 //                .authorizeRequests()
 //                .antMatchers("/", "/test").permitAll();
 //                .antMatchers("/**").hasAnyRole(Role.BLACK.name() ,Role.USER.name(), Role.ADMIN.name());
 
-//                .web.ignoring().antMatchers("/assets/**")
 //                .web.ignoring().antMatchers("/favicon.ico");
+//                .web.ignoring().antMatchers("/assets/**")
 //                .antMatchers("/auth/**", "/oauth2/**").permitAll()
 //                .anyRequest().authenticated()
 //                .and()
