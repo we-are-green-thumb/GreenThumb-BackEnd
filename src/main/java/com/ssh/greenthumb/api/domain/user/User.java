@@ -2,8 +2,8 @@ package com.ssh.greenthumb.api.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssh.greenthumb.api.common.domain.BaseTimeEntity;
-import com.ssh.greenthumb.api.domain.login.AuthProvider;
-import com.ssh.greenthumb.api.domain.login.Role;
+import com.ssh.greenthumb.auth.domain.AuthProvider;
+import com.ssh.greenthumb.auth.domain.Role;
 import com.ssh.greenthumb.api.domain.plant.Plant;
 import com.ssh.greenthumb.api.domain.post.Comment;
 import com.ssh.greenthumb.api.domain.post.Post;
