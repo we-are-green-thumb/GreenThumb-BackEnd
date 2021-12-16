@@ -4,6 +4,8 @@ import com.ssh.greenthumb.api.domain.plant.Plant;
 import com.ssh.greenthumb.api.domain.user.User;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 public class PlantDTO {
 
     @Getter
@@ -37,6 +39,7 @@ public class PlantDTO {
         private Long water;
         private Long temp;
         private String imageUrl;
+        private LocalDateTime createdDate;
 
         public Get(Plant entity) {
             this.plantId = entity.getId();
@@ -46,6 +49,7 @@ public class PlantDTO {
             this.water = entity.getWater();
             this.temp = entity.getTemp();
             this.imageUrl = entity.getImageUrl();
+            this.createdDate = entity.getCreatedDate();
         }
     }
 
