@@ -22,7 +22,7 @@ public class PlantController {
         return plantService.add(dto);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public List<PlantDTO.Get> getAll() {
         return plantService.getAll();
     }
@@ -33,7 +33,7 @@ public class PlantController {
         return plantService.getAllByUser(userId, request);
     }
 
-    // 유저별 식물 조회(하나)
+    // 유저별 식물 조회(하나) - 식물 상세
     @GetMapping("/{plantId}")
     public PlantDTO.Get getOneByUser(@PathVariable Long plantId) {
         return plantService.getOneByUser(plantId);
