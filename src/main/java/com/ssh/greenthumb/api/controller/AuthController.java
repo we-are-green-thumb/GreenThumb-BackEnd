@@ -1,7 +1,6 @@
 package com.ssh.greenthumb.api.controller;
 
 import com.ssh.greenthumb.api.common.exception.BadRequestException;
-import com.ssh.greenthumb.api.dao.login.UserRefreshTokenRepository;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.login.ApiResponse;
@@ -9,6 +8,7 @@ import com.ssh.greenthumb.api.dto.login.AuthResponse;
 import com.ssh.greenthumb.api.dto.login.LoginRequest;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
 import com.ssh.greenthumb.auth.domain.*;
+import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
 import com.ssh.greenthumb.auth.token.Token;
 import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class AuthController {
     private final UserRepository userDao;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
-    private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final RefreshTokenRepository refreshTokenDao;
 
     @PostMapping("/login")
     public Object authenticateUser(@RequestBody LoginRequest loginRequest) {
@@ -48,17 +48,21 @@ public class AuthController {
 
         User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
 
-        userRefreshTokenRepository.save(UserRefreshToken.builder()
-                        .user(user)
-                        .refreshToken(token.getRefreshToken())
-                        .build());
+//        if (refreshTokenDao.findByUser(user) == null) {
+            refreshTokenDao.save(RefreshToken.builder()
+                    .user(user)
+                    .refreshToken(token.getRefreshToken())
+                    .build());
 
-        return new ResponseEntity(AuthResponse.builder()
-                .accessToken(token.getAccessToken())
-                .refreshToken(token.getRefreshToken())
-                .id(user.getId())
-                .build(), HttpStatus.OK);
+            return new ResponseEntity(AuthResponse.builder()
+                    .accessToken(token.getAccessToken())
+                    .id(user.getId())
+                    .build(), HttpStatus.OK);
+//        } else {
+//        }
     }
+
+//    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
