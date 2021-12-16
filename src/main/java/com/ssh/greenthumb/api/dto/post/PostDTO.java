@@ -17,15 +17,14 @@ public class PostDTO {
         private String title;
         private String category;
         private String content;
-        private List<File> fileList;
+        private String fileUrl;
 
-        public Post toEntity(User user, String title, String category, String content, List<File> fileList) {
+        public Post toEntity(User user, String title, String category, String content) {
             return Post.builder()
                     .user(user)
                     .title(title)
                     .category(category)
                     .content(content)
-                    .fileList(fileList)
                     .build();
         }
     }
@@ -33,6 +32,7 @@ public class PostDTO {
     @Getter
     public static class Get {
         private Long id;
+        private Long writerId;
         private String writer;
         private String title;
         private String category;
@@ -44,6 +44,7 @@ public class PostDTO {
 
         public Get(Post entity) {
             this.id = entity.getId();
+            this.writerId = entity.getUser().getId();
             this.writer = entity.getUser().getNickName();
             this.title = entity.getTitle();
             this.category = entity.getCategory();

@@ -6,15 +6,13 @@ import lombok.Getter;
 @Getter
 public class AuthResponse {
 
-    private String tokenType = "Bearer";  // 인증 방식
+    private String tokenType = "Bearer";
     private String accessToken;
-    private String refreshToken;
     private Long id;
 
     @Builder
     public AuthResponse(String accessToken, String refreshToken, Long id) {
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
         this.id = id;
     }
 
