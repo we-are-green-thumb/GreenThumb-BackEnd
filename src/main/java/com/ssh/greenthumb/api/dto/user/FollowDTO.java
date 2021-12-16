@@ -21,13 +21,24 @@ public class FollowDTO {
     }
 
     @Getter
-    public static class Get {
+    public static class Follower {
         private Long followerId;
-        private Long followeeId;
+        private String followerNickName;
 
-        public Get(Follow entity) {
+        public Follower(Follow entity) {
             this.followerId = entity.getFollower().getId();
+            this.followerNickName = entity.getFollower().getNickName();
+        }
+    }
+
+    @Getter
+    public static class Followee {
+        private Long followeeId;
+        private String followeeNickName;
+
+        public Followee(Follow entity) {
             this.followeeId = entity.getFollowee().getId();
+            this.followeeNickName = entity.getFollowee().getNickName();
         }
     }
 
