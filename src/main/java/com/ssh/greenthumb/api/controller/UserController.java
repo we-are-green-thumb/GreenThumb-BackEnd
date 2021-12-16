@@ -3,7 +3,7 @@ package com.ssh.greenthumb.api.controller;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.dto.user.BlackListDTO;
 import com.ssh.greenthumb.api.dto.user.UserDTO;
-import com.ssh.greenthumb.api.security.TokenProvider;
+import com.ssh.greenthumb.auth.token.TokenProvider;
 import com.ssh.greenthumb.api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
