@@ -42,37 +42,25 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     // 사용자 정보 추출
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
-        System.out.println(oAuth2UserRequest.getClientRegistration().getRegistrationId());
-        System.out.println(oAuth2User.getAttributes());
-        System.out.println(1);
-//        OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()), oAuth2User.getAttributes());
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
-        System.out.println(2);
-
-        System.out.println(oAuth2UserInfo.getId());
-
 
         if(StringUtils.isEmpty(oAuth2UserInfo.getId())) {
             throw new OAuth2AuthenticationProcessingException("ProviderId not found from OAuth2 provider");
         }
 
-        System.out.println(3);
         User userOptional = userRepository.findByProviderId(oAuth2UserInfo.getId());
-        System.out.println(4);
         User user;
 
         if(userOptional != null) {
             user = userOptional;
-            System.out.println(5);
+
             if(!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
                 throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
                         user.getProvider() + " account. Please use your " + user.getProvider() +
                         " account to login.");
             }
-            System.out.println(6);
             user = updateExistingUser(user, oAuth2UserInfo);
         } else {
-            System.out.println(7);
             user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
         }
 

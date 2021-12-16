@@ -1,15 +1,19 @@
 package com.ssh.greenthumb.api.service;
 
-import com.ssh.greenthumb.api.dto.plant.PlantDTO;
+import com.ssh.greenthumb.api.common.exception.BadRequestException;
 import com.ssh.greenthumb.api.common.exception.NotFoundException;
 import com.ssh.greenthumb.api.dao.plant.PlantRepository;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.plant.Plant;
 import com.ssh.greenthumb.api.domain.user.User;
+import com.ssh.greenthumb.api.dto.plant.PlantDTO;
+import com.ssh.greenthumb.api.security.TokenAuthenticationFilter;
+import com.ssh.greenthumb.api.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +23,8 @@ public class PlantService {
 
     private final UserRepository userDao;
     private final PlantRepository plantDao;
+    private final TokenProvider provider;
+    private final TokenAuthenticationFilter filter;
 
     // 식물 생성
     @Transactional
@@ -38,11 +44,27 @@ public class PlantService {
 
     // 유저별 식물 조회(전체)
     @Transactional
-    public List<PlantDTO.Get> getAllByUser(Long userId) {
+    public List<PlantDTO.Get> getAllByUser(Long userId, HttpServletRequest request) {
+
+        String token = filter.getJwtFromRequest(request);
+        System.out.println(token);
+
+        if(userId != provider.getUserIdFromToken(token).longValue()) {
+            throw new BadRequestException("잘못된 아이디 요청");
+        }else if(!provider.validateToken(token)) {
+            throw new BadRequestException("잘못된 토큰 요청");
+        }
+
         User user = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
         return plantDao.findAllByUser(user).stream().map(PlantDTO.Get::new).collect(Collectors.toList());
+//        } else {
+//            throw new NotFoundException();
+//        }
+
+        //UsernamePasswordAuthenticationToken [Principal=null, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_USER]]
+//        System.out.println(authentication);
 
     }
 

@@ -9,24 +9,24 @@ import com.ssh.greenthumb.api.dto.login.ApiResponse;
 import com.ssh.greenthumb.api.dto.login.AuthResponse;
 import com.ssh.greenthumb.api.dto.login.LoginRequest;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
+import com.ssh.greenthumb.api.security.CurrentUser;
 import com.ssh.greenthumb.api.security.TokenProvider;
+import com.ssh.greenthumb.api.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-//@CrossOrigin(origins = {"*"})
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 @RestController
@@ -45,8 +45,14 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = tokenProvider.createToken(authentication);
+//        response.setHeader("Authorization", token);
 
-        return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
+        User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
+
+        return new ResponseEntity(AuthResponse.builder()
+                .accessToken(token)
+                .id(user.getId())
+                .build(), HttpStatus.OK);
     }
 
     @PostMapping("/signup")
@@ -70,6 +76,13 @@ public class AuthController {
 
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "계정 생성 성공"));
+    }
+
+    @GetMapping("/user/me")
+    @PreAuthorize("hasRole('USER')")
+    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+        return userDao.findById(userPrincipal.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
 }
