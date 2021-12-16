@@ -21,7 +21,7 @@ public class UserController {
     private final UserRepository userDao;
 
     //Q 유저정보 모두 출력할 때, userId도 필요할까?
-    @GetMapping
+    @GetMapping("/user")
     public List<UserDTO.Get> getAll() {
         return userService.getAll();
     }
@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @GetMapping("/admin/users")
-    public List<UserDTO.GetFromAdmin> getAllFromAdmin() {
+    public List<UserDTO.Admin> getAllFromAdmin() {
         return userService.getAllFromAdmin();
     }
 
