@@ -1,5 +1,8 @@
 # playdata-greenthumb
 
+![Geen](https://user-images.githubusercontent.com/87889860/146340398-d96f4f38-5e74-418e-b0d4-8ef7722ae17b.png)
+![GREENTHUMB_logo](https://user-images.githubusercontent.com/87889860/146340415-26dc87f3-dd0d-4736-a576-5740921e2eb5.png)
+
 # 👩‍🏫 프로젝트 소개
 
 내용 추가 필요
