@@ -13,7 +13,7 @@
 - 유영훈 
 - 이태경 ([https://github.com/gaetaegoo](https://github.com/gaetaegoo))
 - 정은진 ([https://github.com/bingbong-party](https://github.com/bingbong-party))
-- 최해림
+- 최해림 ([https://github.com/choihaerim](https://github.com/choihaerim))
 
 ---
 
