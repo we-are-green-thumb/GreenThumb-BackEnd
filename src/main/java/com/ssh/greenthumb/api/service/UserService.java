@@ -104,8 +104,8 @@ public class UserService {
 
     }
 
-    public List<UserDTO.GetFromAdmin> getAllFromAdmin(){
-        return userDao.findAll().stream().map(UserDTO.GetFromAdmin::new).collect(Collectors.toList());
+    public List<UserDTO.Admin> getAllFromAdmin(){
+        return userDao.findAll().stream().map(UserDTO.Admin::new).collect(Collectors.toList());
     }
 
     // 블랙리스트 등록

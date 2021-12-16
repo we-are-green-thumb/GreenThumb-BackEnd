@@ -110,7 +110,6 @@ public class User extends BaseTimeEntity {
         this.role = role;
         this.provider = provider;
         this.providerId = providerId;
-
     }
 
     public User update(String password, String nickName, String imageUrl) {
