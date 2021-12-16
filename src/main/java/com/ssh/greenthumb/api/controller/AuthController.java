@@ -1,16 +1,14 @@
 package com.ssh.greenthumb.api.controller;
 
 import com.ssh.greenthumb.api.common.exception.BadRequestException;
+import com.ssh.greenthumb.api.dao.login.UserRefreshTokenRepository;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.login.ApiResponse;
 import com.ssh.greenthumb.api.dto.login.AuthResponse;
 import com.ssh.greenthumb.api.dto.login.LoginRequest;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
-import com.ssh.greenthumb.auth.domain.AuthProvider;
-import com.ssh.greenthumb.auth.domain.CurrentUser;
-import com.ssh.greenthumb.auth.domain.Role;
-import com.ssh.greenthumb.auth.domain.UserPrincipal;
+import com.ssh.greenthumb.auth.domain.*;
 import com.ssh.greenthumb.auth.token.Token;
 import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +35,7 @@ public class AuthController {
     private final UserRepository userDao;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     @PostMapping("/login")
     public Object authenticateUser(@RequestBody LoginRequest loginRequest) {
@@ -48,6 +47,11 @@ public class AuthController {
         Token token = tokenProvider.createToken(authentication);
 
         User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
+
+        userRefreshTokenRepository.save(UserRefreshToken.builder()
+                        .user(user)
+                        .refreshToken(token.getRefreshToken())
+                        .build());
 
         return new ResponseEntity(AuthResponse.builder()
                 .accessToken(token.getAccessToken())

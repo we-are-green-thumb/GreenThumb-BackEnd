@@ -1,37 +1,35 @@
-package com.ssh.greenthumb.api.domain.login;
+package com.ssh.greenthumb.auth.domain;
 
+import com.ssh.greenthumb.api.domain.user.User;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class UserRefreshToken {
     @Id
-    @Column(name = "REFRESH_TOKEN_SEQ")
+    @Column(name = "refresh_token_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long refreshTokenSeq;
+    private Long id;
 
-    @Column(name = "USER_ID", length = 64, unique = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user")
     @NotNull
-    @Size(max = 64)
-    private String userId;
+    private User user;
 
     @Column(name = "REFRESH_TOKEN", length = 256)
     @NotNull
-    @Size(max = 256)
     private String refreshToken;
 
-    public UserRefreshToken(
-            @NotNull @Size(max = 64) String userId,
-            @NotNull @Size(max = 256) String refreshToken
-    ) {
-        this.userId = userId;
+    @Builder
+    public UserRefreshToken(User user, String refreshToken) {
+        this.user = user;
         this.refreshToken = refreshToken;
     }
 }
