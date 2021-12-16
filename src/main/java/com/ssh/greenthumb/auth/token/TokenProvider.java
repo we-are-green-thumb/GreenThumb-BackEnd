@@ -1,9 +1,15 @@
 package com.ssh.greenthumb.auth.token;
 
+import com.ssh.greenthumb.api.common.exception.BadRequestException;
+import com.ssh.greenthumb.api.dto.login.AuthResponse;
 import com.ssh.greenthumb.auth.domain.UserPrincipal;
+import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +20,10 @@ public class TokenProvider {
 
     private static final Logger log = LoggerFactory.getLogger(TokenProvider.class);
     private final AppProperties appProperties;
+    @Autowired
+    private RefreshTokenRepository refreshTokenDao;
+//    @Autowired
+//    private UserRepository userDao;
 
     public TokenProvider(AppProperties appProperties) {
         this.appProperties = appProperties;
@@ -24,9 +34,10 @@ public class TokenProvider {
         Date now = new Date();
 
         String accessToken = Jwts.builder()
+                .setHeaderParam("typ", "JWT")
                 .setSubject(Long.toString(userPrincipal.getId()))
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + appProperties.getAuth().getAccessTokenExpiry()))
+                .setExpiration(new Date(System.currentTimeMillis() + appProperties.getAuth().getAccessTokenExpiry()))
                 .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
                 .compact();
 
@@ -37,11 +48,33 @@ public class TokenProvider {
                 .compact();
 
         System.out.println(appProperties.getAuth().getAccessTokenExpiry());
+        System.out.println(now.getTime());
 
         return Token.builder()
                  .accessToken(accessToken)
                  .refreshToken(refreshToken)
                  .build();
+    }
+
+    public ResponseEntity reissue(Long userId, String refreshToken, Authentication authentication) {
+        if(validateToken(refreshToken)) {
+            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+            Date now = new Date();
+
+            String accessToken = Jwts.builder()
+                    .setSubject(Long.toString(userPrincipal.getId()))
+                    .setIssuedAt(now)
+                    .setExpiration(new Date(now.getTime() + appProperties.getAuth().getAccessTokenExpiry()))
+                    .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
+                    .compact();
+
+            return new ResponseEntity(AuthResponse.builder()
+                    .accessToken(accessToken)
+                    .id(userId)
+                    .build(), HttpStatus.OK);
+        }else {
+            throw new BadRequestException("토큰 리프레시 불가");
+        }
     }
 
     public Long getUserIdFromToken(String token) {

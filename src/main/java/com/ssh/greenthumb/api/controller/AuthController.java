@@ -1,6 +1,7 @@
 package com.ssh.greenthumb.api.controller;
 
 import com.ssh.greenthumb.api.common.exception.BadRequestException;
+import com.ssh.greenthumb.api.common.exception.NotFoundException;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.login.ApiResponse;
@@ -9,10 +10,12 @@ import com.ssh.greenthumb.api.dto.login.LoginRequest;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
 import com.ssh.greenthumb.auth.domain.*;
 import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
+import com.ssh.greenthumb.auth.token.AppProperties;
 import com.ssh.greenthumb.auth.token.Token;
 import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +24,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -36,33 +40,43 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenDao;
+    @Autowired
+    private AppProperties appProperties;
 
+    @Transactional
     @PostMapping("/login")
     public Object authenticateUser(@RequestBody LoginRequest loginRequest) {
+        if (userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n") == null) {
+            throw new NotFoundException();
+        } else {
+            User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            if (user.getRole() == Role.BLACK || user.getRole() == Role.DELETE) {
+                throw new BadRequestException("접근 권한이 없습니다.");
+            } else if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                throw new BadRequestException("비밀번호가 틀립니다.");
+            } else if (refreshTokenDao.findByUser(user) != null) {
+                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+                return tokenProvider.reissue(user.getId(), refreshTokenDao.findByUser(user).getRefreshToken(), authentication);
+            } else {
+                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        Token token = tokenProvider.createToken(authentication);
+                Token token = tokenProvider.createToken(authentication);
 
-        User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
+                refreshTokenDao.save(RefreshToken.builder()
+                        .user(user)
+                        .refreshToken(token.getRefreshToken())
+                        .build());
 
-//        if (refreshTokenDao.findByUser(user) == null) {
-            refreshTokenDao.save(RefreshToken.builder()
-                    .user(user)
-                    .refreshToken(token.getRefreshToken())
-                    .build());
-
-            return new ResponseEntity(AuthResponse.builder()
-                    .accessToken(token.getAccessToken())
-                    .id(user.getId())
-                    .build(), HttpStatus.OK);
-//        } else {
-//        }
+                return new ResponseEntity(AuthResponse.builder()
+                        .accessToken(token.getAccessToken())
+                        .id(user.getId())
+                        .build(), HttpStatus.OK);
+            }
+        }
     }
-
-//    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
@@ -93,5 +107,24 @@ public class AuthController {
         return userDao.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
+
+//    @GetMapping("/valid")
+//    public boolean valid(@RequestHeader("Authorization") String token) {
+//        try {
+//            Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(token);
+//            return true;
+//        } catch (SignatureException ex) {
+//            System.out.println(("유효하지 않은 JWT 서명"));
+//        } catch (MalformedJwtException ex) {
+//            System.out.println(("유효하지 않은 JWT 토큰"));
+//        } catch (ExpiredJwtException ex) {
+//            System.out.println("만료된 JWT 토큰");
+//        } catch (UnsupportedJwtException ex) {
+//            System.out.println("지원하지 않는 JWT 토큰");
+//        } catch (IllegalArgumentException ex) {
+//            System.out.println("비어있는 JWT");
+//        }
+//        return false;
+//    }
 
 }
