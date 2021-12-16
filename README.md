@@ -21,3 +21,7 @@
 
 #### Others
 `Postman` `ERDCloud` `Figma`
+
+# ⚙ 모델링
+
+![ERD](https://user-images.githubusercontent.com/87889860/146314010-b6eb7c94-b6d5-4c93-95bf-497d6437a995.PNG)
