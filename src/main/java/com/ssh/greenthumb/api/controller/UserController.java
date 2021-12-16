@@ -1,16 +1,11 @@
 package com.ssh.greenthumb.api.controller;
 
 import com.ssh.greenthumb.api.dao.user.UserRepository;
-import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.user.BlackListDTO;
 import com.ssh.greenthumb.api.dto.user.UserDTO;
-import com.ssh.greenthumb.api.security.CurrentUser;
 import com.ssh.greenthumb.api.security.TokenProvider;
-import com.ssh.greenthumb.api.security.UserPrincipal;
 import com.ssh.greenthumb.api.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.elasticsearch.ResourceNotFoundException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +21,7 @@ public class UserController {
     private final UserRepository userDao;
 
     //Q 유저정보 모두 출력할 때, userId도 필요할까?
-    @GetMapping
+    @GetMapping("/user")
     public List<UserDTO.Get> getAll() {
         return userService.getAll();
     }
@@ -35,13 +30,6 @@ public class UserController {
     @GetMapping("/user/{userId}")
     public UserDTO.Get getOne(@PathVariable Long userId) {
         return userService.getOne(userId);
-    }
-
-    @GetMapping("/user/me")
-    @PreAuthorize("hasRole('USER')")
-    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-        return userDao.findById(userPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
     //Q 업데이트한 항목 확인하는 게 좋을 것 같은데.. dto map에러 발생해서 그냥 둠
@@ -61,7 +49,7 @@ public class UserController {
     }
 
     @GetMapping("/admin/users")
-    public List<UserDTO.GetFromAdmin> getAllFromAdmin() {
+    public List<UserDTO.Admin> getAllFromAdmin() {
         return userService.getAllFromAdmin();
     }
 

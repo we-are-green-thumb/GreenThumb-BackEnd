@@ -39,19 +39,26 @@ public class UserDTO {
     @Getter
     public static class Get {
         private String email;
-        // Q 마이페이지에서 유저 정보 가져올 떄 패스워드 필요성 여부
-        private String password;
         private String nickName;
+        private String profile;
+        private String providerId;
+        private LocalDateTime signUpDate;
+        private int followeeCount;
+        private int followerCount;
 
         public Get(User entity) {
             this.email = entity.getEmail();
-            this.password = entity.getPassword();
             this.nickName = entity.getNickName();
+            this.profile = entity.getProfile();
+            this.providerId = entity.getProvider().toString();
+            this.signUpDate = entity.getCreatedDate();
+            this.followeeCount = entity.getFolloweeList().size();
+            this.followerCount = entity.getFollowerList().size();
         }
     }
 
     @Getter
-    public static class GetFromAdmin {
+    public static class Admin {
         private String email;
         private String nickName;
         private String role;
@@ -61,13 +68,12 @@ public class UserDTO {
         private String isBlack;
         private String providerId;
 
-        public GetFromAdmin(User entity) {
+        public Admin(User entity) {
             this.email = entity.getEmail();
             this.nickName = entity.getNickName();
             this.role = entity.getRole().getDisplayName();
             this.isDeleted = entity.getIsDeleted();
             this.deleteReason = entity.getDeleteReason();
-//        String formatDate = LocalDateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             this.deleteDate = entity.getDeleteDate();
             this.isBlack = entity.getIsBlack();
             this.providerId = entity.getProviderId();

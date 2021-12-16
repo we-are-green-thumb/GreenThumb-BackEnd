@@ -24,16 +24,18 @@ public class CommentDTO {
 
     @Getter
     public static class Get {   // 댓글 정보
-        private Long postId;
-        private Long userId;
-        private String commentContent;
+        private Long id;
+        private String writer;
+        private String content;
         private String isDeleted;
+        private int like;
 
         public Get(Comment entity) {
-            this.postId = entity.getPost().getId();
-            this.userId = entity.getUser().getId();
-            this.commentContent = entity.getContent();
+            this.id = entity.getId();
+            this.writer = entity.getUser().getNickName();
+            this.content = entity.getContent();
             this.isDeleted = entity.getIsDeleted();
+            this.like = entity.getLikeCommentList().size();
         }
     }
 
