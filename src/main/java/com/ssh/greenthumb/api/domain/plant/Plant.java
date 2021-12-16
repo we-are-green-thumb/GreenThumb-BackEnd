@@ -1,6 +1,7 @@
 package com.ssh.greenthumb.api.domain.plant;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ssh.greenthumb.api.common.domain.BaseTimeEntity;
 import com.ssh.greenthumb.api.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Plant {
+public class Plant extends BaseTimeEntity {
 
     @Id
     @Column(name = "plant_id")
