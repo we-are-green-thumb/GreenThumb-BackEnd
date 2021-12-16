@@ -1,14 +1,15 @@
 package com.ssh.greenthumb.api.service;
 
-import com.ssh.greenthumb.api.dto.post.FileDTO;
-import com.ssh.greenthumb.api.dto.post.PostDTO;
 import com.ssh.greenthumb.api.common.exception.NotFoundException;
+import com.ssh.greenthumb.api.dao.like.LikePostRepository;
 import com.ssh.greenthumb.api.dao.post.FileRepository;
 import com.ssh.greenthumb.api.dao.post.PostRepository;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.post.File;
 import com.ssh.greenthumb.api.domain.post.Post;
 import com.ssh.greenthumb.api.domain.user.User;
+import com.ssh.greenthumb.api.dto.post.FileDTO;
+import com.ssh.greenthumb.api.dto.post.PostDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class PostService {
     private final PostRepository postDao;
     private final UserRepository userDao;
     private final FileRepository fileDao;
+    private final LikePostRepository likePostDao;
 
     @Transactional
     public Long add(PostDTO.Create dto) {

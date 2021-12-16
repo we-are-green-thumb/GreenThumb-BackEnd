@@ -3,6 +3,7 @@ package com.ssh.greenthumb.api.domain.post;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssh.greenthumb.api.common.domain.BaseTimeEntity;
+import com.ssh.greenthumb.api.domain.like.LikePost;
 import com.ssh.greenthumb.api.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -60,6 +61,10 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<File> fileList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<LikePost> likePostList = new ArrayList<>();
 
     @Builder
     public Post(User user, String title, String content, String category) {
