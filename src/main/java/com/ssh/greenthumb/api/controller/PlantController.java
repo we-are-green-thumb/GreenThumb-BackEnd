@@ -5,6 +5,7 @@ import com.ssh.greenthumb.api.service.PlantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,8 +29,8 @@ public class PlantController {
 
     // 유저별 식물 조회(전체)
     @GetMapping("/user/{userId}")
-    public List<PlantDTO.Get> getAllByUser(@PathVariable Long userId) {
-        return plantService.getAllByUser(userId);
+    public List<PlantDTO.Get> getAllByUser(@PathVariable Long userId, HttpServletRequest request) {
+        return plantService.getAllByUser(userId, request);
     }
 
     // 유저별 식물 조회(하나)
