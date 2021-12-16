@@ -20,6 +20,8 @@ public class TokenProvider {
     private static final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
     private AppProperties appProperties;
+//
+//    private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     public TokenProvider(AppProperties appProperties) {
         this.appProperties = appProperties;
@@ -31,12 +33,32 @@ public class TokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
 
-        return Jwts.builder()
+        // 시간 개긴거 같은데?
+        System.out.println(expiryDate.getTime());
+
+        // 중요한 정보를 refresh토큰에만 담는 듯듯
+       return Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
                 .compact();
+    }
+
+    public void createRefreshToken(Authentication authentication) {
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
+        Date now = new Date();
+        // 일반 토큰이랑 시간을 달리 설정해주어야할 듯 싶음
+        Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
+
+        String refreshToken = Jwts.builder()
+                        .setSubject(Long.toString(userPrincipal.getId()))
+                        .setIssuedAt(new Date())
+                        .setExpiration(expiryDate)
+                        .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
+                        .compact();
+
     }
 
     public Long getUserIdFromToken(String token) {
