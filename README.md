@@ -25,3 +25,23 @@
 # ⚙ 모델링
 
 ![ERD](https://user-images.githubusercontent.com/87889860/146314010-b6eb7c94-b6d5-4c93-95bf-497d6437a995.PNG)
+
+---
+
+# 🔗 서비스 개념도
+
+![서비스개념도](https://user-images.githubusercontent.com/87889860/146329828-cb917d8f-c387-4cbf-addb-9cbe51bed74f.png)
+
+# 🕹 주요 기능
+
+### [ 회원 ]
+
+![서비스 주요 기능(회원_1)](https://user-images.githubusercontent.com/87889860/146329106-e3d9036b-6c2a-48ea-ade6-b2ccf5bbfb61.png)
+
+### [ 게시판 ]
+
+![서비스 주요 기능(회원_2)](https://user-images.githubusercontent.com/87889860/146336632-784bc2e9-b165-4696-b59d-98bb45c24973.png)
+
+### [ 식물 ]
+
+![서비스 주요 기능(식물)](https://user-images.githubusercontent.com/87889860/146336754-63058146-390b-4923-90dd-ffc892bc1c11.png)
