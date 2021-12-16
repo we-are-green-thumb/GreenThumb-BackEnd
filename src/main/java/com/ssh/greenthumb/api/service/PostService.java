@@ -33,7 +33,12 @@ public class PostService {
     }
 
     @Transactional
-    public List<PostDTO.Get> getAll(String postCategory) {
+    public List<PostDTO.Get> getAll() {
+        return postDao.findAllByIsDeleted("n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<PostDTO.Get> getAllByCategory(String postCategory) {
         return postDao.findAllPostByCategoryAndIsDeleted(postCategory, "n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
     }
 
