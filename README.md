@@ -11,7 +11,9 @@
 - 유영훈 
 - 이태경 ([https://github.com/gaetaegoo](https://github.com/gaetaegoo))
 - 정은진 
-- 최해림 
+- 최해림
+
+---
 
 # 📅 개발기간
 
@@ -65,4 +67,4 @@
 
 # 💥 추후 개선할 점
 
-뭘~깝~쇼?
+뭘까용~?
