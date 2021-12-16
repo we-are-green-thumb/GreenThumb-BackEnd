@@ -25,6 +25,7 @@ public class CommentDTO {
     @Getter
     public static class Get {   // 댓글 정보
         private Long id;
+        private Long writerId;
         private String writer;
         private String content;
         private String isDeleted;
@@ -32,6 +33,7 @@ public class CommentDTO {
 
         public Get(Comment entity) {
             this.id = entity.getId();
+            this.writerId = entity.getUser().getId();
             this.writer = entity.getUser().getNickName();
             this.content = entity.getContent();
             this.isDeleted = entity.getIsDeleted();
