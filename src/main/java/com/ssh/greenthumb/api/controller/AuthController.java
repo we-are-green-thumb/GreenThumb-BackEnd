@@ -55,7 +55,6 @@ public class AuthController {
 
         return new ResponseEntity(AuthResponse.builder()
                 .accessToken(token.getAccessToken())
-                .refreshToken(token.getRefreshToken())
                 .id(user.getId())
                 .build(), HttpStatus.OK);
     }
