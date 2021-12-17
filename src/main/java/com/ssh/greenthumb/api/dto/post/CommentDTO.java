@@ -8,8 +8,7 @@ import lombok.Getter;
 public class CommentDTO {
 
     @Getter
-    public static class Create {  // 댓글 생성
-        private Long postId;
+    public static class Create {
         private Long userId;
         private String content;
 
@@ -23,8 +22,7 @@ public class CommentDTO {
     }
 
     @Getter
-    public static class Get {   // 댓글 정보
-        private Long id;
+    public static class Get {
         private Long writerId;
         private String writer;
         private String content;
@@ -32,7 +30,6 @@ public class CommentDTO {
         private int like;
 
         public Get(Comment entity) {
-            this.id = entity.getId();
             this.writerId = entity.getUser().getId();
             this.writer = entity.getUser().getNickName();
             this.content = entity.getContent();
@@ -42,13 +39,8 @@ public class CommentDTO {
     }
 
     @Getter
-    public static class Update {  // 댓글 수정 정보
+    public static class Update {
         private String content;
-    }
-
-    @Getter
-    public static class Delete {  // 댓글 삭제 정보
-        private String isDeleted;
     }
 
 }

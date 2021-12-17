@@ -1,14 +1,10 @@
 package com.ssh.greenthumb.api.service;
 
 import com.ssh.greenthumb.api.common.exception.NotFoundException;
-import com.ssh.greenthumb.api.dao.like.LikePostRepository;
-import com.ssh.greenthumb.api.dao.post.FileRepository;
 import com.ssh.greenthumb.api.dao.post.PostRepository;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
-import com.ssh.greenthumb.api.domain.post.File;
 import com.ssh.greenthumb.api.domain.post.Post;
 import com.ssh.greenthumb.api.domain.user.User;
-import com.ssh.greenthumb.api.dto.post.FileDTO;
 import com.ssh.greenthumb.api.dto.post.PostDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,15 +19,13 @@ public class PostService {
 
     private final PostRepository postDao;
     private final UserRepository userDao;
-    private final FileRepository fileDao;
-    private final LikePostRepository likePostDao;
 
     @Transactional
-    public Long add(PostDTO.Create dto) {
-        User user = userDao.findById(dto.getUserId()).
+    public Long add(Long id, PostDTO.Create dto) {
+        User user = userDao.findById(id).
                 orElseThrow(NotFoundException::new);
 
-        Post post = postDao.save(dto.toEntity(user, dto.getTitle(), dto.getCategory(), dto.getContent()));
+        Post post = postDao.save(dto.toEntity(user, dto.getTitle(), dto.getCategory(), dto.getContent(),dto.getFileUrl()));
 
         return post.getId();
     }
@@ -50,42 +44,33 @@ public class PostService {
     }
 
     @Transactional
-    public List<PostDTO.Get> getAllByCategory(String postCategory) {
-        return postDao.findAllPostByCategoryAndIsDeleted(postCategory, "n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
+    public List<PostDTO.Get> getAllByCategory(String category) {
+        return postDao.findAllPostByCategoryAndIsDeleted(category, "n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
     }
 
-    @Transactional
-    public List<PostDTO.Get> getAllByUser(Long userId) {
-        User user = userDao.findById(userId).get();
+    public List<PostDTO.Get> getAllByUser(Long id) {
+        User user = userDao.findById(id).get();
 
         return postDao.findAllPostByUserAndIsDeleted(user, "n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
     }
 
-    @Transactional
-    public PostDTO.Get getOne(Long postId) {
-        Post post = postDao.findById(postId).get();
-
-        PostDTO.Get dto = postDao.findById(postId).map(PostDTO.Get::new).get();
-
-        dto.setLike(post.getLikePostList().size());
-
-        return dto;
+    public PostDTO.Get getOne(Long id) {
+        return postDao.findById(id).map(PostDTO.Get::new).get();
     }
 
-
     @Transactional
-    public Long update(Long postId, PostDTO.Update dto) {
-        Post post = postDao.findById(postId).
+    public Long update(Long id, PostDTO.Update dto) {
+        Post post = postDao.findById(id).
                 orElseThrow(NotFoundException::new);
 
-        post.update(dto.getTitle(), dto.getCategory(), dto.getContent());
+        post.update(dto.getTitle(), dto.getCategory(), dto.getContent(), dto.getFileUrl());
 
         return post.getId();
     }
 
     @Transactional
-    public Long updateCheck(Long postId) {
-        Post post = postDao.findById(postId).
+    public Long updateCheck(Long id) {
+        Post post = postDao.findById(id).
                 orElseThrow(NotFoundException::new);
 
         post.updateCheck(post.getIsComplete());
@@ -94,29 +79,11 @@ public class PostService {
     }
 
     @Transactional
-    public void delete(Long postId) {
-        Post post = postDao.findById(postId)
+    public void delete(Long id) {
+        Post post = postDao.findById(id)
                 .orElseThrow(NotFoundException::new);
 
         post.delete();
-    }
-
-    // 파일 생성
-    @Transactional
-    public Long addFile(Long postId, FileDTO.Create dto) {
-        Post post = postDao.findById(postId).
-                orElseThrow(NotFoundException::new);
-
-        return fileDao.save(dto.toEntity(post, dto.getFileUrl())).getId();
-    }
-
-    // 파일 삭제
-    @Transactional
-    public void deleteFile(Long fileId) {
-        File file = fileDao.findById(fileId).
-                orElseThrow(NotFoundException::new);
-
-        fileDao.delete(file);
     }
 
 }

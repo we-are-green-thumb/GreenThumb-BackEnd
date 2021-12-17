@@ -26,7 +26,6 @@ public class LikeService {
     private final CommentRepository commentDao;
     private final UserRepository userDao;
 
-    // 게시글 좋아요 등록
     public String likePost(Long postId, Long userId) {
         Post post = postDao.findById(postId).
                 orElseThrow(NotFoundException::new);
@@ -47,33 +46,6 @@ public class LikeService {
         }
     }
 
-//    // 게시글 좋아요 등록
-//    public Long likePost(Long postId, Long userId) {
-//        Post post = postDao.findById(postId).
-//                orElseThrow(NotFoundException::new);
-//
-//        User user = userDao.findById(userId).
-//                orElseThrow(NotFoundException::new);
-//
-//        LikePostDTO.Create likePost = new LikePostDTO.Create(postId, userId);
-//
-//        return likePostDao.save(likePost.toEntity(post, user)).getId();
-//    }
-//
-//    // 게시글 좋아요 취소
-//    public void unLikePost(Long postId, Long userId) {
-//        Post post = postDao.findById(postId).
-//                orElseThrow(NotFoundException::new);
-//
-//        User user = userDao.findById(userId).
-//                orElseThrow(NotFoundException::new);
-//
-//        LikePost likePost = likePostDao.findByPost(post);
-//
-//        likePostDao.delete(likePost);
-//    }
-
-    // 댓글 좋아요 등록
     public Long likeComment(Long commentId, Long userId) {
         Comment comment = commentDao.findById(commentId).
                 orElseThrow(NotFoundException::new);
@@ -86,7 +58,6 @@ public class LikeService {
         return likeCommentDao.save(dto.toEntity(comment, user)).getId();
     }
 
-    // 댓글 좋아요 취소
     public void unLikeComment(Long commentId, Long userId) {
         Comment comment = commentDao.findById(commentId).
                 orElseThrow(NotFoundException::new);

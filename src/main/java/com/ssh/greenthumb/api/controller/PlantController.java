@@ -5,32 +5,27 @@ import com.ssh.greenthumb.api.service.PlantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/plant")
 @RestController
-//@CrossOrigin(origins = {"*"})
 public class PlantController {
 
     private final PlantService plantService;
 
-    // 식물 생성
-    @PostMapping
-    public Long add(@RequestBody PlantDTO.Create dto) {
-        return plantService.add(dto);
+    @PostMapping("/user/{id}/plant")
+    public Long add(@PathVariable Long id, @RequestBody PlantDTO.Create dto) {
+        return plantService.add(id, dto);
     }
 
-    @GetMapping()
+    @GetMapping("/plants")
     public List<PlantDTO.Get> getAll() {
         return plantService.getAll();
     }
 
-    // 유저별 식물 조회(전체)
-    @GetMapping("/user/{userId}")
-    public List<PlantDTO.Get> getAllByUser(@PathVariable Long userId, HttpServletRequest request) {
-        return plantService.getAllByUser(userId, request);
+    @GetMapping("/user/{id}/plants")
+    public List<PlantDTO.Get> getAllByUser(@PathVariable Long id) {
+        return plantService.getAllByUser(id);
     }
 
     @GetMapping("/plant-name/{name}")
@@ -39,20 +34,18 @@ public class PlantController {
     }
 
     // 유저별 식물 조회(하나) - 식물 상세
-    @GetMapping("/{plantId}")
+    @GetMapping("/plant/{plantId}")
     public PlantDTO.Get getOneByUser(@PathVariable Long plantId) {
         return plantService.getOneByUser(plantId);
     }
 
-    // 식물 수정
-    @PutMapping("/{plantId}")
-    public Long update(@PathVariable Long plantId, @RequestBody PlantDTO.Update dto) {
+    @PutMapping("/user/{userId}/plant/{plantId}")
+    public Long update(@PathVariable Long userId, @PathVariable Long plantId, @RequestBody PlantDTO.Update dto) {
         return plantService.update(plantId, dto);
     }
 
-    // 식물 삭제
-    @DeleteMapping("/{plantId}")
-    public void delete(@PathVariable Long plantId) {
+    @DeleteMapping("/user/{userId}/plant/{plantId}")
+    public void delete(@PathVariable Long userId, @PathVariable Long plantId) {
         plantService.delete(plantId);
     }
   

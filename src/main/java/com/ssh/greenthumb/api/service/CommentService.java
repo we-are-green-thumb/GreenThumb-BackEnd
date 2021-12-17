@@ -23,10 +23,9 @@ public class CommentService {
     private final PostRepository postDao;
     private final CommentRepository commentDao;
 
-    // 댓글 생성
     @Transactional
-    public Long add(CommentDTO.Create dto) {
-        Post post = postDao.findById(dto.getPostId()).
+    public Long add(Long id, CommentDTO.Create dto) {
+        Post post = postDao.findById(id).
                 orElseThrow(NotFoundException::new);
 
         User user = userDao.findById(dto.getUserId()).
@@ -35,16 +34,14 @@ public class CommentService {
         return commentDao.save(dto.toEntity(post, user, dto.getContent())).getId();
     }
 
-    // 게시글별 댓글 조회
     @Transactional
-    public List<CommentDTO.Get> getAllByPost(Long postId) {
-        Post post = postDao.findById(postId).
+    public List<CommentDTO.Get> getAllByPost(Long id) {
+        Post post = postDao.findById(id).
                 orElseThrow(NotFoundException::new);
 
         return commentDao.findAllByPostAndIsDeleted(post, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
     }
 
-    // 유저별 댓글 조회
     @Transactional
     public List<CommentDTO.Get> getAllByUser(Long postId, Long userId) {
         Post post = postDao.findById(postId).
@@ -56,7 +53,6 @@ public class CommentService {
         return commentDao.findAllByPostAndUserAndIsDeleted(post, user, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
     }
 
-    // 댓글 수정
     @Transactional
     public Long update(Long commentId, CommentDTO.Update dto) {
         Comment comment = commentDao.findById(commentId).
@@ -69,7 +65,6 @@ public class CommentService {
         return commentId;
     }
 
-    // 댓글 삭제
     @Transactional
     public String delete(Long commentId) {
         Comment comment = commentDao.findById(commentId).

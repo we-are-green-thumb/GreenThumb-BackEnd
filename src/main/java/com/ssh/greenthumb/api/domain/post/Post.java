@@ -55,30 +55,31 @@ public class Post extends BaseTimeEntity {
     @Column(name = "post_check")
     private String isComplete = "n";
 
+    @Column(name = "file_url")
+    private String fileUrl;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonBackReference
-    private List<File> fileList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    @JsonBackReference
     private List<LikePost> likePostList = new ArrayList<>();
 
     @Builder
-    public Post(User user, String title, String category, String content) {
+    public Post(User user, String title, String category, String content, String fileUrl) {
         this.user = user;
         this.title = title;
         this.category = category;
         this.content = content;
+        this.fileUrl = fileUrl;
     }
 
-    public Post update(String title, String content, String category) {
+    public Post update(String title, String content, String category, String fileUrl) {
         this.title = title;
         this.content = content;
         this.category = category;
+        this.fileUrl = fileUrl;
 
         return this;
     }

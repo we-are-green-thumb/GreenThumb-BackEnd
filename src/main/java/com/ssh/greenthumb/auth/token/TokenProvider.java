@@ -20,10 +20,9 @@ public class TokenProvider {
 
     private static final Logger log = LoggerFactory.getLogger(TokenProvider.class);
     private final AppProperties appProperties;
+
     @Autowired
     private RefreshTokenRepository refreshTokenDao;
-//    @Autowired
-//    private UserRepository userDao;
 
     public TokenProvider(AppProperties appProperties) {
         this.appProperties = appProperties;
@@ -70,7 +69,7 @@ public class TokenProvider {
 
             return new ResponseEntity(AuthResponse.builder()
                     .accessToken(accessToken)
-                    .id(userId)
+                    .userId(userId)
                     .build(), HttpStatus.OK);
         }else {
             throw new BadRequestException("토큰 리프레시 불가");

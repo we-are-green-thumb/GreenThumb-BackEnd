@@ -6,19 +6,12 @@ import lombok.Getter;
 
 public class FollowDTO {
 
-    //팔로우
-    @Getter
-    public static class Create {
-        private Long followerId;
-        private Long followeeId;
-
-        public Follow toEntity(User follower, User followee) {
+        public static Follow toEntity(User follower, User followee) {
             return Follow.builder()
                     .follower(follower)
                     .followee(followee)
                     .build();
         }
-    }
 
     @Getter
     public static class Follower {
@@ -40,13 +33,6 @@ public class FollowDTO {
             this.followeeId = entity.getFollowee().getId();
             this.followeeNickName = entity.getFollowee().getNickName();
         }
-    }
-
-    //언팔
-    @Getter
-    public static class Delete {
-        private Long followerId;
-        private Long followeeId;
     }
 
 }

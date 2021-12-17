@@ -47,16 +47,17 @@ public class AuthController {
         } else {
             User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
 
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
             if (user.getRole() == Role.BLACK || user.getRole() == Role.DELETE) {
                 throw new BadRequestException("접근 권한이 없습니다.");
             } else if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 throw new BadRequestException("비밀번호가 틀립니다.");
-            } else if (refreshTokenDao.findByUser(user) != null) {
-                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            } else if (!SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
 
-                return tokenProvider.reissue(user.getId(), refreshTokenDao.findByUser(user).getRefreshToken(), authentication);
-            } else {
-                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                if (refreshTokenDao.findByUser(userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n")) != null) {
+                    return tokenProvider.reissue(user.getId(), refreshTokenDao.findByUser(user).getRefreshToken(), authentication);
+                }
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
                 Token token = tokenProvider.createToken(authentication);
@@ -68,10 +69,11 @@ public class AuthController {
 
                 return new ResponseEntity(AuthResponse.builder()
                         .accessToken(token.getAccessToken())
-                        .id(user.getId())
+                        .userId(user.getId())
                         .build(), HttpStatus.OK);
             }
         }
+        throw new BadRequestException("재인증 필요.");
     }
 
     @PostMapping("/signup")
@@ -97,11 +99,10 @@ public class AuthController {
                 .body(new ApiResponse(true, "계정 생성 성공"));
     }
 
-    @Transactional // 여기선 delete만으로 커밋이 안 됨.. @Service 유무의 차이때문일까..?
-    @DeleteMapping("/logout/{userId}")
-    public void logout(@PathVariable Long userId) {
-        System.out.println("-------------------");
-        User user = userDao.findById(userId).get();
+    @Transactional
+    @DeleteMapping("/logout/{id}")
+    public void logout(@PathVariable Long id) {
+        User user = userDao.findById(id).get();
 
         refreshTokenDao.deleteByUser(user);
     }
