@@ -6,7 +6,7 @@ import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.login.ApiResponse;
 import com.ssh.greenthumb.api.dto.login.AuthResponse;
-import com.ssh.greenthumb.api.dto.login.LoginRequest;
+import com.ssh.greenthumb.api.dto.login.AuthRequest;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
 import com.ssh.greenthumb.auth.domain.*;
 import com.ssh.greenthumb.auth.token.Token;
@@ -21,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -38,7 +39,7 @@ public class AuthController {
     private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     @PostMapping("/login")
-    public Object authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public Object authenticateUser(@RequestBody AuthRequest.Login loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
@@ -81,6 +82,14 @@ public class AuthController {
 
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "계정 생성 성공"));
+    }
+
+    @Transactional // 여기선 delete만으로 커밋이 안 됨.. @Service 유무의 차이때문일까..?
+    @DeleteMapping("/logout")
+    public void logout(@RequestBody AuthRequest.Logout logoutRequest) {
+        User user = userDao.findByEmail(logoutRequest.getEmail());
+
+        userRefreshTokenRepository.deleteByUser(user);
     }
 
     @GetMapping("/user/me")
