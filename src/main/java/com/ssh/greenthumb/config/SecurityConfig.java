@@ -2,17 +2,18 @@ package com.ssh.greenthumb.config;
 
 import com.ssh.greenthumb.auth.domain.Role;
 import com.ssh.greenthumb.auth.exception.RestAuthenticationEntryPoint;
-import com.ssh.greenthumb.auth.service.CustomOAuth2UserService;
-import com.ssh.greenthumb.auth.service.CustomUserDetailsService;
 import com.ssh.greenthumb.auth.filter.TokenAuthenticationFilter;
 import com.ssh.greenthumb.auth.handler.OAuth2AuthenticationFailureHandler;
 import com.ssh.greenthumb.auth.handler.OAuth2AuthenticationSuccessHandler;
 import com.ssh.greenthumb.auth.handler.TokenAccessDeniedHandler;
 import com.ssh.greenthumb.auth.repository.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.ssh.greenthumb.auth.service.CustomOAuth2UserService;
+import com.ssh.greenthumb.auth.service.CustomUserDetailsService;
 import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -119,7 +120,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js")
                 .permitAll()
-                .antMatchers("/auth/**", "/oauth2/**", "/login/**").permitAll()
+                .antMatchers("/auth/**", "/oauth2/**").permitAll()
+                .antMatchers(HttpMethod.POST, "login").permitAll()
                 .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
                 .antMatchers("/user/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                 .anyRequest().authenticated()

@@ -10,8 +10,6 @@ import com.ssh.greenthumb.api.dto.login.AuthResponse;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
 import com.ssh.greenthumb.auth.domain.*;
 import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
-import com.ssh.greenthumb.auth.service.CustomOAuth2UserService;
-import com.ssh.greenthumb.auth.service.CustomUserDetailsService;
 import com.ssh.greenthumb.auth.token.Token;
 import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +38,8 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenDao;
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final CustomUserDetailsService customUserDetailsService;
+//    private final CustomOAuth2UserService customOAuth2UserService;
+//    private final CustomUserDetailsService customUserDetailsService;
 
     @Transactional
     @PostMapping("/login")
@@ -124,9 +122,10 @@ public class AuthController {
     }
 
     @Transactional // 여기선 delete만으로 커밋이 안 됨.. @Service 유무의 차이때문일까..?
-    @DeleteMapping("/logout")
-    public void logout(@RequestBody AuthRequest.Logout logoutRequest) {
-        User user = userDao.findByEmail(logoutRequest.getEmail());
+    @DeleteMapping("/logout/{userId}")
+    public void logout(@PathVariable Long userId) {
+        System.out.println("-------------------");
+        User user = userDao.findById(userId).get();
 
         refreshTokenDao.deleteByUser(user);
     }
