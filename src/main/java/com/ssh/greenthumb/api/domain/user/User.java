@@ -99,9 +99,11 @@ public class User extends BaseTimeEntity {
     private Set<Follow> followeeList = new HashSet<>();
 
     @OneToOne(mappedBy = "user")
+    @JsonBackReference
     private BlackList blackList;
 
     @OneToOne(mappedBy = "user")
+    @JsonBackReference
     private RefreshToken refreshToken;
 
     //Q 마이페이지에서 유저정보 가져올 때 비밀번호 가져올까?
