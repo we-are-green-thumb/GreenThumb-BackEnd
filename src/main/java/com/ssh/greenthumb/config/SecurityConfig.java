@@ -2,13 +2,14 @@ package com.ssh.greenthumb.config;
 
 import com.ssh.greenthumb.auth.domain.Role;
 import com.ssh.greenthumb.auth.exception.RestAuthenticationEntryPoint;
-import com.ssh.greenthumb.auth.service.CustomOAuth2UserService;
-import com.ssh.greenthumb.auth.service.CustomUserDetailsService;
 import com.ssh.greenthumb.auth.filter.TokenAuthenticationFilter;
 import com.ssh.greenthumb.auth.handler.OAuth2AuthenticationFailureHandler;
 import com.ssh.greenthumb.auth.handler.OAuth2AuthenticationSuccessHandler;
 import com.ssh.greenthumb.auth.handler.TokenAccessDeniedHandler;
 import com.ssh.greenthumb.auth.repository.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.ssh.greenthumb.auth.service.CustomOAuth2UserService;
+import com.ssh.greenthumb.auth.service.CustomUserDetailsService;
+import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
+    private final TokenProvider provider;
 
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
@@ -108,18 +110,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/",
                         "/error",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js")
+                        "/favicon.ico")
                 .permitAll()
-                .antMatchers("/auth/**", "/oauth2/**", "/login**").permitAll()
+                .antMatchers("/auth/**", "/oauth2/**", "/follow-user/**", "**/plants/**", "/posts/**").permitAll()
                 .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
-                .antMatchers("/user/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/post/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/comment/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                 .anyRequest().authenticated()
             .and()
                 .oauth2Login()
@@ -135,6 +131,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler);
+//            .and()
+//                .apply(new JwtSecurityConfig(provider));
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

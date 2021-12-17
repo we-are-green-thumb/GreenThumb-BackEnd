@@ -8,12 +8,12 @@ public class AuthResponse {
 
     private String tokenType = "Bearer";
     private String accessToken;
-    private Long id;
+    private Long userId;
 
     @Builder
-    public AuthResponse(String accessToken, String refreshToken, Long id) {
+    public AuthResponse(String accessToken, String refreshToken, Long userId) {
         this.accessToken = accessToken;
-        this.id = id;
+        this.userId = userId;
     }
 
 }
