@@ -22,6 +22,7 @@ public class PostDTO {
                     .title(title)
                     .category(category)
                     .content(content)
+                    .fileUrl(fileUrl)
                     .build();
         }
     }

@@ -47,17 +47,17 @@ public class AuthController {
         } else {
             User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
 
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
             if (user.getRole() == Role.BLACK || user.getRole() == Role.DELETE) {
                 throw new BadRequestException("접근 권한이 없습니다.");
             } else if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 throw new BadRequestException("비밀번호가 틀립니다.");
-            } else if (refreshTokenDao.findByUser(user) != null) {
-                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            } else if (!SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
 
-                return tokenProvider.reissue(user.getId(), refreshTokenDao.findByUser(user).getRefreshToken(), authentication);
-            } else {
-                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-
+                if (refreshTokenDao.findByUser(userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n")) != null) {
+                    return tokenProvider.reissue(user.getId(), refreshTokenDao.findByUser(user).getRefreshToken(), authentication);
+                }
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
                 Token token = tokenProvider.createToken(authentication);
@@ -73,6 +73,7 @@ public class AuthController {
                         .build(), HttpStatus.OK);
             }
         }
+        throw new BadRequestException("재인증 필요.");
     }
 
     @PostMapping("/signup")
@@ -101,7 +102,6 @@ public class AuthController {
     @Transactional
     @DeleteMapping("/logout/{id}")
     public void logout(@PathVariable Long id) {
-        System.out.println("-------------------");
         User user = userDao.findById(id).get();
 
         refreshTokenDao.deleteByUser(user);
