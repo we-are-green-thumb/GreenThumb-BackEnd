@@ -9,10 +9,10 @@ import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.like.LikeComment;
 import com.ssh.greenthumb.api.domain.like.LikePost;
 import com.ssh.greenthumb.api.domain.post.Comment;
+import com.ssh.greenthumb.api.domain.post.Post;
 import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.like.LikeCommentDTO;
 import com.ssh.greenthumb.api.dto.like.LikePostDTO;
-import com.ssh.greenthumb.api.domain.post.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,30 +27,51 @@ public class LikeService {
     private final UserRepository userDao;
 
     // 게시글 좋아요 등록
-    public Long likePost(Long postId, Long userId) {
+    public String likePost(Long postId, Long userId) {
         Post post = postDao.findById(postId).
                 orElseThrow(NotFoundException::new);
 
         User user = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
-        LikePostDTO.Create likePost = new LikePostDTO.Create(postId, userId);
+        LikePost likePost = likePostDao.findByPostAndUser(post, user);
 
-        return likePostDao.save(likePost.toEntity(post, user)).getId();
+        LikePostDTO dto = new LikePostDTO();
+
+        if (likePost == null) {
+            likePostDao.save(dto.toEntity(post, user));
+            return "좋아요 완료";
+        } else {
+            likePostDao.delete(likePost);
+            return "좋아요 취소 완료";
+        }
     }
 
-    // 게시글 좋아요 취소
-    public void unLikePost(Long postId, Long userId) {
-        Post post = postDao.findById(postId).
-                orElseThrow(NotFoundException::new);
-
-        User user = userDao.findById(userId).
-                orElseThrow(NotFoundException::new);
-
-        LikePost likePost = likePostDao.findByPost(post);
-
-        likePostDao.delete(likePost);
-    }
+//    // 게시글 좋아요 등록
+//    public Long likePost(Long postId, Long userId) {
+//        Post post = postDao.findById(postId).
+//                orElseThrow(NotFoundException::new);
+//
+//        User user = userDao.findById(userId).
+//                orElseThrow(NotFoundException::new);
+//
+//        LikePostDTO.Create likePost = new LikePostDTO.Create(postId, userId);
+//
+//        return likePostDao.save(likePost.toEntity(post, user)).getId();
+//    }
+//
+//    // 게시글 좋아요 취소
+//    public void unLikePost(Long postId, Long userId) {
+//        Post post = postDao.findById(postId).
+//                orElseThrow(NotFoundException::new);
+//
+//        User user = userDao.findById(userId).
+//                orElseThrow(NotFoundException::new);
+//
+//        LikePost likePost = likePostDao.findByPost(post);
+//
+//        likePostDao.delete(likePost);
+//    }
 
     // 댓글 좋아요 등록
     public Long likeComment(Long commentId, Long userId) {

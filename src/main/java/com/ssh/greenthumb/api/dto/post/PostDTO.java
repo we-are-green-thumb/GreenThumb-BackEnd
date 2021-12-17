@@ -5,6 +5,7 @@ import com.ssh.greenthumb.api.domain.post.Post;
 import com.ssh.greenthumb.api.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class PostDTO {
     }
 
     @Getter
+    @Setter
     public static class Get {
         private Long id;
         private Long writerId;

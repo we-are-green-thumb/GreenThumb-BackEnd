@@ -13,17 +13,17 @@ public class LikeController {
 
     private final LikeService likeService;
 
-    // 게시글 좋아요 등록
+    // 게시글 좋아요 등록 or 취소
     @PostMapping("/post/{postId}/user/{userId}/like")
-    public Long likePost(@PathVariable Long postId, @PathVariable Long userId) {
+    public String likePost(@PathVariable Long postId, @PathVariable Long userId) {
         return likeService.likePost(postId, userId);
     }
 
-    // 게시글 좋아요 취소
-    @DeleteMapping("/post/{postId}/user/{userId}/like")
-    public void unLikePost(@PathVariable Long postId, @PathVariable Long userId) {
-        likeService.unLikePost(postId, userId);
-    }
+//    // 게시글 좋아요 취소
+//    @DeleteMapping("/post/{postId}/user/{userId}/like")
+//    public void unLikePost(@PathVariable Long postId, @PathVariable Long userId) {
+//        likeService.unLikePost(postId, userId);
+//    }
 
     // 댓글 좋아요 등록
     @PostMapping("/comment/{commentId}/user/{userId}/like")

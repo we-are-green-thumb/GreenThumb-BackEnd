@@ -6,21 +6,29 @@ import com.ssh.greenthumb.api.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public class LikePostDTO {
 
-    @Getter
-    @AllArgsConstructor
-    public static class Create {
-        private Long postId;
-        private Long userId;
-
-        public LikePost toEntity(Post post, User user) {
-            return LikePost.builder()
-                    .post(post)
-                    .user(user)
-                    .build();
-        }
+    public LikePost toEntity(Post post, User user) {
+        return LikePost.builder()
+                .post(post)
+                .user(user)
+                .build();
     }
+
+//    @Getter
+//    @AllArgsConstructor
+//    public static class Create {
+//        private Long postId;
+//        private Long userId;
+//
+//        public LikePost toEntity(Post post, User user) {
+//            return LikePost.builder()
+//                    .post(post)
+//                    .user(user)
+//                    .build();
+//        }
 
     @Getter
     public static class Delete {

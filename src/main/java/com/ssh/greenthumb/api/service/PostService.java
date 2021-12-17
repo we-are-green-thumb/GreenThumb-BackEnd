@@ -31,22 +31,22 @@ public class PostService {
         User user = userDao.findById(dto.getUserId()).
                 orElseThrow(NotFoundException::new);
 
-//        for(File f : dto.getFileList()) {
-//            fileDao.save(File.builder()
-//                    .post(f.getPost())
-//                    .fileUrl(f.getFileUrl())
-//                    .build());
-//        }
         Post post = postDao.save(dto.toEntity(user, dto.getTitle(), dto.getCategory(), dto.getContent()));
-
-        File file = fileDao.save(File.builder().fileUrl(dto.getFileUrl()).post(post).build());
 
         return post.getId();
     }
 
     @Transactional
     public List<PostDTO.Get> getAll() {
-        return postDao.findAllByIsDeleted("n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
+        List<Post> posts = postDao.findAllByIsDeleted("n");
+
+        List<PostDTO.Get> dtos = posts.stream().map(PostDTO.Get::new).collect(Collectors.toList());
+
+        for (int i = 0; i<posts.size(); i++) {
+            dtos.get(i).setLike(posts.get(i).getLikePostList().size());
+        }
+
+        return dtos;
     }
 
     @Transactional
@@ -56,8 +56,15 @@ public class PostService {
 
     @Transactional
     public PostDTO.Get getOne(Long postId) {
-        return postDao.findById(postId).map(PostDTO.Get::new).get();
+        Post post = postDao.findById(postId).get();
+
+        PostDTO.Get dto = postDao.findById(postId).map(PostDTO.Get::new).get();
+
+        dto.setLike(post.getLikePostList().size());
+
+        return dto;
     }
+
 
     @Transactional
     public Long update(Long postId, PostDTO.Update dto) {

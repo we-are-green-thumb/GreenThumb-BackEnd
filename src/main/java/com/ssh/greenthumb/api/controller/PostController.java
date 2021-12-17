@@ -41,7 +41,7 @@ public class PostController {
         return postService.update(postId, dto);
     }
 
-    @PatchMapping("/{postId}/check")
+    @PutMapping("/{postId}/check")
     public Long updateCheck(@PathVariable Long postId) {
         return postService.updateCheck(postId);
     }
