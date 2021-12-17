@@ -31,6 +31,11 @@ public class PostController {
         return postService.getAllByCategory(postCategory);
     }
 
+    @GetMapping("/posts/user/{userId}")
+    public List<PostDTO.Get> getAllByUser(@PathVariable Long userId) {
+        return postService.getAllByUser(userId);
+    }
+
     @GetMapping("/{postId}")
     public PostDTO.Get getOne(@PathVariable Long postId) {
         return postService.getOne(postId);

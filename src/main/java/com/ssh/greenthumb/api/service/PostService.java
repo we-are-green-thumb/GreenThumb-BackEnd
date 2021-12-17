@@ -55,6 +55,13 @@ public class PostService {
     }
 
     @Transactional
+    public List<PostDTO.Get> getAllByUser(Long userId) {
+        User user = userDao.findById(userId).get();
+
+        return postDao.findAllPostByUserAndIsDeleted(user, "n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
+    }
+
+    @Transactional
     public PostDTO.Get getOne(Long postId) {
         Post post = postDao.findById(postId).get();
 
