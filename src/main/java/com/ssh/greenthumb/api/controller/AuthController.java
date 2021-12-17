@@ -6,7 +6,7 @@ import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.login.ApiResponse;
 import com.ssh.greenthumb.api.dto.login.AuthResponse;
-import com.ssh.greenthumb.api.dto.login.LoginRequest;
+import com.ssh.greenthumb.api.dto.login.AuthRequest;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
 import com.ssh.greenthumb.auth.domain.*;
 import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
@@ -40,12 +40,10 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenDao;
-    @Autowired
-    private AppProperties appProperties;
 
     @Transactional
     @PostMapping("/login")
-    public Object authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public Object authenticateUser(@RequestBody AuthRequest.Login loginRequest) {
         if (userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n") == null) {
             throw new NotFoundException();
         } else {
@@ -101,30 +99,19 @@ public class AuthController {
                 .body(new ApiResponse(true, "계정 생성 성공"));
     }
 
+    @Transactional // 여기선 delete만으로 커밋이 안 됨.. @Service 유무의 차이때문일까..?
+    @DeleteMapping("/logout")
+    public void logout(@RequestBody AuthRequest.Logout logoutRequest) {
+        User user = userDao.findByEmail(logoutRequest.getEmail());
+
+        refreshTokenDao.deleteByUser(user);
+    }
+
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
         return userDao.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
-
-//    @GetMapping("/valid")
-//    public boolean valid(@RequestHeader("Authorization") String token) {
-//        try {
-//            Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(token);
-//            return true;
-//        } catch (SignatureException ex) {
-//            System.out.println(("유효하지 않은 JWT 서명"));
-//        } catch (MalformedJwtException ex) {
-//            System.out.println(("유효하지 않은 JWT 토큰"));
-//        } catch (ExpiredJwtException ex) {
-//            System.out.println("만료된 JWT 토큰");
-//        } catch (UnsupportedJwtException ex) {
-//            System.out.println("지원하지 않는 JWT 토큰");
-//        } catch (IllegalArgumentException ex) {
-//            System.out.println("비어있는 JWT");
-//        }
-//        return false;
-//    }
 
 }

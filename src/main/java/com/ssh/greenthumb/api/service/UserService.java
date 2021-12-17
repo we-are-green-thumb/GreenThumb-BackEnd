@@ -12,7 +12,6 @@ import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.user.BlackListDTO;
 import com.ssh.greenthumb.api.dto.user.UserDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,14 +24,8 @@ public class UserService {
 
     private final UserRepository userDao;
     private final BlackListRepository blackListDao;
-    private final PasswordEncoder passwordEncoder;
     private final PostRepository postDao;
     private final CommentRepository commentDao;
-
-    @Transactional
-    public Long add(UserDTO.Create dto) {
-        return userDao.save(dto.toEntity(dto.getEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNickName(), dto.getImageUrl(), dto.getProviderId())).getId();
-    }
 
     // 이메일 중복 체크
     public boolean checkEmail(String email) {
@@ -92,6 +85,7 @@ public class UserService {
         List<Post> postList = postDao.findByUser(user);
 
         user.delete();
+        user.updateRole();
 
         // 삭제된 회원의 게시물과 댓글 삭제
         for(Post p : postList) {
