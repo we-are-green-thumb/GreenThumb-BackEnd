@@ -37,7 +37,7 @@ public class PostService {
 //                    .fileUrl(f.getFileUrl())
 //                    .build());
 //        }
-        Post post = postDao.save(dto.toEntity(user, dto.getTitle(), dto.getContent(), dto.getCategory()));
+        Post post = postDao.save(dto.toEntity(user, dto.getTitle(), dto.getCategory(), dto.getContent()));
 
         File file = fileDao.save(File.builder().fileUrl(dto.getFileUrl()).post(post).build());
 

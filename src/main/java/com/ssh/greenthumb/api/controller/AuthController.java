@@ -5,17 +5,15 @@ import com.ssh.greenthumb.api.common.exception.NotFoundException;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.login.ApiResponse;
-import com.ssh.greenthumb.api.dto.login.AuthResponse;
 import com.ssh.greenthumb.api.dto.login.AuthRequest;
+import com.ssh.greenthumb.api.dto.login.AuthResponse;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
 import com.ssh.greenthumb.auth.domain.*;
 import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
-import com.ssh.greenthumb.auth.token.AppProperties;
 import com.ssh.greenthumb.auth.token.Token;
 import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -100,9 +98,10 @@ public class AuthController {
     }
 
     @Transactional // 여기선 delete만으로 커밋이 안 됨.. @Service 유무의 차이때문일까..?
-    @DeleteMapping("/logout")
-    public void logout(@RequestBody AuthRequest.Logout logoutRequest) {
-        User user = userDao.findByEmail(logoutRequest.getEmail());
+    @DeleteMapping("/logout/{userId}")
+    public void logout(@PathVariable Long userId) {
+        System.out.println("-------------------");
+        User user = userDao.findById(userId).get();
 
         refreshTokenDao.deleteByUser(user);
     }

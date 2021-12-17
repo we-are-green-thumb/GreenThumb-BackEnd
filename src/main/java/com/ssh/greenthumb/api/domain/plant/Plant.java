@@ -44,7 +44,7 @@ public class Plant extends BaseTimeEntity {
     private Long temp;
 
     @Column(name = "image_url")
-    @NotNull
+//    @NotNull
     private String imageUrl;
 
     @Builder
