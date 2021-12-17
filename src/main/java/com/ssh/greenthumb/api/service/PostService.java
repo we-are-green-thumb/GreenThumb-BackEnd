@@ -25,7 +25,7 @@ public class PostService {
         User user = userDao.findById(id).
                 orElseThrow(NotFoundException::new);
 
-        Post post = postDao.save(dto.toEntity(user, dto.getTitle(), dto.getCategory(), dto.getContent()));
+        Post post = postDao.save(dto.toEntity(user, dto.getTitle(), dto.getCategory(), dto.getContent(),dto.getFileUrl()));
 
         return post.getId();
     }

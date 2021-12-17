@@ -16,12 +16,13 @@ public class PostDTO {
         private String content;
         private String fileUrl;
 
-        public Post toEntity(User user, String title, String category, String content) {
+        public Post toEntity(User user, String title, String category, String content,String fileUrl) {
             return Post.builder()
                     .user(user)
                     .title(title)
                     .category(category)
                     .content(content)
+                    .fileUrl(fileUrl)
                     .build();
         }
     }
