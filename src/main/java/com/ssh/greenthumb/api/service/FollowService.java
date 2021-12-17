@@ -6,6 +6,7 @@ import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.user.Follow;
 import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.user.FollowDTO;
+import com.ssh.greenthumb.auth.domain.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +47,7 @@ public class FollowService {
         List<Follow> followerList = followDao.findFollowerByfollowee(followee);
 
         for(Follow f : followerList) {
-            if(f.getFollower().getIsBlack().equals("y")) followDao.delete(f);
+            if(f.getFollower().getRole() == Role.BLACK) followDao.delete(f);
         }
 
         return followerList.stream().map(FollowDTO.Follower::new).collect(Collectors.toList());

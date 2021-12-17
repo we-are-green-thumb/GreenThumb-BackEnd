@@ -9,6 +9,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public enum Role {
 
+    DELETE("ROLE_DELETE", "삭제 회원"),
     BLACK("ROLE_BLACK", "블랙 회원"),
     USER("ROLE_USER", "일반 회원"),
     ADMIN("ROLE_ADMIN", "관리자");

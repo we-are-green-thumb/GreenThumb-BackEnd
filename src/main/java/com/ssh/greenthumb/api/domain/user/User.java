@@ -124,31 +124,25 @@ public class User extends BaseTimeEntity {
         return this;
     }
 
-//    public String getRoleKey() {
-//        return this.role.getCode();
-//    }
-
     public User updateRole() {
         this.role = Role.ADMIN;
 
         return this;
     }
 
-    public String blackUser() {
+    public void blackUser() {
         this.isBlack = "y";
         this.role = Role.BLACK;
-
-        return this.isBlack;
     }
 
-    public String nonBlackUser() {
+    public void nonBlackUser() {
         this.isBlack = "n";
-
-        return this.isBlack;
+        this.role = Role.USER;
     }
 
     public void delete() {
         this.isDeleted = "y";
+        this.role = Role.DELETE;
     }
 
 }

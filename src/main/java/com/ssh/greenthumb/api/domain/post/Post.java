@@ -68,12 +68,11 @@ public class Post extends BaseTimeEntity {
     private List<LikePost> likePostList = new ArrayList<>();
 
     @Builder
-    public Post(User user, String title, String category, String content, List<File> fileList) {
+    public Post(User user, String title, String category, String content) {
         this.user = user;
         this.title = title;
         this.category = category;
         this.content = content;
-        this.fileList = fileList;
     }
 
     public Post update(String title, String content, String category) {
