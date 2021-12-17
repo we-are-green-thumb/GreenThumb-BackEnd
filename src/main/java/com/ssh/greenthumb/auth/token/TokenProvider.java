@@ -20,10 +20,9 @@ public class TokenProvider {
 
     private static final Logger log = LoggerFactory.getLogger(TokenProvider.class);
     private final AppProperties appProperties;
+
     @Autowired
     private RefreshTokenRepository refreshTokenDao;
-//    @Autowired
-//    private UserRepository userDao;
 
     public TokenProvider(AppProperties appProperties) {
         this.appProperties = appProperties;

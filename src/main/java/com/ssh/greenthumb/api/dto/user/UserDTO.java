@@ -27,16 +27,6 @@ public class UserDTO {
     }
 
     @Getter
-    public static class CheckEmail {
-        private String email;
-    }
-
-    @Getter
-    public static class CheckNickName {
-        private String nickName;
-    }
-
-    @Getter
     public static class Get {
         private String email;
         private String nickName;
@@ -82,8 +72,8 @@ public class UserDTO {
 
     @Getter
     public static class Update {
-        private String userPassword;
         private String userNickname;
+        private String userPassword;
         private String imageUrl;
     }
 

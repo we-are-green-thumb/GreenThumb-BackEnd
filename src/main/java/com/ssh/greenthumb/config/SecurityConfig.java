@@ -13,7 +13,6 @@ import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -111,19 +110,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/",
                         "/error",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js")
+                        "/favicon.ico")
                 .permitAll()
-                .antMatchers("/auth/**", "/oauth2/**").permitAll()
-                .antMatchers(HttpMethod.POST, "login").permitAll()
+                .antMatchers("/auth/**", "/oauth2/**", "/follow-user/**", "**/plants/**", "/posts/**").permitAll()
                 .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
-                .antMatchers("/user/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/post/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/comment/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                 .anyRequest().authenticated()
             .and()
                 .oauth2Login()

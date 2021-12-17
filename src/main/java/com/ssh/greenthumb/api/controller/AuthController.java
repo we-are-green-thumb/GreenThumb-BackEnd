@@ -38,8 +38,6 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenDao;
-//    private final CustomOAuth2UserService customOAuth2UserService;
-//    private final CustomUserDetailsService customUserDetailsService;
 
     @Transactional
     @PostMapping("/login")
@@ -76,27 +74,6 @@ public class AuthController {
             }
         }
     }
-//
-//    @PostMapping("/oauth")
-//    public ResponseEntity<AuthResponse> oAuthTokenVerify(@RequestBody AuthRequest.OAuth oAuthRequest) {
-//
-//        HttpHeaders res = new HttpHeaders();
-//
-//        UserPrincipal user = (UserPrincipal) customUserDetailsService.loadUserByUsername(oAuthRequest.getEmail());
-//
-//        if(oAuthRequest.getEmail() != null) {
-//            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-//
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//            Token token = tokenProvider.createToken(authentication);
-//
-//            res.add("Authorization", token.getAccessToken());
-//        }
-//
-//        return new ResponseEntity<>(AuthResponse.builder().userId(user.getId()).build(), HttpStatus.OK);
-//
-//    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
@@ -121,11 +98,11 @@ public class AuthController {
                 .body(new ApiResponse(true, "계정 생성 성공"));
     }
 
-    @Transactional // 여기선 delete만으로 커밋이 안 됨.. @Service 유무의 차이때문일까..?
-    @DeleteMapping("/logout/{userId}")
-    public void logout(@PathVariable Long userId) {
+    @Transactional
+    @DeleteMapping("/logout/{id}")
+    public void logout(@PathVariable Long id) {
         System.out.println("-------------------");
-        User user = userDao.findById(userId).get();
+        User user = userDao.findById(id).get();
 
         refreshTokenDao.deleteByUser(user);
     }
