@@ -43,6 +43,10 @@ public class PlantService {
             return plantDao.findAllByUser(user).stream().map(PlantDTO.Get::new).collect(Collectors.toList());
     }
 
+    public List<PlantDTO.Get> getAllByName(String name) {
+        return plantDao.findAllByName(name).stream().map(PlantDTO.Get::new).collect(Collectors.toList());
+    }
+
     @Transactional
     public PlantDTO.Get getOneByUser(Long plantId) {
         return plantDao.findById(plantId).map(PlantDTO.Get::new).get();

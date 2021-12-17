@@ -14,13 +14,8 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping("/post/{postId}/user/{userId}/like")
-    public Long likePost(@PathVariable Long postId, @PathVariable Long userId) {
+    public String likePost(@PathVariable Long postId, @PathVariable Long userId) {
         return likeService.likePost(postId, userId);
-    }
-
-    @DeleteMapping("/post/{postId}/user/{userId}/like")
-    public void unLikePost(@PathVariable Long postId, @PathVariable Long userId) {
-        likeService.unLikePost(postId, userId);
     }
 
     @PostMapping("/comment/{commentId}/user/{userId}/like")

@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface PlantRepository extends JpaRepository<Plant, Long> {
 
-    Plant findByUser(User user);
-
     List<Plant> findAllByUser(User user);
+
+    List<Plant> findAllByName(String name);
 
 }
