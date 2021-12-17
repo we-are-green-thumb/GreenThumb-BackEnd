@@ -7,7 +7,7 @@ import com.ssh.greenthumb.auth.domain.Role;
 import com.ssh.greenthumb.api.domain.plant.Plant;
 import com.ssh.greenthumb.api.domain.post.Comment;
 import com.ssh.greenthumb.api.domain.post.Post;
-import com.ssh.greenthumb.auth.domain.UserRefreshToken;
+import com.ssh.greenthumb.auth.domain.RefreshToken;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -99,10 +99,12 @@ public class User extends BaseTimeEntity {
     private Set<Follow> followeeList = new HashSet<>();
 
     @OneToOne(mappedBy = "user")
+    @JsonBackReference
     private BlackList blackList;
 
     @OneToOne(mappedBy = "user")
-    private UserRefreshToken refreshToken;
+    @JsonBackReference
+    private RefreshToken refreshToken;
 
     //Q 마이페이지에서 유저정보 가져올 때 비밀번호 가져올까?
     @Builder
@@ -124,10 +126,6 @@ public class User extends BaseTimeEntity {
         return this;
     }
 
-//    public String getRoleKey() {
-//        return this.role.getCode();
-//    }
-
     public User updateRole() {
         this.role = Role.ADMIN;
 
@@ -141,7 +139,7 @@ public class User extends BaseTimeEntity {
 
     public void nonBlackUser() {
         this.isBlack = "n";
-        this.role = Role.BLACK;
+        this.role = Role.USER;
     }
 
     public void delete() {

@@ -1,7 +1,7 @@
 package com.ssh.greenthumb.api.controller;
 
 import com.ssh.greenthumb.api.common.exception.BadRequestException;
-import com.ssh.greenthumb.api.dao.login.UserRefreshTokenRepository;
+import com.ssh.greenthumb.api.common.exception.NotFoundException;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.login.ApiResponse;
@@ -9,10 +9,13 @@ import com.ssh.greenthumb.api.dto.login.AuthResponse;
 import com.ssh.greenthumb.api.dto.login.AuthRequest;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
 import com.ssh.greenthumb.auth.domain.*;
+import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
+import com.ssh.greenthumb.auth.token.AppProperties;
 import com.ssh.greenthumb.auth.token.Token;
 import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,29 +39,41 @@ public class AuthController {
     private final UserRepository userDao;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
-    private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final RefreshTokenRepository refreshTokenDao;
 
+    @Transactional
     @PostMapping("/login")
     public Object authenticateUser(@RequestBody AuthRequest.Login loginRequest) {
+        if (userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n") == null) {
+            throw new NotFoundException();
+        } else {
+            User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            if (user.getRole() == Role.BLACK || user.getRole() == Role.DELETE) {
+                throw new BadRequestException("접근 권한이 없습니다.");
+            } else if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                throw new BadRequestException("비밀번호가 틀립니다.");
+            } else if (refreshTokenDao.findByUser(user) != null) {
+                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+                return tokenProvider.reissue(user.getId(), refreshTokenDao.findByUser(user).getRefreshToken(), authentication);
+            } else {
+                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        Token token = tokenProvider.createToken(authentication);
+                Token token = tokenProvider.createToken(authentication);
 
-        User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
-
-        userRefreshTokenRepository.save(UserRefreshToken.builder()
+                refreshTokenDao.save(RefreshToken.builder()
                         .user(user)
                         .refreshToken(token.getRefreshToken())
                         .build());
 
-        return new ResponseEntity(AuthResponse.builder()
-                .accessToken(token.getAccessToken())
-                .refreshToken(token.getRefreshToken())
-                .id(user.getId())
-                .build(), HttpStatus.OK);
+                return new ResponseEntity(AuthResponse.builder()
+                        .accessToken(token.getAccessToken())
+                        .id(user.getId())
+                        .build(), HttpStatus.OK);
+            }
+        }
     }
 
     @PostMapping("/signup")
@@ -89,7 +104,7 @@ public class AuthController {
     public void logout(@RequestBody AuthRequest.Logout logoutRequest) {
         User user = userDao.findByEmail(logoutRequest.getEmail());
 
-        userRefreshTokenRepository.deleteByUser(user);
+        refreshTokenDao.deleteByUser(user);
     }
 
     @GetMapping("/user/me")

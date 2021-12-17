@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class UserRefreshToken {
+public class RefreshToken {
     @Id
     @Column(name = "refresh_token_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class UserRefreshToken {
     private String refreshToken;
 
     @Builder
-    public UserRefreshToken(User user, String refreshToken) {
+    public RefreshToken(User user, String refreshToken) {
         this.user = user;
         this.refreshToken = refreshToken;
     }

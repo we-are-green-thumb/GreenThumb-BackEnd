@@ -14,11 +14,5 @@ public class AuthRequest {
     public static class Logout {
         private String email;
     }
-//
-//    @Builder
-//    public LoginRequest(String email, String password) {
-//        this.email = email;
-//        this.password = password;
-//    }
 
 }

@@ -31,14 +31,17 @@ public class PostService {
         User user = userDao.findById(dto.getUserId()).
                 orElseThrow(NotFoundException::new);
 
-        for(File f : dto.getFileList()) {
-            fileDao.save(File.builder()
-                    .post(f.getPost())
-                    .fileUrl(f.getFileUrl())
-                    .build());
-        }
+//        for(File f : dto.getFileList()) {
+//            fileDao.save(File.builder()
+//                    .post(f.getPost())
+//                    .fileUrl(f.getFileUrl())
+//                    .build());
+//        }
+        Post post = postDao.save(dto.toEntity(user, dto.getTitle(), dto.getContent(), dto.getCategory()));
 
-        return postDao.save(dto.toEntity(user, dto.getTitle(), dto.getContent(), dto.getCategory(), dto.getFileList())).getId();
+        File file = fileDao.save(File.builder().fileUrl(dto.getFileUrl()).post(post).build());
+
+        return post.getId();
     }
 
     @Transactional
