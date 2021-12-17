@@ -29,6 +29,7 @@ public class PostDTO {
     @Getter
     @Setter
     public static class Get {
+        private Long id;
         private Long writerId;
         private String writer;
         private String title;
@@ -40,6 +41,7 @@ public class PostDTO {
         private String fileUrl;
 
         public Get(Post entity) {
+            this.id = entity.getId();
             this.writerId = entity.getUser().getId();
             this.writer = entity.getUser().getNickName();
             this.title = entity.getTitle();
