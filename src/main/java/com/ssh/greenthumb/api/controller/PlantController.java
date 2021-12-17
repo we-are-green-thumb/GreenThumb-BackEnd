@@ -33,6 +33,11 @@ public class PlantController {
         return plantService.getAllByUser(userId, request);
     }
 
+    @GetMapping("/plant-name/{name}")
+    public List<PlantDTO.Get> getAllByName(@PathVariable String name) {
+        return plantService.getAllByName(name);
+    }
+
     // 유저별 식물 조회(하나) - 식물 상세
     @GetMapping("/{plantId}")
     public PlantDTO.Get getOneByUser(@PathVariable Long plantId) {

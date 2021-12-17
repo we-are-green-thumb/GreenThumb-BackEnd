@@ -57,6 +57,11 @@ public class PlantService {
         }
     }
 
+    // 같은 이름의 식물 찾기
+    public List<PlantDTO.Get> getAllByName(String name) {
+        return plantDao.findAllByName(name).stream().map(PlantDTO.Get::new).collect(Collectors.toList());
+    }
+
     // 유저별 식물 조회(하나)
     @Transactional
     public PlantDTO.Get getOneByUser(Long plantId) {
