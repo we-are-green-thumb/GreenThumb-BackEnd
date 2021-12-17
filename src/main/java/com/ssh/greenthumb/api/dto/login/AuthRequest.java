@@ -10,4 +10,15 @@ public class AuthRequest {
         private String password;
     }
 
+    @Getter
+    public static class Logout {
+        private String email;
+    }
+
+    @Getter
+    public static class OAuth {
+        private String email;
+        private String idToken;
+    }
+
 }

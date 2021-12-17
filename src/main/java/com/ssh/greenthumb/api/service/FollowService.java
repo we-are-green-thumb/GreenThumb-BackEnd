@@ -21,27 +21,25 @@ public class FollowService {
     private final FollowRepository followDao;
     private final UserRepository userDao;
 
-    // 팔로우 요청
     @Transactional
-    public String add(FollowDTO.Create dto) {
-        User follower = userDao.findById(dto.getFollowerId()).
+    public String add(Long userId, Long followeeId) {
+        User follower = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
-        User following = userDao.findById(dto.getFolloweeId()).
+        User following = userDao.findById(followeeId).
                 orElseThrow(NotFoundException::new);
 
         if(following.getIsBlack().equals("n") && following.getIsDeleted().equals("n")) {
-            followDao.save(dto.toEntity(follower, following)).getId();
+            followDao.save(FollowDTO.toEntity(follower, following)).getId();
 
             return "팔로우 요청 완료";
         } else return "해당 회원은 요청 불가";
     }
 
-    // 유저 한명의 팔로워 목록 조회
     @Transactional
-    public List<FollowDTO.Follower> getFollwers(Long userId) {
+    public List<FollowDTO.Follower> getFollwers(Long id) {
 
-        User followee = userDao.findById(userId).
+        User followee = userDao.findById(id).
                 orElseThrow(NotFoundException::new);
 
         List<Follow> followerList = followDao.findFollowerByfollowee(followee);
@@ -53,11 +51,10 @@ public class FollowService {
         return followerList.stream().map(FollowDTO.Follower::new).collect(Collectors.toList());
     }
 
-    // 유저 한명의 팔로잉 목록 조회
     @Transactional
-    public List<FollowDTO.Followee> getFollowees(Long userId) {
+    public List<FollowDTO.Followee> getFollowees(Long id) {
 
-        User follower = userDao.findById(userId).
+        User follower = userDao.findById(id).
                 orElseThrow(NotFoundException::new);
 
         List<Follow> followeeList = followDao.findFolloweeByfollower(follower);
@@ -69,13 +66,12 @@ public class FollowService {
         return followeeList.stream().map(FollowDTO.Followee::new).collect(Collectors.toList());
     }
 
-    // 언팔로우
     @Transactional
-    public void delete(FollowDTO.Delete dto) {
-        User follower = userDao.findById(dto.getFollowerId()).
+    public void delete(Long userId, Long followeeId) {
+        User follower = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
-        User followee = userDao.findById(dto.getFolloweeId()).
+        User followee = userDao.findById(followeeId).
                 orElseThrow(NotFoundException::new);
 
         followDao.deleteByFollowerAndFollowee(follower, followee);

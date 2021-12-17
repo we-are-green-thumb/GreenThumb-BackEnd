@@ -27,59 +27,35 @@ public class UserService {
     private final PostRepository postDao;
     private final CommentRepository commentDao;
 
-    // 이메일 중복 체크
-    public boolean checkEmail(String email) {
-        boolean result = false;
-        User user = userDao.findByEmailAndIsDeleted(email, "n");
-
-        if (user == null) {
-            result = true;
-        }
-
-        return result;
-    }
-
-    // 닉네임 중복 체크
-    public boolean checkNickName(String nickName) {
-        boolean result = false;
-        User user = userDao.findByNickName(nickName);
-
-        if (user == null) {
-            result = true;
-        }
-
-        return result;
-    }
-
     @Transactional
     public List<UserDTO.Get> getAll() {
         return userDao.findAllByIsDeleted("n").stream().map(UserDTO.Get::new).collect(Collectors.toList());
     }
 
     @Transactional
-    public UserDTO.Get getOne(Long userId) {
-        return userDao.findById(userId).map(UserDTO.Get::new).get();
+    public UserDTO.Get getOne(Long id) {
+        return userDao.findById(id).map(UserDTO.Get::new).get();
     }
 
     @Transactional
-    public Long update(Long userId, UserDTO.Update dto) {
-        User user = userDao.findById(userId)
+    public Long update(Long id, UserDTO.Update dto) {
+        User user = userDao.findById(id)
                 .orElseThrow(NotFoundException::new);
 
-        return user.update(dto.getUserPassword(), dto.getUserNickname(), dto.getImageUrl()).getId();
+        return user.update(dto.getNickName(), dto.getProfile()).getId();
     }
 
     @Transactional
-    public Long updateRole(Long userId) {
-        User user = userDao.findById(userId)
+    public Long updateRole(Long id) {
+        User user = userDao.findById(id)
                 .orElseThrow(NotFoundException::new);
 
         return user.updateRole().getId();
     }
 
     @Transactional
-    public void delete(Long userId) {
-        User user = userDao.findById(userId)
+    public void delete(Long id) {
+        User user = userDao.findById(id)
                 .orElseThrow(NotFoundException::new);
 
         List<Post> postList = postDao.findByUser(user);
@@ -87,7 +63,6 @@ public class UserService {
         user.delete();
         user.updateRole();
 
-        // 삭제된 회원의 게시물과 댓글 삭제
         for(Post p : postList) {
             p.delete();
 
@@ -95,29 +70,24 @@ public class UserService {
 
             for(Comment c : commentList) c.delete();
         }
-
     }
 
     public List<UserDTO.Admin> getAllFromAdmin(){
         return userDao.findAll().stream().map(UserDTO.Admin::new).collect(Collectors.toList());
     }
 
-    // 블랙리스트 등록
     @Transactional
     public Long addBlack(BlackListDTO.Create dto) {
-
 
         User user = userDao.findById(dto.getUserId()).
                 orElseThrow(NotFoundException::new);
 
         List<Post> postList = postDao.findByUser(user);
 
-        //Q 이미 블랙리스트일 경우 추가 할? 말?
         if(user.getIsBlack().equals("y")) {
             throw new NotFoundException();
         }
 
-        // User entity의 isBlack값 변경
         user.blackUser();
 
         for(Post p : postList) {
@@ -127,26 +97,14 @@ public class UserService {
 
             for(Comment c : commentList) c.delete();
         }
-
         return blackListDao.save(dto.toEntity(user, dto.getReason())).getId();
     }
 
-    // 블랙리스트 전체 검색
     @Transactional
     public List<BlackListDTO.Get> getBlackList() {
         return blackListDao.findAll().stream().map(BlackListDTO.Get::new).collect(Collectors.toList());
     }
 
-    // 해당 유저가 블랙리스트인지 조회
-    @Transactional
-    public String isBlack(Long userId) {
-        User user = userDao.findById(userId).
-                orElseThrow(NotFoundException::new);
-
-        return user.getIsBlack();
-    }
-
-    // 블랙리스트 사유 수정
     @Transactional
     public Long updateBlack(BlackListDTO.Update dto) {
         BlackList blackList = blackListDao.findById(dto.getId()).
@@ -157,10 +115,8 @@ public class UserService {
         return blackList.getId();
     }
 
-    // 블랙리스트 삭제
-//    @Transactional save 안해도 delete하니까 세이브 되네 !?..... userDao 세이브 안해줘도.. 되네?
-    public void deleteBlack(Long blackId) {
-        BlackList blackList = blackListDao.findById(blackId).
+    public void deleteBlack(Long id) {
+        BlackList blackList = blackListDao.findById(id).
                 orElseThrow(NotFoundException::new);
 
         blackList.getUser().nonBlackUser();

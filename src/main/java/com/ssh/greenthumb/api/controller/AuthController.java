@@ -57,6 +57,7 @@ public class AuthController {
                 return tokenProvider.reissue(user.getId(), refreshTokenDao.findByUser(user).getRefreshToken(), authentication);
             } else {
                 Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
                 Token token = tokenProvider.createToken(authentication);
@@ -68,7 +69,7 @@ public class AuthController {
 
                 return new ResponseEntity(AuthResponse.builder()
                         .accessToken(token.getAccessToken())
-                        .id(user.getId())
+                        .userId(user.getId())
                         .build(), HttpStatus.OK);
             }
         }
@@ -97,11 +98,11 @@ public class AuthController {
                 .body(new ApiResponse(true, "계정 생성 성공"));
     }
 
-    @Transactional // 여기선 delete만으로 커밋이 안 됨.. @Service 유무의 차이때문일까..?
-    @DeleteMapping("/logout/{userId}")
-    public void logout(@PathVariable Long userId) {
+    @Transactional
+    @DeleteMapping("/logout/{id}")
+    public void logout(@PathVariable Long id) {
         System.out.println("-------------------");
-        User user = userDao.findById(userId).get();
+        User user = userDao.findById(id).get();
 
         refreshTokenDao.deleteByUser(user);
     }
