@@ -106,7 +106,6 @@ public class User extends BaseTimeEntity {
     @JsonBackReference
     private RefreshToken refreshToken;
 
-    //Q 마이페이지에서 유저정보 가져올 때 비밀번호 가져올까?
     @Builder
     public User(String email, String password, String nickName, String imageUrl, Role role, AuthProvider provider, String providerId) {
         this.email = email;
@@ -118,10 +117,9 @@ public class User extends BaseTimeEntity {
         this.providerId = providerId;
     }
 
-    public User update(String password, String nickName, String imageUrl) {
-        this.password = password;
+    public User update(String nickName, String profile) {
         this.nickName = nickName;
-        this.imageUrl = imageUrl;
+        this.profile = profile;
 
         return this;
     }

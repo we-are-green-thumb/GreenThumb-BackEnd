@@ -72,9 +72,8 @@ public class UserDTO {
 
     @Getter
     public static class Update {
-        private String userNickname;
-        private String userPassword;
-        private String imageUrl;
+        private String nickName;
+        private String profile;
     }
 
 }
