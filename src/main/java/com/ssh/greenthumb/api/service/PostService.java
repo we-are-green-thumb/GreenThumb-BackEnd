@@ -32,7 +32,15 @@ public class PostService {
 
     @Transactional
     public List<PostDTO.Get> getAll() {
-        return postDao.findAllByIsDeleted("n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
+        List<Post> posts = postDao.findAllByIsDeleted("n");
+
+        List<PostDTO.Get> dtos = posts.stream().map(PostDTO.Get::new).collect(Collectors.toList());
+
+        for (int i = 0; i<posts.size(); i++) {
+            dtos.get(i).setLike(posts.get(i).getLikePostList().size());
+        }
+
+        return dtos;
     }
 
     @Transactional
