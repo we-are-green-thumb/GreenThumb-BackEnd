@@ -98,9 +98,10 @@ public class AuthController {
     }
 
     @Transactional // 여기선 delete만으로 커밋이 안 됨.. @Service 유무의 차이때문일까..?
-    @DeleteMapping("/logout")
-    public void logout(@RequestBody AuthRequest.Logout logoutRequest) {
-        User user = userDao.findById(logoutRequest.getUserId()).get();
+    @DeleteMapping("/logout/{userId}")
+    public void logout(@PathVariable Long userId) {
+        System.out.println("-------------------");
+        User user = userDao.findById(userId).get();
 
         refreshTokenDao.deleteByUser(user);
     }

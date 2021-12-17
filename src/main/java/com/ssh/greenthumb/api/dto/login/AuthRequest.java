@@ -10,9 +10,4 @@ public class AuthRequest {
         private String password;
     }
 
-    @Getter
-    public static class Logout {
-        private Long userId;
-    }
-
 }

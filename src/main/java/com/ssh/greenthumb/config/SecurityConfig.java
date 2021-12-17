@@ -117,7 +117,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js")
                 .permitAll()
-                .antMatchers("/auth/**", "/oauth2/**").permitAll()
+                .antMatchers("/auth/**", "/oauth2/**", "/login**").permitAll()
                 .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
                 .antMatchers("/user/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                 .anyRequest().authenticated()
