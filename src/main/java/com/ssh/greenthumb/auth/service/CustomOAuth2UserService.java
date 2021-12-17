@@ -24,7 +24,7 @@ import org.springframework.util.StringUtils;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userDao;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -48,7 +48,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationProcessingException("ProviderId not found from OAuth2 provider");
         }
 
-        User userOptional = userRepository.findByProviderId(oAuth2UserInfo.getId());
+        User userOptional = userDao.findByProviderId(oAuth2UserInfo.getId());
         User user;
 
         if(userOptional != null) {
@@ -68,7 +68,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
-        return userRepository.save(User.builder()
+        return userDao.save(User.builder()
                 .provider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))
                 .providerId(oAuth2UserInfo.getId())
                 .nickName(oAuth2UserInfo.getName())
@@ -78,7 +78,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .build());
     }
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
-        return userRepository.save(existingUser.builder()
+        return userDao.save(existingUser.builder()
                 .nickName(oAuth2UserInfo.getName())
                 .imageUrl(oAuth2UserInfo.getImageUrl())
                 .build());

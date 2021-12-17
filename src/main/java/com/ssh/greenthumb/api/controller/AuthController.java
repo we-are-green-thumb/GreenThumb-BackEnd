@@ -5,17 +5,17 @@ import com.ssh.greenthumb.api.common.exception.NotFoundException;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.login.ApiResponse;
-import com.ssh.greenthumb.api.dto.login.AuthResponse;
 import com.ssh.greenthumb.api.dto.login.AuthRequest;
+import com.ssh.greenthumb.api.dto.login.AuthResponse;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
 import com.ssh.greenthumb.auth.domain.*;
 import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
-import com.ssh.greenthumb.auth.token.AppProperties;
+import com.ssh.greenthumb.auth.service.CustomOAuth2UserService;
+import com.ssh.greenthumb.auth.service.CustomUserDetailsService;
 import com.ssh.greenthumb.auth.token.Token;
 import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,6 +40,8 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenDao;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Transactional
     @PostMapping("/login")
@@ -59,6 +61,7 @@ public class AuthController {
                 return tokenProvider.reissue(user.getId(), refreshTokenDao.findByUser(user).getRefreshToken(), authentication);
             } else {
                 Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
                 Token token = tokenProvider.createToken(authentication);
@@ -70,11 +73,32 @@ public class AuthController {
 
                 return new ResponseEntity(AuthResponse.builder()
                         .accessToken(token.getAccessToken())
-                        .id(user.getId())
+                        .userId(user.getId())
                         .build(), HttpStatus.OK);
             }
         }
     }
+//
+//    @PostMapping("/oauth")
+//    public ResponseEntity<AuthResponse> oAuthTokenVerify(@RequestBody AuthRequest.OAuth oAuthRequest) {
+//
+//        HttpHeaders res = new HttpHeaders();
+//
+//        UserPrincipal user = (UserPrincipal) customUserDetailsService.loadUserByUsername(oAuthRequest.getEmail());
+//
+//        if(oAuthRequest.getEmail() != null) {
+//            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+//
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//            Token token = tokenProvider.createToken(authentication);
+//
+//            res.add("Authorization", token.getAccessToken());
+//        }
+//
+//        return new ResponseEntity<>(AuthResponse.builder().userId(user.getId()).build(), HttpStatus.OK);
+//
+//    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {

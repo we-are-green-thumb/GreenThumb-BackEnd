@@ -70,7 +70,7 @@ public class TokenProvider {
 
             return new ResponseEntity(AuthResponse.builder()
                     .accessToken(accessToken)
-                    .id(userId)
+                    .userId(userId)
                     .build(), HttpStatus.OK);
         }else {
             throw new BadRequestException("토큰 리프레시 불가");

@@ -15,4 +15,10 @@ public class AuthRequest {
         private String email;
     }
 
+    @Getter
+    public static class OAuth {
+        private String email;
+        private String idToken;
+    }
+
 }
