@@ -12,7 +12,7 @@ public class AuthRequest {
 
     @Getter
     public static class Logout {
-        private String email;
+        private Long userId;
     }
 
 }
