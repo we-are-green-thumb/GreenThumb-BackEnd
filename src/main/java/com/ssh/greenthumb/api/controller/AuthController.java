@@ -52,15 +52,16 @@ public class AuthController {
             throw new BadRequestException("접근 권한이 없습니다.");
         } else {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-
+//            Authentication authentication = jwtUtil.getAuthentication(token);
+//            tokenProvider.
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             Token token = tokenProvider.createToken(authentication);
 
-            refreshTokenDao.save(RefreshToken.builder()
-                    .user(user)
-                    .refreshToken(token.getRefreshToken())
-                    .build());
+//            refreshTokenDao.save(RefreshToken.builder()
+//                    .user(user)
+//                    .refreshToken(token.getRefreshToken())
+//                    .build());
 
             return new ResponseEntity(AuthResponse.builder()
                     .accessToken(token.getAccessToken())

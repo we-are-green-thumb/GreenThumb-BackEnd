@@ -1,19 +1,25 @@
 package com.ssh.greenthumb.auth.token;
 
-import com.ssh.greenthumb.api.common.exception.BadRequestException;
-import com.ssh.greenthumb.api.dto.login.AuthResponse;
+import com.ssh.greenthumb.api.common.exception.NotFoundException;
+import com.ssh.greenthumb.api.dao.user.UserRepository;
+import com.ssh.greenthumb.api.domain.user.User;
+import com.ssh.greenthumb.auth.domain.RefreshToken;
 import com.ssh.greenthumb.auth.domain.UserPrincipal;
 import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Service
 public class TokenProvider {
@@ -23,18 +29,21 @@ public class TokenProvider {
 
     @Autowired
     private RefreshTokenRepository refreshTokenDao;
+    @Autowired
+    private UserRepository userDao;
 
     public TokenProvider(AppProperties appProperties) {
         this.appProperties = appProperties;
     }
 
+    @Transactional
     public Token createToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         Date now = new Date();
 
         String accessToken = Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .setSubject(Long.toString(userPrincipal.getId()))
+                .setSubject(String.valueOf(userPrincipal.getId()))
                 .setIssuedAt(now)
                 .setExpiration(new Date(System.currentTimeMillis() + appProperties.getAuth().getAccessTokenExpiry()))
                 .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
@@ -46,34 +55,48 @@ public class TokenProvider {
                 .signWith(SignatureAlgorithm.HS256, appProperties.getAuth().getTokenSecret())
                 .compact();
 
+        User user = userDao.findById(userPrincipal.getId()).orElseThrow(NotFoundException::new);
+
+        if (refreshTokenDao.findByUser(user) != null) {
+            refreshTokenDao.deleteByUser(user);
+        }
+//        } else if (refreshTokenDao.findByUser(user) != null && validateToken(refreshTokenDao.findByUser(user).getRefreshToken())) {
+//            Claims claim = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret())
+//                    .parseClaimsJws(refreshTokenDao.findByUser(user).getRefreshToken())
+//                    .getBody();
+//            claim.setExpiration(new Date(now.getTime() + appProperties.getAuth().getRefreshTokenExpiry()));
+//        }
+        refreshTokenDao.save(RefreshToken.builder().user(user).refreshToken(refreshToken).build());
+
         return Token.builder()
                  .accessToken(accessToken)
                  .refreshToken(refreshToken)
                  .build();
     }
 
-    public String reissue(Long userId, String refreshToken, Authentication authentication) {
-        if(validateToken(refreshToken)) {
-            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+    @Transactional
+    public Token reissue(Long userId, String refreshToken) {
+        if (validateToken(refreshToken)) {
             Date now = new Date();
 
             String accessToken = Jwts.builder()
-                    .setSubject(Long.toString(userPrincipal.getId()))
+                    .setSubject(String.valueOf(userId))
                     .setIssuedAt(now)
                     .setExpiration(new Date(now.getTime() + appProperties.getAuth().getAccessTokenExpiry()))
                     .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
                     .compact();
 
-            new ResponseEntity(AuthResponse.builder()
-                    .accessToken(accessToken)
-                    .userId(userId)
-                    .build(), HttpStatus.OK);
+            User user = userDao.findById(userId).orElseThrow(NotFoundException::new);
 
-            return accessToken;
+            refreshTokenDao.deleteByUser(user);
 
-        }else {
-            throw new BadRequestException("토큰 리프레시 불가");
-        }
+            return Token.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+            }
+        User user = userDao.findById(userId).orElseThrow(NotFoundException::new);
+
+        Authentication authentication = getAuthentication(refreshToken);
+
+        return createToken(authentication);
     }
 
     public Long getUserIdFromToken(String token) {
@@ -85,10 +108,26 @@ public class TokenProvider {
         return Long.parseLong(claims.getSubject());
     }
 
+    public Authentication getAuthentication(String token) {
+        Claims claims = Jwts
+                .parser()
+                .setSigningKey(appProperties.getAuth().getTokenSecret())
+                .parseClaimsJws(token)
+                .getBody();
+
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get("auth").toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+        return new UsernamePasswordAuthenticationToken(claims.getSubject(), token, authorities);
+    }
+
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
-            return true;
+            Jws<Claims> claims = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
+//            return true;
+            return !claims.getBody().getExpiration().before(new Date());
         } catch (SignatureException ex) {
             log.error("유효하지 않은 JWT 서명");
         } catch (MalformedJwtException ex) {

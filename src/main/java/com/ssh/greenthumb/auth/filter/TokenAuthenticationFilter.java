@@ -1,18 +1,16 @@
 package com.ssh.greenthumb.auth.filter;
 
-import com.ssh.greenthumb.api.common.exception.BadRequestException;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.auth.domain.RefreshToken;
 import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
 import com.ssh.greenthumb.auth.service.CustomUserDetailsService;
+import com.ssh.greenthumb.auth.token.Token;
 import com.ssh.greenthumb.auth.token.TokenProvider;
 import com.ssh.greenthumb.auth.token.UsernamePasswordAuthenticationToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -36,8 +34,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserRepository userDao;
     private static final Logger log = LoggerFactory.getLogger(TokenAuthenticationFilter.class);
-    @Autowired
-    private AuthenticationManager authenticationManager;
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -59,16 +57,18 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } else if (!tokenProvider.validateToken2(accessToken) && (refreshToken != null)) {
                     System.out.println("=====만료토큰 아이디 가져오기 가능?=====2222");
-                    if (!tokenProvider.validateToken2(refreshToken.getRefreshToken())) {
-                        refreshTokenDao.deleteByUser(user);
-                        throw new BadRequestException("재로그인 필요");
-                    }
+//                    if (!tokenProvider.validateToken2(refreshToken.getRefreshToken())) {
+//                        refreshTokenDao.deleteByUser(user);
+//                        throw new BadRequestException("재로그인 필요");
+//                    }
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userId, user.getPassword());
 
-                    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), null));
-                    String newAccessToken = tokenProvider.reissue(userId, refreshToken.getRefreshToken(), authentication);
-                    response.setHeader("authorization", "bearer " + newAccessToken);
+//                    Authentication authentication = authenticationManager.authenticate()
+//                    Authentication authentication = authenticationManager.authenticate(aa);
+                    Token token = tokenProvider.reissue(userId, refreshToken.getRefreshToken());
+                    response.setHeader("authorization", "bearer " + token.getAccessToken());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    System.out.println("=====재발급 됐니???=====" + newAccessToken);
+                    System.out.println("=====재발급 됐니???=====" + token.getAccessToken());
                 }
 
             } catch (Exception ex) {
