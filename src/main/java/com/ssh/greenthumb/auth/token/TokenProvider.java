@@ -52,7 +52,7 @@ public class TokenProvider {
                  .build();
     }
 
-    public ResponseEntity reissue(Long userId, String refreshToken, Authentication authentication) {
+    public String reissue(Long userId, String refreshToken, Authentication authentication) {
         if(validateToken(refreshToken)) {
             UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
             Date now = new Date();
@@ -64,10 +64,13 @@ public class TokenProvider {
                     .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
                     .compact();
 
-            return new ResponseEntity(AuthResponse.builder()
+            new ResponseEntity(AuthResponse.builder()
                     .accessToken(accessToken)
                     .userId(userId)
                     .build(), HttpStatus.OK);
+
+            return accessToken;
+
         }else {
             throw new BadRequestException("토큰 리프레시 불가");
         }
@@ -98,6 +101,16 @@ public class TokenProvider {
             log.error("비어있는 JWT");
         }
         return false;
+    }
+
+    public boolean validateToken2(String jwtToken) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(jwtToken);
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (ExpiredJwtException e) {
+            log.info(e.getMessage());
+            return false;
+        }
     }
 
 }

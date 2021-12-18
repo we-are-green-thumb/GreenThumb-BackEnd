@@ -57,6 +57,11 @@ public class AuthController {
 
             Token token = tokenProvider.createToken(authentication);
 
+            refreshTokenDao.save(RefreshToken.builder()
+                    .user(user)
+                    .refreshToken(token.getRefreshToken())
+                    .build());
+
             return new ResponseEntity(AuthResponse.builder()
                     .accessToken(token.getAccessToken())
                     .userId(user.getId())
