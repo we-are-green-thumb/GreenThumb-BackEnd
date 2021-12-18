@@ -46,9 +46,6 @@ public class TokenProvider {
                 .signWith(SignatureAlgorithm.HS256, appProperties.getAuth().getTokenSecret())
                 .compact();
 
-        System.out.println(appProperties.getAuth().getAccessTokenExpiry());
-        System.out.println(now.getTime());
-
         return Token.builder()
                  .accessToken(accessToken)
                  .refreshToken(refreshToken)
