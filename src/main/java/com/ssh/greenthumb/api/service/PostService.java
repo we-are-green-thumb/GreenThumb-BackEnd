@@ -25,7 +25,7 @@ public class PostService {
         User user = userDao.findById(id).
                 orElseThrow(NotFoundException::new);
 
-        Post post = postDao.save(dto.toEntity(user, dto.getTitle(), dto.getCategory(), dto.getContent()));
+        Post post = postDao.save(dto.toEntity(user, dto.getTitle(), dto.getCategory(), dto.getContent(),dto.getFileUrl()));
 
         return post.getId();
     }
@@ -48,7 +48,12 @@ public class PostService {
         return postDao.findAllPostByCategoryAndIsDeleted(category, "n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
     }
 
-    @Transactional
+    public List<PostDTO.Get> getAllByUser(Long id) {
+        User user = userDao.findById(id).get();
+
+        return postDao.findAllPostByUserAndIsDeleted(user, "n").stream().map(PostDTO.Get::new).collect(Collectors.toList());
+    }
+
     public PostDTO.Get getOne(Long id) {
         return postDao.findById(id).map(PostDTO.Get::new).get();
     }

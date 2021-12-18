@@ -16,12 +16,13 @@ public class PostDTO {
         private String content;
         private String fileUrl;
 
-        public Post toEntity(User user, String title, String category, String content) {
+        public Post toEntity(User user, String title, String category, String content,String fileUrl) {
             return Post.builder()
                     .user(user)
                     .title(title)
                     .category(category)
                     .content(content)
+                    .fileUrl(fileUrl)
                     .build();
         }
     }
@@ -29,6 +30,7 @@ public class PostDTO {
     @Getter
     @Setter
     public static class Get {
+        private Long id;
         private Long writerId;
         private String writer;
         private String title;
@@ -40,6 +42,7 @@ public class PostDTO {
         private String fileUrl;
 
         public Get(Post entity) {
+            this.id = entity.getId();
             this.writerId = entity.getUser().getId();
             this.writer = entity.getUser().getNickName();
             this.title = entity.getTitle();

@@ -13,6 +13,7 @@ import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -48,20 +49,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new TokenAuthenticationFilter();
     }
 
-    /*
-      By default, Spring OAuth2 uses HttpSessionOAuth2AuthorizationRequestRepository to save
-      the authorization request. But, since our service is stateless, we can't save it in
-      the session. We'll save the request in a Base64 encoded cookie instead.
-      HttpCookieOAuth2AuthorizationReqeustRepository
-      - JWT를 사용하기 때문에 Session에 저장할 필요가 없어져, Authorization Request를 Based64 encoded cookie에 저장
-    */
-
     @Bean
     public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
         return new HttpCookieOAuth2AuthorizationRequestRepository();
     }
 
-    // Authorization에 사용할 userDetailService와 password Encoder 정의
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
@@ -69,16 +61,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
     }
 
-    // SecurityConfig에서 사용할 password encoder를 BCryptPasswordEncoder로 정의
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-    //
-//    /*
-//      AuthenticationManager를 외부에서 사용하기 위해 AuthenticationManager Bean을 통해
-//      @Autowired가 아닌 @Bean 설정으로 Spring Security 밖으로 Authentication 추출
-//     */
+
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -86,12 +73,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception
-    {
-        // static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 )
+    public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
     }
-//
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -112,10 +96,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/error",
                         "/favicon.ico")
                 .permitAll()
-                .antMatchers("/auth/**", "/oauth2/**", "/follow-user/**", "**/plants/**", "/posts/**").permitAll()
+                .antMatchers("/auth/**", "/oauth2/**", "/follow-user/**", "**/plants/**", "/plant-name/**", "/posts/**", "**/comments").permitAll()
+                .antMatchers(HttpMethod.GET, "/post/{id}").permitAll()
+                .antMatchers("/post/**", "/comment/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                 .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
-                .antMatchers("/post/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
-                .antMatchers("/comment/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                 .anyRequest().authenticated()
             .and()
                 .oauth2Login()

@@ -15,4 +15,5 @@ public interface PostRepository extends JpaRepository<Post, Long>, PagingAndSort
 
     List<Post> findByUser(User user);
 
+    List<Post> findAllPostByUserAndIsDeleted(User user, String isDeleted);
 }

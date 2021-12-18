@@ -30,7 +30,8 @@ public class PlantDTO {
     }
 
     @Getter
-    public static class Get {       // 식물정보 가져오기
+    public static class Get {
+        private Long plantId;// 식물정보 가져오기
         private String name;
         private String nickName;
         private Long water;
@@ -39,6 +40,7 @@ public class PlantDTO {
         private LocalDateTime createdDate;
 
         public Get(Plant entity) {
+            this.plantId = entity.getId();
             this.name = entity.getName();
             this.nickName = entity.getNickName();
             this.water = entity.getWater();

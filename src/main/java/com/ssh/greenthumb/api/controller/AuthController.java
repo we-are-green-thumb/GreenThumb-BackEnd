@@ -42,36 +42,25 @@ public class AuthController {
     @Transactional
     @PostMapping("/login")
     public Object authenticateUser(@RequestBody AuthRequest.Login loginRequest) {
-        if (userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n") == null) {
+        User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
+
+        if (user == null) {
             throw new NotFoundException();
+        } else if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new BadRequestException("비밀번호가 틀립니다.");
+        } else if (user.getRole() == Role.BLACK || user.getRole() == Role.DELETE) {
+            throw new BadRequestException("접근 권한이 없습니다.");
         } else {
-            User user = userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n");
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-            if (user.getRole() == Role.BLACK || user.getRole() == Role.DELETE) {
-                throw new BadRequestException("접근 권한이 없습니다.");
-            } else if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-                throw new BadRequestException("비밀번호가 틀립니다.");
-            } else if (refreshTokenDao.findByUser(user) != null) {
-                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                return tokenProvider.reissue(user.getId(), refreshTokenDao.findByUser(user).getRefreshToken(), authentication);
-            } else {
-                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            Token token = tokenProvider.createToken(authentication);
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                Token token = tokenProvider.createToken(authentication);
-
-                refreshTokenDao.save(RefreshToken.builder()
-                        .user(user)
-                        .refreshToken(token.getRefreshToken())
-                        .build());
-
-                return new ResponseEntity(AuthResponse.builder()
-                        .accessToken(token.getAccessToken())
-                        .userId(user.getId())
-                        .build(), HttpStatus.OK);
-            }
+            return new ResponseEntity(AuthResponse.builder()
+                    .accessToken(token.getAccessToken())
+                    .userId(user.getId())
+                    .build(), HttpStatus.OK);
         }
     }
 
@@ -101,7 +90,6 @@ public class AuthController {
     @Transactional
     @DeleteMapping("/logout/{id}")
     public void logout(@PathVariable Long id) {
-        System.out.println("-------------------");
         User user = userDao.findById(id).get();
 
         refreshTokenDao.deleteByUser(user);

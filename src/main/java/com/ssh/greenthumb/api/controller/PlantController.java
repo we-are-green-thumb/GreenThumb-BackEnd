@@ -34,7 +34,7 @@ public class PlantController {
     }
 
     // 유저별 식물 조회(하나) - 식물 상세
-    @GetMapping("/{plantId}")
+    @GetMapping("/plant/{plantId}")
     public PlantDTO.Get getOneByUser(@PathVariable Long plantId) {
         return plantService.getOneByUser(plantId);
     }
