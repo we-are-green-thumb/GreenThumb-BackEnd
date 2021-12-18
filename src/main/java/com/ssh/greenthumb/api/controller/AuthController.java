@@ -57,7 +57,11 @@ public class AuthController {
 
                 if (refreshTokenDao.findByUser(userDao.findByEmailAndIsDeleted(loginRequest.getEmail(), "n")) != null) {
                     return tokenProvider.reissue(user.getId(), refreshTokenDao.findByUser(user).getRefreshToken(), authentication);
+                } else {
+                    throw new BadRequestException("재인증 필요.");
                 }
+
+            } else {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
                 Token token = tokenProvider.createToken(authentication);
@@ -73,7 +77,6 @@ public class AuthController {
                         .build(), HttpStatus.OK);
             }
         }
-        throw new BadRequestException("재인증 필요.");
     }
 
     @PostMapping("/signup")
