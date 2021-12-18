@@ -26,7 +26,7 @@ public class PlantService {
                 orElseThrow(NotFoundException::new);
 
         return plantDao.save(dto.toEntity(user, dto.getName(), dto.getNickName(),
-                dto.getWater(), dto.getTemp(), dto.getImageUrl())).getId();
+                             dto.getWater(), dto.getTemp(), dto.getImageUrl())).getId();
     }
 
     @Transactional

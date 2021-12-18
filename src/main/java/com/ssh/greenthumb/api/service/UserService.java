@@ -63,12 +63,12 @@ public class UserService {
         user.delete();
         user.updateRole();
 
-        for(Post p : postList) {
+        for (Post p : postList) {
             p.delete();
 
             List<Comment> commentList = commentDao.findAllByPostAndUserAndIsDeleted(p, user,"y");
 
-            for(Comment c : commentList) c.delete();
+            for (Comment c : commentList) c.delete();
         }
     }
 
@@ -84,18 +84,18 @@ public class UserService {
 
         List<Post> postList = postDao.findByUser(user);
 
-        if(user.getIsBlack().equals("y")) {
+        if (user.getIsBlack().equals("y")) {
             throw new NotFoundException();
         }
 
         user.blackUser();
 
-        for(Post p : postList) {
+        for (Post p : postList) {
             p.delete();
 
             List<Comment> commentList = commentDao.findAllByPostAndUserAndIsDeleted(p, user,"y");
 
-            for(Comment c : commentList) c.delete();
+            for (Comment c : commentList) c.delete();
         }
         return blackListDao.save(dto.toEntity(user, dto.getReason())).getId();
     }

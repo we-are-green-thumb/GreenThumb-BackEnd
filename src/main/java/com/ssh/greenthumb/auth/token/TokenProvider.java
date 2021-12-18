@@ -4,22 +4,15 @@ import com.ssh.greenthumb.api.common.exception.NotFoundException;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
 import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.auth.domain.RefreshToken;
-import com.ssh.greenthumb.auth.domain.UserPrincipal;
 import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Service
 public class TokenProvider {
@@ -37,35 +30,26 @@ public class TokenProvider {
     }
 
     @Transactional
-    public Token createToken(Authentication authentication) {
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        Date now = new Date();
-
+    public Token createToken(Long userId) {
         String accessToken = Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .setSubject(String.valueOf(userPrincipal.getId()))
-                .setIssuedAt(now)
+                .setSubject(String.valueOf(userId))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + appProperties.getAuth().getAccessTokenExpiry()))
                 .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
                 .compact();
 
         String refreshToken = Jwts.builder()
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + appProperties.getAuth().getRefreshTokenExpiry()))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + appProperties.getAuth().getRefreshTokenExpiry()))
                 .signWith(SignatureAlgorithm.HS256, appProperties.getAuth().getTokenSecret())
                 .compact();
 
-        User user = userDao.findById(userPrincipal.getId()).orElseThrow(NotFoundException::new);
+        User user = userDao.findById(userId).orElseThrow(NotFoundException::new);
 
         if (refreshTokenDao.findByUser(user) != null) {
             refreshTokenDao.deleteByUser(user);
         }
-//        } else if (refreshTokenDao.findByUser(user) != null && validateToken(refreshTokenDao.findByUser(user).getRefreshToken())) {
-//            Claims claim = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret())
-//                    .parseClaimsJws(refreshTokenDao.findByUser(user).getRefreshToken())
-//                    .getBody();
-//            claim.setExpiration(new Date(now.getTime() + appProperties.getAuth().getRefreshTokenExpiry()));
-//        }
         refreshTokenDao.save(RefreshToken.builder().user(user).refreshToken(refreshToken).build());
 
         return Token.builder()
@@ -77,26 +61,17 @@ public class TokenProvider {
     @Transactional
     public Token reissue(Long userId, String refreshToken) {
         if (validateToken(refreshToken)) {
-            Date now = new Date();
-
             String accessToken = Jwts.builder()
+                    .setHeaderParam("typ", "JWT")
                     .setSubject(String.valueOf(userId))
-                    .setIssuedAt(now)
-                    .setExpiration(new Date(now.getTime() + appProperties.getAuth().getAccessTokenExpiry()))
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setExpiration(new Date(System.currentTimeMillis() + appProperties.getAuth().getAccessTokenExpiry()))
                     .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
                     .compact();
 
-            User user = userDao.findById(userId).orElseThrow(NotFoundException::new);
-
-            refreshTokenDao.deleteByUser(user);
-
             return Token.builder().accessToken(accessToken).refreshToken(refreshToken).build();
             }
-        User user = userDao.findById(userId).orElseThrow(NotFoundException::new);
-
-        Authentication authentication = getAuthentication(refreshToken);
-
-        return createToken(authentication);
+        return createToken(userId);
     }
 
     public Long getUserIdFromToken(String token) {
@@ -108,26 +83,11 @@ public class TokenProvider {
         return Long.parseLong(claims.getSubject());
     }
 
-    public Authentication getAuthentication(String token) {
-        Claims claims = Jwts
-                .parser()
-                .setSigningKey(appProperties.getAuth().getTokenSecret())
-                .parseClaimsJws(token)
-                .getBody();
-
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get("auth").toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
-
-        return new UsernamePasswordAuthenticationToken(claims.getSubject(), token, authorities);
-    }
-
     public boolean validateToken(String authToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
 //            return true;
-            return !claims.getBody().getExpiration().before(new Date());
+            return claims.getBody().getExpiration().before(new Date(System.currentTimeMillis()));
         } catch (SignatureException ex) {
             log.error("유효하지 않은 JWT 서명");
         } catch (MalformedJwtException ex) {
@@ -140,16 +100,6 @@ public class TokenProvider {
             log.error("비어있는 JWT");
         }
         return false;
-    }
-
-    public boolean validateToken2(String jwtToken) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (ExpiredJwtException e) {
-            log.info(e.getMessage());
-            return false;
-        }
     }
 
 }

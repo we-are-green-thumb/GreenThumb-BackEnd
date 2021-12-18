@@ -29,7 +29,7 @@ public class FollowService {
         User following = userDao.findById(followeeId).
                 orElseThrow(NotFoundException::new);
 
-        if(following.getIsBlack().equals("n") && following.getIsDeleted().equals("n")) {
+        if (following.getIsBlack().equals("n") && following.getIsDeleted().equals("n")) {
             followDao.save(FollowDTO.toEntity(follower, following)).getId();
 
             return "팔로우 요청 완료";
@@ -44,8 +44,8 @@ public class FollowService {
 
         List<Follow> followerList = followDao.findFollowerByfollowee(followee);
 
-        for(Follow f : followerList) {
-            if(f.getFollower().getRole() == Role.BLACK) followDao.delete(f);
+        for (Follow f : followerList) {
+            if (f.getFollower().getRole() == Role.BLACK) followDao.delete(f);
         }
 
         return followerList.stream().map(FollowDTO.Follower::new).collect(Collectors.toList());
@@ -59,8 +59,8 @@ public class FollowService {
 
         List<Follow> followeeList = followDao.findFolloweeByfollower(follower);
 
-        for(Follow f : followeeList) {
-            if(f.getFollowee().getIsBlack().equals("y")) followDao.delete(f);
+        for (Follow f : followeeList) {
+            if (f.getFollowee().getIsBlack().equals("y")) followDao.delete(f);
         }
 
         return followeeList.stream().map(FollowDTO.Followee::new).collect(Collectors.toList());

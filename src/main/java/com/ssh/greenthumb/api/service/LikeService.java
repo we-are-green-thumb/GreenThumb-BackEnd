@@ -39,9 +39,11 @@ public class LikeService {
 
         if (likePost == null) {
             likePostDao.save(dto.toEntity(post, user));
+
             return "좋아요 완료";
         } else {
             likePostDao.delete(likePost);
+
             return "좋아요 취소 완료";
         }
     }
