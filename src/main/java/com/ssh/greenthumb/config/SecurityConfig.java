@@ -4,12 +4,10 @@ import com.ssh.greenthumb.auth.domain.Role;
 import com.ssh.greenthumb.auth.exception.RestAuthenticationEntryPoint;
 import com.ssh.greenthumb.auth.filter.TokenAuthenticationFilter;
 import com.ssh.greenthumb.auth.handler.OAuth2AuthenticationFailureHandler;
-import com.ssh.greenthumb.auth.handler.OAuth2AuthenticationSuccessHandler;
 import com.ssh.greenthumb.auth.handler.TokenAccessDeniedHandler;
 import com.ssh.greenthumb.auth.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ssh.greenthumb.auth.service.CustomOAuth2UserService;
 import com.ssh.greenthumb.auth.service.CustomUserDetailsService;
-import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,10 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
-    private final TokenProvider provider;
+//    private final TokenProvider provider;/
 
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
@@ -113,10 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService)
             .and()
-                .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler);
-//            .and()
-//                .apply(new JwtSecurityConfig(provider));
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

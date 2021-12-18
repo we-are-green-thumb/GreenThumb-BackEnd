@@ -8,7 +8,10 @@ import com.ssh.greenthumb.api.dto.login.ApiResponse;
 import com.ssh.greenthumb.api.dto.login.AuthRequest;
 import com.ssh.greenthumb.api.dto.login.AuthResponse;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
-import com.ssh.greenthumb.auth.domain.*;
+import com.ssh.greenthumb.auth.domain.AuthProvider;
+import com.ssh.greenthumb.auth.domain.CurrentUser;
+import com.ssh.greenthumb.auth.domain.Role;
+import com.ssh.greenthumb.auth.domain.UserPrincipal;
 import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
 import com.ssh.greenthumb.auth.token.Token;
 import com.ssh.greenthumb.auth.token.TokenProvider;
@@ -55,7 +58,7 @@ public class AuthController {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            Token token = tokenProvider.createToken(authentication);
+            Token token = tokenProvider.createToken(user.getId());
 
             return new ResponseEntity(AuthResponse.builder()
                     .accessToken(token.getAccessToken())
