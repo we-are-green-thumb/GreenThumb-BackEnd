@@ -80,11 +80,15 @@ public class UserDTO {
     @Getter
     public static class Feed {
         private Long userId;
+        private String nickName;
+        private String profile;
         private int followeeCount;
         private int followerCount;
 
         public Feed(User entity) {
             this.userId = entity.getId();
+            this.nickName = entity.getNickName();
+            this.profile = entity.getProfile();
             this.followeeCount = entity.getFolloweeList().size();
             this.followerCount = entity.getFollowerList().size();
         }
