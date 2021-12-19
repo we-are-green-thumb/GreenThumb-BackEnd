@@ -18,9 +18,4 @@ public class GreenthumbApplication extends SpringBootServletInitializer {
         SpringApplication.run(GreenthumbApplication.class, args);
     }
 
-//    @Override
-//    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-//        return application.sources(GreenthumbApplication.class);
-//    }
-
 }
