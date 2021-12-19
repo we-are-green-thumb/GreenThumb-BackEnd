@@ -14,7 +14,7 @@ public class HospitalController {
     private final HospitalService hospitalService;
 
     @PostMapping("/plant-hospital")
-    public Object DiseaseAnswer(@RequestBody PlantImageRequest plantImage) {
-        return hospitalService.getHospitalAnswer(plantImage);
+    public Object DiseaseAnswer(@RequestBody PlantImageRequest imageUrl) {
+        return hospitalService.getHospitalAnswer(imageUrl);
     }
 }

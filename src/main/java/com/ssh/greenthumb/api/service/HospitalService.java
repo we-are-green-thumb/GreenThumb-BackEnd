@@ -6,6 +6,8 @@ import com.ssh.greenthumb.api.domain.hospital.PlantImageResponse;
 import com.ssh.greenthumb.api.domain.plant.HospitalPlant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -22,15 +24,19 @@ public class HospitalService {
     private final PlantHospitalRepository hospitalDao;
 
 //    @Transactional
-    public Object getHospitalAnswer(PlantImageRequest plantImage) {
+    public Object getHospitalAnswer(PlantImageRequest imageUrl) {
         RestTemplate restTemplate = new RestTemplate();
         PlantImageResponse plantImageResponse = new PlantImageResponse();
         String flaskResponse;
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
-        map.add("imageUrl", plantImage.getImageUrl());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:5000/predict", new HttpEntity<>(map) , String.class );
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("imageUrl", imageUrl.getImageUrl());
+
+        ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:5000/predict", new HttpEntity<>(map, headers), String.class);
+
         flaskResponse = response.getBody();
 
         Optional<HospitalPlant> hospitalPlantOptional = hospitalDao.findByDisease(flaskResponse);
