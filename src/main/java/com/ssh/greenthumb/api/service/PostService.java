@@ -1,10 +1,13 @@
 package com.ssh.greenthumb.api.service;
 
 import com.ssh.greenthumb.api.common.exception.NotFoundException;
+import com.ssh.greenthumb.api.dao.like.LikePostRepository;
 import com.ssh.greenthumb.api.dao.post.PostRepository;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
+import com.ssh.greenthumb.api.domain.like.LikePost;
 import com.ssh.greenthumb.api.domain.post.Post;
 import com.ssh.greenthumb.api.domain.user.User;
+import com.ssh.greenthumb.api.dto.like.LikePostDTO;
 import com.ssh.greenthumb.api.dto.post.PostDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ public class PostService {
 
     private final PostRepository postDao;
     private final UserRepository userDao;
+    private final LikePostRepository likePostDao;
 
     @Transactional
     public Long add(Long id, PostDTO.Create dto) {
@@ -84,6 +88,28 @@ public class PostService {
                 .orElseThrow(NotFoundException::new);
 
         post.delete();
+    }
+
+    public String likePost(Long postId, Long userId) {
+        Post post = postDao.findById(postId).
+                orElseThrow(NotFoundException::new);
+
+        User user = userDao.findById(userId).
+                orElseThrow(NotFoundException::new);
+
+        LikePost likePost = likePostDao.findByPostAndUser(post, user);
+
+        LikePostDTO dto = new LikePostDTO();
+
+        if (likePost == null) {
+            likePostDao.save(dto.toEntity(post, user));
+
+            return "좋아요 완료";
+        } else {
+            likePostDao.delete(likePost);
+
+            return "좋아요 취소 완료";
+        }
     }
 
 }
