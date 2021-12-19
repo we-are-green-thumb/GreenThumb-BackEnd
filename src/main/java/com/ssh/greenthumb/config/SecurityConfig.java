@@ -81,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/auth/**", "/oauth2/**", "/follow-user/**", "/plants", "/plant-name/**", "/posts/**", "**/comments", "/plant-hospital/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/post/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/user/{id}/feed").permitAll()
                 .antMatchers("/v3/api-docs/**", "/swagger-resources/**", "/swagger-ui/**").permitAll()   // OAS_30
                 .antMatchers("/post/**", "/comment/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                 .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
