@@ -20,10 +20,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HospitalService {
 
-//    @Autowired
     private final PlantHospitalRepository hospitalDao;
 
-//    @Transactional
     public Object getHospitalAnswer(PlantImageRequest imageUrl) {
         RestTemplate restTemplate = new RestTemplate();
         PlantImageResponse plantImageResponse = new PlantImageResponse();
@@ -41,14 +39,15 @@ public class HospitalService {
 
         Optional<HospitalPlant> hospitalPlantOptional = hospitalDao.findByDisease(flaskResponse);
 
-        if(!hospitalPlantOptional.isPresent()){
+        if (!hospitalPlantOptional.isPresent()){
             plantImageResponse.setDisease("질병 데이터가 없습니다.");
             plantImageResponse.setContent("질병 데이터가 없습니다.");
-        }else{
+
+        } else {
             plantImageResponse.setDisease(flaskResponse);
             plantImageResponse.setContent(hospitalPlantOptional.get().getContent());
         }
-
         return plantImageResponse;
     }
+
 }
