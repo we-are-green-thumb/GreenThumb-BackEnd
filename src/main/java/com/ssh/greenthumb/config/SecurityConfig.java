@@ -3,9 +3,7 @@ package com.ssh.greenthumb.config;
 import com.ssh.greenthumb.auth.domain.Role;
 import com.ssh.greenthumb.auth.exception.RestAuthenticationEntryPoint;
 import com.ssh.greenthumb.auth.filter.TokenAuthenticationFilter;
-import com.ssh.greenthumb.auth.handler.OAuth2AuthenticationFailureHandler;
 import com.ssh.greenthumb.auth.handler.TokenAccessDeniedHandler;
-import com.ssh.greenthumb.auth.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ssh.greenthumb.auth.service.CustomOAuth2UserService;
 import com.ssh.greenthumb.auth.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -31,17 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
 
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
         return new TokenAuthenticationFilter();
-    }
-
-    @Bean
-    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
-        return new HttpCookieOAuth2AuthorizationRequestRepository();
     }
 
     @Override
@@ -66,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -96,15 +89,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2Login()
                 .authorizationEndpoint()
                 .baseUri("/oauth2/authorization")
-                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
             .and()
                 .redirectionEndpoint()
                 .baseUri("/*/oauth2/code/*")
             .and()
                 .userInfoEndpoint()
-                .userService(customOAuth2UserService)
-            .and()
-                .failureHandler(oAuth2AuthenticationFailureHandler);
+                .userService(customOAuth2UserService);
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
