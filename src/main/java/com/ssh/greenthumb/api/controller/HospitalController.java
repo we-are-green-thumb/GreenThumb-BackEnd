@@ -17,4 +17,5 @@ public class HospitalController {
     public Object DiseaseAnswer(@RequestBody PlantImageRequest imageUrl) {
         return hospitalService.getHospitalAnswer(imageUrl);
     }
+
 }
