@@ -5,8 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class AuthResponse {
-
-    private String tokenType = "Bearer";
     private String accessToken;
     private Long userId;
 
