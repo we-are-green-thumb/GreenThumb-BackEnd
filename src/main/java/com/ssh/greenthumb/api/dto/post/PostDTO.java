@@ -60,6 +60,7 @@ public class PostDTO {
         private String title;
         private String category;
         private String content;
+        private Long hits;
         private String fileUrl;
     }
 

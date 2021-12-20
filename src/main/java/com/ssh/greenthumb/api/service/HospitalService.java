@@ -30,7 +30,7 @@ public class HospitalService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("imageUrl", imageUrl.getImageUrl());
 
         ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:5000/predict", new HttpEntity<>(map, headers), String.class);

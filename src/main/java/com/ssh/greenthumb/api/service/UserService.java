@@ -38,6 +38,12 @@ public class UserService {
     }
 
     @Transactional
+    public UserDTO.Feed getFeed(Long id) {
+        return userDao.findById(id).map(UserDTO.Feed::new).get();
+    }
+
+
+    @Transactional
     public Long update(Long id, UserDTO.Update dto) {
         User user = userDao.findById(id)
                 .orElseThrow(NotFoundException::new);

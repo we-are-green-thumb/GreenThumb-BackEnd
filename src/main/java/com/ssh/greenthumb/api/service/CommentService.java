@@ -47,14 +47,12 @@ public class CommentService {
     }
 
     @Transactional
-    public List<CommentDTO.Get> getAllByUser(Long postId, Long userId) {
-        Post post = postDao.findById(postId).
-                orElseThrow(NotFoundException::new);
+    public List<CommentDTO.Get> getAllByUser(Long userId) {
 
         User user = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
-        return commentDao.findAllByPostAndUserAndIsDeleted(post, user, "n").stream().map(CommentDTO.Get::new).collect(Collectors.toList());
+        return user.getCommentList().stream().map(CommentDTO.Get::new).collect(Collectors.toList());
     }
 
     @Transactional
