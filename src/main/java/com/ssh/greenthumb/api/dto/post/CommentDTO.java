@@ -23,6 +23,7 @@ public class CommentDTO {
 
     @Getter
     public static class Get {
+        private Long postId;
         private Long writerId;
         private String writer;
         private String content;
@@ -30,6 +31,7 @@ public class CommentDTO {
         private int like;
 
         public Get(Comment entity) {
+            this.postId = entity.getPost().getId();
             this.writerId = entity.getUser().getId();
             this.writer = entity.getUser().getNickName();
             this.content = entity.getContent();

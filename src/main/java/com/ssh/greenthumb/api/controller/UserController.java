@@ -35,8 +35,6 @@ public class UserController {
         return userService.getFeed(id);
     }
 
-
-
     @Operation(summary = "내 정보 수정", description = "사용자 id로 닉네임, 자기어필 정보를 수정합니다.")
     @PutMapping("/user/{id}")
     public Long update(@PathVariable Long id, @RequestBody UserDTO.Update dto) {
