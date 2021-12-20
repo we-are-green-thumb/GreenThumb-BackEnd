@@ -52,9 +52,7 @@ public class CommentService {
         User user = userDao.findById(userId).
                 orElseThrow(NotFoundException::new);
 
-        List<CommentDTO.Get> commentList = user.getCommentList().stream().map(CommentDTO.Get::new).collect(Collectors.toList());
-
-        return commentList;
+        return user.getCommentList().stream().map(CommentDTO.Get::new).collect(Collectors.toList());
     }
 
     @Transactional
