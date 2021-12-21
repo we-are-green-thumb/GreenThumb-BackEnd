@@ -34,7 +34,7 @@ public class PostDTO {
         private Long writerId;
         private String writer;
         private String title;
-        private String category;
+//        private String category;
         private String content;
         private Long hits;
         private String isComplete;
@@ -46,7 +46,7 @@ public class PostDTO {
             this.writerId = entity.getUser().getId();
             this.writer = entity.getUser().getNickName();
             this.title = entity.getTitle();
-            this.category = entity.getCategory();
+//            this.category = entity.getCategory();
             this.content = entity.getContent();
             this.hits = entity.getHits();
             this.isComplete = entity.getIsComplete();
