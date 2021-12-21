@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class Token {
+
     private String accessToken;
     private String refreshToken;
 
@@ -13,4 +14,5 @@ public class Token {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
+
 }
