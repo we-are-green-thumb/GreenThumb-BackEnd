@@ -75,10 +75,10 @@ public class Post extends BaseTimeEntity {
         this.fileUrl = fileUrl;
     }
 
-    public Post update(String title, String content, String category, Long hits, String fileUrl) {
+    public Post update(String title,  String category,String content, Long hits, String fileUrl) {
         this.title = title;
-        this.content = content;
         this.category = category;
+        this.content = content;
         this.hits = hits;
         this.fileUrl = fileUrl;
 
