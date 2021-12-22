@@ -29,9 +29,9 @@ public class CommentController {
     }
 
     @Operation(summary = "작성자별 댓글 조회", description = "사용자 id와 게시글 id로 사용자 한명의 모든 댓글을 조회합니다.")
-    @GetMapping("user/{userId}/post/{postId}/comments")
-    public List<CommentDTO.Get> getAllByUser(@PathVariable Long userId, @PathVariable Long postId) {
-        return commentService.getAllByUser(postId, userId);
+    @GetMapping("/user/{userId}/comments")
+    public List<CommentDTO.Get> getAllByUser(@PathVariable Long userId) {
+        return commentService.getAllByUser(userId);
     }
 
     @Operation(summary = "댓글 수정", description = "게시글 id와 댓글 id로 댓글 내용을 수정합니다.")

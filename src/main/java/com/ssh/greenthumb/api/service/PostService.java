@@ -67,7 +67,7 @@ public class PostService {
         Post post = postDao.findById(id).
                 orElseThrow(NotFoundException::new);
 
-        post.update(dto.getTitle(), dto.getCategory(), dto.getContent(), dto.getFileUrl());
+        post.update(dto.getTitle(), dto.getCategory(), dto.getContent(), dto.getHits(), dto.getFileUrl());
 
         return post.getId();
     }

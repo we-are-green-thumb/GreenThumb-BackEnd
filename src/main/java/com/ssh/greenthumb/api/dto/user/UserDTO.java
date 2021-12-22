@@ -1,6 +1,7 @@
 package com.ssh.greenthumb.api.dto.user;
 
 import com.ssh.greenthumb.api.domain.user.User;
+import com.ssh.greenthumb.auth.domain.AuthProvider;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -31,7 +32,7 @@ public class UserDTO {
         private String email;
         private String nickName;
         private String profile;
-        private String providerId;
+        private AuthProvider provider;
         private LocalDateTime signUpDate;
         private int followeeCount;
         private int followerCount;
@@ -40,7 +41,7 @@ public class UserDTO {
             this.email = entity.getEmail();
             this.nickName = entity.getNickName();
             this.profile = entity.getProfile();
-            this.providerId = entity.getProvider().toString();
+            this.provider = entity.getProvider();
             this.signUpDate = entity.getCreatedDate();
             this.followeeCount = entity.getFolloweeList().size();
             this.followerCount = entity.getFollowerList().size();
@@ -56,7 +57,7 @@ public class UserDTO {
         private String deleteReason;
         private LocalDateTime deleteDate;
         private String isBlack;
-        private String providerId;
+        private AuthProvider provider;
 
         public Admin(User entity) {
             this.email = entity.getEmail();
@@ -66,7 +67,7 @@ public class UserDTO {
             this.deleteReason = entity.getDeleteReason();
             this.deleteDate = entity.getDeleteDate();
             this.isBlack = entity.getIsBlack();
-            this.providerId = entity.getProviderId();
+            this.provider = entity.getProvider();
         }
     }
 
@@ -74,6 +75,23 @@ public class UserDTO {
     public static class Update {
         private String nickName;
         private String profile;
+    }
+
+    @Getter
+    public static class Feed {
+        private Long userId;
+        private String nickName;
+        private String profile;
+        private int followeeCount;
+        private int followerCount;
+
+        public Feed(User entity) {
+            this.userId = entity.getId();
+            this.nickName = entity.getNickName();
+            this.profile = entity.getProfile();
+            this.followeeCount = entity.getFolloweeList().size();
+            this.followerCount = entity.getFollowerList().size();
+        }
     }
 
 }

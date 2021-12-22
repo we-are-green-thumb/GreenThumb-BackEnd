@@ -48,6 +48,7 @@ public class TokenProvider {
         User user = userDao.findById(userId).orElseThrow(NotFoundException::new);
 
         if (refreshTokenDao.findByUser(user) != null) {
+            System.out.println(user);
             refreshTokenDao.deleteByUser(user);
         }
         refreshTokenDao.save(RefreshToken.builder().user(user).refreshToken(refreshToken).build());
@@ -86,7 +87,6 @@ public class TokenProvider {
     public boolean validateToken(String authToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
-//            return true;
             return claims.getBody().getExpiration().before(new Date(System.currentTimeMillis()));
         } catch (SignatureException ex) {
             log.error("유효하지 않은 JWT 서명");

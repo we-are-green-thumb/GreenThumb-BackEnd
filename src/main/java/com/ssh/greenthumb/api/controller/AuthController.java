@@ -3,6 +3,8 @@ package com.ssh.greenthumb.api.controller;
 import com.ssh.greenthumb.api.dto.login.AuthRequest;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
 import com.ssh.greenthumb.api.service.AuthService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +45,15 @@ public class AuthController {
 //        return userDao.findById(userPrincipal.getId())
 //                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
 //    }
+
+    @GetMapping("/token")
+    public Long getId(String token) {
+            Claims claims = Jwts.parser()
+                    .setSigningKey("926D96C90030DD58429D2751AC1BDBBC")
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            return Long.parseLong(claims.getSubject());
+        }
 
 }
