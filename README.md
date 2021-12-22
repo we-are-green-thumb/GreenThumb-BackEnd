@@ -30,16 +30,10 @@
 - 정은진 ([https://github.com/bingbong-party](https://github.com/bingbong-party))
 - 최해림
 
-
-
-
-
-
-
 |![KakaoTalk_20211222_182136137](https://user-images.githubusercontent.com/85170623/147073248-ac35db7c-bc66-42db-838d-97ce170acf15.png)|![KakaoTalk_20211222_184537177](https://user-images.githubusercontent.com/85170623/147072959-24bf07d0-24d6-4785-b1af-5646c3223a6e.png)|![KakaoTalk_20211222_180456286](https://user-images.githubusercontent.com/85170623/147072823-c1fbed53-4662-4bf5-baab-7f671e1d9e16.png)|![KakaoTalk_20211222_180943652](https://user-images.githubusercontent.com/85170623/147072850-84d4b5b8-9094-41dc-845e-65da7f9e004e.png)|![KakaoTalk_20211222_183945855](https://user-images.githubusercontent.com/85170623/147072930-cac387df-8066-4bb4-aba5-cadde51e04b4.png)|![KakaoTalk_20211222_183945855](https://user-images.githubusercontent.com/85170623/147072930-cac387df-8066-4bb4-aba5-cadde51e04b4.png)|
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |서주연|이태경|정은진|최해림|박서은|유영훈|
-|BE|BE|BE|BE|BE|BE|
+|BE|BE|BE|BE|FE|FE|
 
 ---
 
