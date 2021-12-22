@@ -44,8 +44,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = getJwtFromRequest(request);
+        System.out.println(accessToken);
 
-        if (accessToken != null) {
+        if (accessToken != null && accessToken.length() > 0) {
             try {
                 Long userId = tokenProvider.getUserIdFromToken(accessToken);
 //                Long userId = Long.parseLong(request.getHeader("userId"));
