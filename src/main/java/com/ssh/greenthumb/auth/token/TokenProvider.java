@@ -48,6 +48,7 @@ public class TokenProvider {
         User user = userDao.findById(userId).orElseThrow(NotFoundException::new);
 
         if (refreshTokenDao.findByUser(user) != null) {
+            System.out.println(user);
             refreshTokenDao.deleteByUser(user);
         }
         refreshTokenDao.save(RefreshToken.builder().user(user).refreshToken(refreshToken).build());
