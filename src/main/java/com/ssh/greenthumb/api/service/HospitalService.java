@@ -33,7 +33,8 @@ public class HospitalService {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("imageUrl", imageUrl.getImageUrl());
 
-        ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:5000/predict", new HttpEntity<>(map, headers), String.class);
+        ResponseEntity<String> response = restTemplate
+                .postForEntity( "http://localhost:5000/predict", new HttpEntity<>(map, headers), String.class);
 
         flaskResponse = response.getBody();
 
