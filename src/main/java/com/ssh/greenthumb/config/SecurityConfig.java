@@ -1,13 +1,17 @@
 package com.ssh.greenthumb.config;
 
+import com.ssh.greenthumb.auth.domain.Role;
 import com.ssh.greenthumb.auth.exception.RestAuthenticationEntryPoint;
 import com.ssh.greenthumb.auth.filter.TokenAuthenticationFilter;
-import com.ssh.greenthumb.auth.handler.TokenAccessDeniedHandler;
+import com.ssh.greenthumb.auth.handler.OAuth2AuthenticationFailureHandler;
+import com.ssh.greenthumb.auth.handler.OAuth2AuthenticationSuccessHandler;
+import com.ssh.greenthumb.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.ssh.greenthumb.auth.service.CustomOAuth2UserService;
 import com.ssh.greenthumb.auth.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,7 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
+    private final OAuth2AuthenticationSuccessHandler successHandler;
+    private final OAuth2AuthenticationFailureHandler failureHandler;
+    private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestBasedOnCookieDao;
 
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
@@ -70,30 +76,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint())
-                .accessDeniedHandler(tokenAccessDeniedHandler)
             .and()
-//                .authorizeRequests()
-//                .antMatchers("/",
-//                        "/error",
-//                        "**/favicon.ico").permitAll()
-//                .antMatchers("/auth/**", "/oauth2/**", "/follow-user/**", "/plants", "/plant-name/**", "/posts/**", "**/comments", "/plant-hospital/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/post/{id}").permitAll()
-//                .antMatchers(HttpMethod.POST, "/login/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/user/{id}/feed").permitAll()
-//                .antMatchers("/v3/api-docs/**", "/swagger-resources/**", "/swagger-ui/**").permitAll()   // OAS_30
-//                .antMatchers("/post/**", "/comment/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
-//                .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
-//                .anyRequest().authenticated()
-//            .and()
+                .authorizeRequests()
+                .antMatchers("/", "/error", "**/favicon.ico").permitAll()
+                .antMatchers("/auth/**", "/oauth2/**").permitAll()
+                .antMatchers(HttpMethod.GET,  "/follow-user/**", "/plants", "/plant-name/**", "/posts/**", "**/comments", "/plant-hospital/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/post/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/user/{id}/feed").permitAll()
+                .antMatchers("/v3/api-docs/**", "/swagger-resources/**", "/swagger-ui/**").permitAll()   // OAS_30
+                .antMatchers("/post/**", "/comment/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
+                .anyRequest().authenticated()
+            .and()
                 .oauth2Login()
                 .authorizationEndpoint()
                 .baseUri("/oauth2/authorization")
+                .authorizationRequestRepository(authorizationRequestBasedOnCookieDao)
             .and()
                 .redirectionEndpoint()
                 .baseUri("/*/oauth2/code/*")
             .and()
                 .userInfoEndpoint()
-                .userService(customOAuth2UserService);
+                .userService(customOAuth2UserService)
+            .and()
+                .successHandler(successHandler)
+                .failureHandler(failureHandler);
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

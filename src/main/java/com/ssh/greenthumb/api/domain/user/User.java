@@ -32,7 +32,7 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @Column
-//    @NotNull
+    @NotNull
     private String email;
 
     @Column(name = "user_password")
@@ -68,7 +68,6 @@ public class User extends BaseTimeEntity {
     @NotNull
     private Boolean emailVerified = false;
 
-    // @LastModifiedDate
     @Column(name = "user_delete_date")
     private LocalDateTime deleteDate;
 
@@ -143,6 +142,7 @@ public class User extends BaseTimeEntity {
     public void delete() {
         this.isDeleted = "y";
         this.role = Role.DELETE;
+        this.deleteDate = LocalDateTime.now();
     }
 
 }
