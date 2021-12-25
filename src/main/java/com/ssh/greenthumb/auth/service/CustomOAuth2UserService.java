@@ -2,12 +2,13 @@ package com.ssh.greenthumb.auth.service;
 
 import com.ssh.greenthumb.api.common.exception.OAuth2AuthenticationProcessingException;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
+import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.auth.domain.AuthProvider;
 import com.ssh.greenthumb.auth.domain.Role;
-import com.ssh.greenthumb.api.domain.user.User;
+import com.ssh.greenthumb.auth.domain.UserPrincipal;
 import com.ssh.greenthumb.auth.info.OAuth2UserInfo;
 import com.ssh.greenthumb.auth.info.OAuth2UserInfoFactory;
-import com.ssh.greenthumb.auth.domain.UserPrincipal;
+import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -25,6 +26,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userDao;
+    @Autowired
+    private TokenProvider tokenProvider;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -53,16 +56,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (userOptional != null) {
             user = userOptional;
 
-            if(!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
+            if (!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
                 throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
                         user.getProvider() + " account. Please use your " + user.getProvider() +
                         " account to login.");
             }
             user = updateExistingUser(user, oAuth2UserInfo);
+
         } else {
             user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
+            tokenProvider.refreshToken(user.getId());
         }
-
         return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
 
