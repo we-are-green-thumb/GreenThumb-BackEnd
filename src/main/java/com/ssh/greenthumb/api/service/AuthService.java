@@ -11,7 +11,6 @@ import com.ssh.greenthumb.api.dto.login.SignUpRequest;
 import com.ssh.greenthumb.auth.domain.AuthProvider;
 import com.ssh.greenthumb.auth.domain.Role;
 import com.ssh.greenthumb.auth.repository.RefreshTokenRepository;
-import com.ssh.greenthumb.auth.token.Token;
 import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -50,10 +49,10 @@ public class AuthService {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            Token token = tokenProvider.createToken(user.getId());
+            String accessToken = tokenProvider.createToken(authentication);
 
             return new ResponseEntity(AuthResponse.builder()
-                    .accessToken(token.getAccessToken())
+                    .accessToken(accessToken)
                     .userId(user.getId())
                     .build(), HttpStatus.OK);
         }

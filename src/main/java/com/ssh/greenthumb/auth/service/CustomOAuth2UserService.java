@@ -35,7 +35,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } catch (AuthenticationException ex) {
             throw ex;
         } catch (Exception ex) {
-            // Throwing an instance of AuthenticationException will trigger the OAuth2AuthenticationFailureHandler
             throw new InternalAuthenticationServiceException(ex.getMessage(), ex.getCause());
         }
     }
@@ -44,14 +43,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
 
-        if(StringUtils.hasText(oAuth2UserInfo.getId())) {
+        if (!StringUtils.hasText(oAuth2UserInfo.getId())) {
             throw new OAuth2AuthenticationProcessingException("ProviderId not found from OAuth2 provider");
         }
 
-        User userOptional = userDao.findByProviderId(oAuth2UserInfo.getId());
+        User userOptional = userDao.findByEmailAndIsDeleted(oAuth2UserInfo.getEmail(), "n");
         User user;
 
-        if(userOptional != null) {
+        if (userOptional != null) {
             user = userOptional;
 
             if(!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
@@ -78,10 +77,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .build());
     }
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
-        return userDao.save(existingUser.builder()
-                .nickName(oAuth2UserInfo.getName())
-                .imageUrl(oAuth2UserInfo.getImageUrl())
-                .build());
+        return existingUser.update(existingUser.getNickName(), existingUser.getImageUrl());
     }
 
 }
