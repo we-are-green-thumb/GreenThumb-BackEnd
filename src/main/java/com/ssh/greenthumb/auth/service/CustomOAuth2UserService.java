@@ -2,12 +2,13 @@ package com.ssh.greenthumb.auth.service;
 
 import com.ssh.greenthumb.api.common.exception.OAuth2AuthenticationProcessingException;
 import com.ssh.greenthumb.api.dao.user.UserRepository;
+import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.auth.domain.AuthProvider;
 import com.ssh.greenthumb.auth.domain.Role;
-import com.ssh.greenthumb.api.domain.user.User;
+import com.ssh.greenthumb.auth.domain.UserPrincipal;
 import com.ssh.greenthumb.auth.info.OAuth2UserInfo;
 import com.ssh.greenthumb.auth.info.OAuth2UserInfoFactory;
-import com.ssh.greenthumb.auth.domain.UserPrincipal;
+import com.ssh.greenthumb.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -25,6 +26,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userDao;
+    @Autowired
+    private TokenProvider tokenProvider;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -35,7 +38,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } catch (AuthenticationException ex) {
             throw ex;
         } catch (Exception ex) {
-            // Throwing an instance of AuthenticationException will trigger the OAuth2AuthenticationFailureHandler
             throw new InternalAuthenticationServiceException(ex.getMessage(), ex.getCause());
         }
     }
@@ -44,30 +46,33 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
 
-        if(StringUtils.hasText(oAuth2UserInfo.getId())) {
+        if (!StringUtils.hasText(oAuth2UserInfo.getId())) {
             throw new OAuth2AuthenticationProcessingException("ProviderId not found from OAuth2 provider");
         }
 
-        User userOptional = userDao.findByProviderId(oAuth2UserInfo.getId());
+        User userOptional = userDao.findByEmailAndIsDeleted(oAuth2UserInfo.getEmail(), "n");
         User user;
 
-        if(userOptional != null) {
+        if (userOptional != null) {
             user = userOptional;
 
-            if(!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
+            if (!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
                 throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
                         user.getProvider() + " account. Please use your " + user.getProvider() +
                         " account to login.");
             }
             user = updateExistingUser(user, oAuth2UserInfo);
+
         } else {
             user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
+            tokenProvider.refreshToken(user.getId());
         }
 
         return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
 
     private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
+
         return userDao.save(User.builder()
                 .provider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))
                 .providerId(oAuth2UserInfo.getId())
@@ -77,11 +82,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .role(Role.USER)
                 .build());
     }
+
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
-        return userDao.save(existingUser.builder()
-                .nickName(oAuth2UserInfo.getName())
-                .imageUrl(oAuth2UserInfo.getImageUrl())
-                .build());
+
+        return existingUser.update(existingUser.getNickName(), existingUser.getImageUrl());
     }
 
 }

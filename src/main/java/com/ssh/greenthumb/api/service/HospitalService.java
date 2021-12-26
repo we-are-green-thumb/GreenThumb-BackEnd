@@ -3,7 +3,7 @@ package com.ssh.greenthumb.api.service;
 import com.ssh.greenthumb.api.dao.plant.PlantHospitalRepository;
 import com.ssh.greenthumb.api.domain.hospital.PlantImageRequest;
 import com.ssh.greenthumb.api.domain.hospital.PlantImageResponse;
-import com.ssh.greenthumb.api.domain.plant.HospitalPlant;
+import com.ssh.greenthumb.api.domain.plant.Hospital;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -38,7 +38,7 @@ public class HospitalService {
 
         flaskResponse = response.getBody();
 
-        Optional<HospitalPlant> hospitalPlantOptional = hospitalDao.findByDisease(flaskResponse);
+        Optional<Hospital> hospitalPlantOptional = hospitalDao.findByDisease(flaskResponse);
 
         if (!hospitalPlantOptional.isPresent()){
             plantImageResponse.setDisease("질병 데이터가 없습니다.");

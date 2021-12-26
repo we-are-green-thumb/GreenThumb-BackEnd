@@ -44,7 +44,6 @@ public class Plant extends BaseTimeEntity {
     private Long temp;
 
     @Column(name = "image_url")
-//    @NotNull
     private String imageUrl;
 
     @Builder
@@ -65,12 +64,6 @@ public class Plant extends BaseTimeEntity {
         this.water = water;
         this.temp = temp;
         this.imageUrl = imageUrl;
-
-        return this;
-    }
-
-    public Plant patch(String name) {
-        this.name = name;
 
         return this;
     }

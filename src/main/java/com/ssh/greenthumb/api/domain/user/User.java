@@ -32,11 +32,10 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @Column
-//    @NotNull
+    @NotNull
     private String email;
 
     @Column(name = "user_password")
-//    @NotNull
     private String password;
 
     @Column(name = "user_nickname")
@@ -68,7 +67,6 @@ public class User extends BaseTimeEntity {
     @NotNull
     private Boolean emailVerified = false;
 
-    // @LastModifiedDate
     @Column(name = "user_delete_date")
     private LocalDateTime deleteDate;
 
@@ -90,19 +88,19 @@ public class User extends BaseTimeEntity {
     @JsonBackReference
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
     @JsonBackReference
     private Set<Follow> followerList = new HashSet<>();
 
-    @OneToMany(mappedBy = "followee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "followee", cascade = CascadeType.ALL)
     @JsonBackReference
     private Set<Follow> followeeList = new HashSet<>();
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private BlackList blackList;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private RefreshToken refreshToken;
 
@@ -143,6 +141,7 @@ public class User extends BaseTimeEntity {
     public void delete() {
         this.isDeleted = "y";
         this.role = Role.DELETE;
+        this.deleteDate = LocalDateTime.now();
     }
 
 }
