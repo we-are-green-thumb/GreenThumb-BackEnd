@@ -37,7 +37,10 @@ public class HospitalService {
 
         flaskResponse = response.getBody();
 
-        Optional<HospitalPlant> hospitalPlantOptional = hospitalDao.findByDisease(flaskResponse);
+        System.out.println("test");
+        String test = String.valueOf(flaskResponse);
+
+        Optional<HospitalPlant> hospitalPlantOptional = hospitalDao.findByDisease(test);
 
         if (!hospitalPlantOptional.isPresent()){
             plantImageResponse.setDisease("질병 데이터가 없습니다.");

@@ -35,6 +35,7 @@ public class PostDTO {
         private String writer;
         private String title;
         private String content;
+        private String category;
         private Long hits;
         private String isComplete;
         private int like;
@@ -46,6 +47,7 @@ public class PostDTO {
             this.writer = entity.getUser().getNickName();
             this.title = entity.getTitle();
             this.content = entity.getContent();
+            this.category = entity.getCategory();
             this.hits = entity.getHits();
             this.isComplete = entity.getIsComplete();
             this.like = entity.getLikePostList().size();
