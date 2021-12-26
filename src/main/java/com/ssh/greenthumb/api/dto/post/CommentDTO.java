@@ -29,6 +29,7 @@ public class CommentDTO {
         private String content;
         private String isDeleted;
         private int like;
+        private Long commentId;
 
         public Get(Comment entity) {
             this.postId = entity.getPost().getId();
@@ -37,6 +38,7 @@ public class CommentDTO {
             this.content = entity.getContent();
             this.isDeleted = entity.getIsDeleted();
             this.like = entity.getLikeCommentList().size();
+            this.commentId = entity.getId();
         }
     }
 

@@ -14,4 +14,5 @@ public class Hospital {
 
     private String disease;
     private String content;
+    private String diseaseName;
 }
