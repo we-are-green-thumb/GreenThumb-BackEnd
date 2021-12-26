@@ -67,10 +67,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
             tokenProvider.refreshToken(user.getId());
         }
+
         return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
 
     private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
+
         return userDao.save(User.builder()
                 .provider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))
                 .providerId(oAuth2UserInfo.getId())
@@ -80,7 +82,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .role(Role.USER)
                 .build());
     }
+
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
+
         return existingUser.update(existingUser.getNickName(), existingUser.getImageUrl());
     }
 

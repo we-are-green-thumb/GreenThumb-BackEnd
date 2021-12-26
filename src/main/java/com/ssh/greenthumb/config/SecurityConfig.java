@@ -87,6 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/post/**", "/comment/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                 .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
                 .anyRequest().authenticated()
+//                .anyRequest().permitAll()
             .and()
                 .oauth2Login()
                 .authorizationEndpoint()
@@ -98,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService)
-            .and()
+                .and()
                 .successHandler(successHandler)
                 .failureHandler(failureHandler);
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

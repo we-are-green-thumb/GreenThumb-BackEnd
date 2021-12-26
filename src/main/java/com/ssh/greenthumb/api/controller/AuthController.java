@@ -1,14 +1,20 @@
 package com.ssh.greenthumb.api.controller;
 
+import com.ssh.greenthumb.api.dao.user.UserRepository;
+import com.ssh.greenthumb.api.domain.user.User;
 import com.ssh.greenthumb.api.dto.login.AuthRequest;
 import com.ssh.greenthumb.api.dto.login.SignUpRequest;
 import com.ssh.greenthumb.api.service.AuthService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import com.ssh.greenthumb.auth.domain.CurrentUser;
+import com.ssh.greenthumb.auth.domain.UserPrincipal;
+import com.ssh.greenthumb.auth.token.AppProperties;
+import io.jsonwebtoken.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserRepository userDao;
+    private final AppProperties appProperties;
 
     @Operation(summary = "로그인", description = "이메일, 패스워드를 입력하여 로그인을 합니다.")
     @PostMapping("/login")
@@ -39,21 +47,37 @@ public class AuthController {
         authService.logout(id);
     }
 
-//    @GetMapping("/user/me")
-//    @PreAuthorize("hasRole('USER')")
-//    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-//        return userDao.findById(userPrincipal.getId())
-//                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-//    }
+    @GetMapping("/user/me")
+    @PreAuthorize("hasRole('USER')")
+    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+        return userDao.findById(userPrincipal.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+    }
 
-    @GetMapping("/token")
-    public Long getId(String token) {
-            Claims claims = Jwts.parser()
-                    .setSigningKey("926D96C90030DD58429D2751AC1BDBBC")
-                    .parseClaimsJws(token)
-                    .getBody();
-
-            return Long.parseLong(claims.getSubject());
+    @GetMapping("/valid")
+    public boolean validateToken(String authToken) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
+//            return claims.getBody().getExpiration().before(new Date(System.currentTimeMillis()));
+            return true;
+        } catch (SignatureException ex) {
+//            log.error("유효하지 않은 JWT 서명");
+            System.out.println(ex);
+        } catch (MalformedJwtException ex) {
+//            log.error("유효하지 않은 JWT 토큰");
+//            System.out.println(ex);
+//            log.error("만료된 JWT 토큰");
+            System.out.println(ex);
+        } catch (UnsupportedJwtException ex) {
+//            log.error("지원하지 않는 JWT 토큰");
+            System.out.println(ex);
+        } catch (IllegalArgumentException ex) {
+//            log.error("비어있는 JWT");
+            System.out.println(ex);
         }
+        Jws<Claims> claims = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
+        System.out.println(claims);
+        return false;
+    }
 
 }

@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 @Entity
 @Getter
-public class HospitalPlant {
+public class Hospital {
 
     @Id
     private Long id;

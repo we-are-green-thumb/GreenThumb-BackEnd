@@ -30,7 +30,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private AppProperties appProperties;
     @Autowired
     private OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestBasedOnCookieDao;
-
     @Autowired
     OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, AppProperties appProperties, OAuth2AuthorizationRequestBasedOnCookieRepository httpCookieOAuth2AuthorizationRequestRepository) {
         this.tokenProvider = tokenProvider;
@@ -46,7 +45,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             logger.debug("응답이 이미 커밋 됨" + targetUrl + "로 리다이렉션을 할 수 없음");
             return;
         }
-
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
@@ -57,12 +55,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
             throw new BadRequestException("승인되지 않은 Redirection URI가 있어 인증을 진행할 수 없음");
         }
-
-        String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
+//        String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         String token = tokenProvider.createToken(authentication);
 
-        return UriComponentsBuilder.fromUriString(targetUrl)
+        return UriComponentsBuilder.fromUriString("http://localhost:8081")
                 .queryParam("token", token)
                 .build().toUriString();
     }
@@ -81,7 +78,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .anyMatch(authorizedRedirectUri -> {
                     URI authorizedURI = URI.create(authorizedRedirectUri);
 
-                    if(authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost()) && authorizedURI.getPort() == clientRedirectUri.getPort()) {
+                    if (authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost()) && authorizedURI.getPort() == clientRedirectUri.getPort()) {
                         return true;
                     }
                     return false;

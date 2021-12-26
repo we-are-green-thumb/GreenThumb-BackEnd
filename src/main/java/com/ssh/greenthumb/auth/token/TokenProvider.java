@@ -64,9 +64,12 @@ public class TokenProvider {
     @Transactional
     public String createToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        System.out.println(userPrincipal.getId());
+        System.out.println(appProperties.getAuth().getTokenSecret());
 
         return Jwts.builder()
-                .setSubject(Long.toString(userPrincipal.getId()))
+                .setHeaderParam("typ", "JWT")
+                .setSubject(String.valueOf(userPrincipal.getId()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + appProperties.getAuth().getAccessTokenExpiry()))
                 .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
@@ -76,6 +79,8 @@ public class TokenProvider {
     @Transactional
     public String refreshToken(Long userId) {
         String refreshToken = Jwts.builder()
+                .setHeaderParam("typ", "JWT")
+                .setSubject(userId.toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + appProperties.getAuth().getRefreshTokenExpiry()))
                 .signWith(SignatureAlgorithm.HS256, appProperties.getAuth().getTokenSecret())
@@ -117,7 +122,8 @@ public class TokenProvider {
     public boolean validateToken(String authToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
-            return claims.getBody().getExpiration().before(new Date(System.currentTimeMillis()));
+//            return claims.getBody().getExpiration().before(new Date(System.currentTimeMillis()));
+            return true;
         } catch (SignatureException ex) {
             log.error("유효하지 않은 JWT 서명");
         } catch (MalformedJwtException ex) {

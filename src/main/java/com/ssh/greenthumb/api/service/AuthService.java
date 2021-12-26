@@ -72,6 +72,8 @@ public class AuthService {
                 .build()
         );
 
+        tokenProvider.refreshToken(result.getId());
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
                 .buildAndExpand(result.getEmail()).toUri();

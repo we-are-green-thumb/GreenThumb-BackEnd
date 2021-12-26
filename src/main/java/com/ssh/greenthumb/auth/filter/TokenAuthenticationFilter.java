@@ -36,6 +36,30 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private AppProperties appProperties;
 
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        try {
+            String jwt = getJwtFromRequest(request);
+//            System.out.println(request.getDateHeader("userId"));
+
+            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+                Long userId = tokenProvider.getUserIdFromToken(jwt);
+
+                UserDetails userDetails = customUserDetailsService.loadUserById(userId);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+//            } else if (StringUtils.hasText(jwt) && !tokenProvider.validateToken(jwt)) {
+////                Long userId = request.getDateHeader("userId");
+//            }
+        } catch (Exception ex) {
+            logger.error("Security Context에서 사용자 인증을 설정할 수 없습니다", ex);
+        }
+        filterChain.doFilter(request, response);
+    }
+
 //    @Override
 //    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 //        String accessToken = getJwtFromRequest(request);
@@ -53,7 +77,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 //
 //                } else if (!tokenProvider.validateToken(accessToken)) {
 //                    User user = userDao.findById(userId).get();
-//                    String refreshToken = refreshTokenDao.findByUser(user).getRefreshToken();
+////                    String refreshToken = refreshTokenDao.findByUser(user).getRefreshToken();
 //
 //                    if (!tokenProvider.validateToken(refreshToken)) {
 //                        Claims claim = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret())
@@ -61,21 +85,21 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 //                                .getBody();
 //                        claim.setExpiration(new Date(new Date().getTime() + appProperties.getAuth().getRefreshTokenExpiry()));
 //
-//                        Token token = tokenProvider.reissue(userId, refreshToken);
+////                        String refresh = tokenProvider.refreshToken(userId);
 //
 //                        UserDetails userDetails = customUserDetailsService.loadUserById(userId);
 //                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 //                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 //                        SecurityContextHolder.getContext().setAuthentication(authentication);
-//                        response.setHeader("Authorization", token.getAccessToken());
+////                        response.setHeader("Authorization", token.getAccessToken());
 //
 //                    } else if (tokenProvider.validateToken(refreshToken)) {
-//                        Token token = tokenProvider.reissue(userId, refreshToken);
+////                        Token token = tokenProvider.reissue(userId, refreshToken);
 //                        UserDetails userDetails = customUserDetailsService.loadUserById(userId);
 //                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 //                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 //                        SecurityContextHolder.getContext().setAuthentication(authentication);
-//                        response.setHeader("Authorization", token.getAccessToken());
+////                        response.setHeader("Authorization", token.getAccessToken());
 //                    }
 //                }
 //            } catch (Exception ex) {
@@ -84,27 +108,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 //        }
 //        filterChain.doFilter(request, response);
 //    }
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            String jwt = getJwtFromRequest(request);
-
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                Long userId = tokenProvider.getUserIdFromToken(jwt);
-
-                UserDetails userDetails = customUserDetailsService.loadUserById(userId);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } catch (Exception ex) {
-            logger.error("Could not set user authentication in security context", ex);
-        }
-
-        filterChain.doFilter(request, response);
-    }
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
