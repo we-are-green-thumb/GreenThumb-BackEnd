@@ -18,6 +18,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @Tag(name = "User", description = "사용자 API")
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -58,8 +60,8 @@ public class AuthController {
     public boolean validateToken(String authToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
-//            return claims.getBody().getExpiration().before(new Date(System.currentTimeMillis()));
-            return true;
+            return claims.getBody().getExpiration().before(new Date(System.currentTimeMillis()));
+//            return true;
         } catch (SignatureException ex) {
 //            log.error("유효하지 않은 JWT 서명");
             System.out.println(ex);

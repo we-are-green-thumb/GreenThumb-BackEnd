@@ -51,9 +51,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-//            } else if (StringUtils.hasText(jwt) && !tokenProvider.validateToken(jwt)) {
-////                Long userId = request.getDateHeader("userId");
-//            }
         } catch (Exception ex) {
             logger.error("Security Context에서 사용자 인증을 설정할 수 없습니다", ex);
         }
