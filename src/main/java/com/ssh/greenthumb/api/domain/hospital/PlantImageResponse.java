@@ -8,4 +8,5 @@ import lombok.Setter;
 public class PlantImageResponse {
     private String disease;
     private String content;
+    private String diseaseName;
 }

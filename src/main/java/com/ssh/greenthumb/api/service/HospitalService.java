@@ -33,7 +33,8 @@ public class HospitalService {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("imageUrl", imageUrl.getImageUrl());
 
-        ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:5000/predict", new HttpEntity<>(map, headers), String.class);
+        ResponseEntity<String> response = restTemplate
+                .postForEntity( "http://localhost:5000/predict", new HttpEntity<>(map, headers), String.class);
 
         flaskResponse = response.getBody();
 
@@ -41,10 +42,12 @@ public class HospitalService {
 
         if (!hospitalPlantOptional.isPresent()){
             plantImageResponse.setDisease("질병 데이터가 없습니다.");
+            plantImageResponse.setDiseaseName("질병 데이터가 없습니다.");
             plantImageResponse.setContent("질병 데이터가 없습니다.");
 
         } else {
             plantImageResponse.setDisease(flaskResponse);
+            plantImageResponse.setDiseaseName(hospitalPlantOptional.get().getDiseaseName());
             plantImageResponse.setContent(hospitalPlantOptional.get().getContent());
         }
         return plantImageResponse;
