@@ -42,10 +42,12 @@ public class HospitalService {
 
         if (!hospitalPlantOptional.isPresent()){
             plantImageResponse.setDisease("질병 데이터가 없습니다.");
+            plantImageResponse.setDiseaseName("질병 데이터가 없습니다.");
             plantImageResponse.setContent("질병 데이터가 없습니다.");
 
         } else {
             plantImageResponse.setDisease(flaskResponse);
+            plantImageResponse.setDiseaseName(hospitalPlantOptional.get().getDiseaseName());
             plantImageResponse.setContent(hospitalPlantOptional.get().getContent());
         }
         return plantImageResponse;

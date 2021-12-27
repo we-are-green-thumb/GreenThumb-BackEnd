@@ -40,7 +40,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
-//            System.out.println(request.getDateHeader("userId"));
 
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 Long userId = tokenProvider.getUserIdFromToken(jwt);
@@ -56,55 +55,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        String accessToken = getJwtFromRequest(request);
-//        System.out.println(accessToken);
-//
-//        if (accessToken != null && accessToken.length() > 0) {
-//            try {
-//                Long userId = tokenProvider.getUserIdFromToken(accessToken);
-////                Long userId = Long.parseLong(request.getHeader("userId"));
-//                if (tokenProvider.validateToken(accessToken)) {
-//                    UserDetails userDetails = customUserDetailsService.loadUserById(userId);
-//                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//                    SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//                } else if (!tokenProvider.validateToken(accessToken)) {
-//                    User user = userDao.findById(userId).get();
-////                    String refreshToken = refreshTokenDao.findByUser(user).getRefreshToken();
-//
-//                    if (!tokenProvider.validateToken(refreshToken)) {
-//                        Claims claim = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret())
-//                                .parseClaimsJws(refreshTokenDao.findByUser(user).getRefreshToken())
-//                                .getBody();
-//                        claim.setExpiration(new Date(new Date().getTime() + appProperties.getAuth().getRefreshTokenExpiry()));
-//
-////                        String refresh = tokenProvider.refreshToken(userId);
-//
-//                        UserDetails userDetails = customUserDetailsService.loadUserById(userId);
-//                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//                        SecurityContextHolder.getContext().setAuthentication(authentication);
-////                        response.setHeader("Authorization", token.getAccessToken());
-//
-//                    } else if (tokenProvider.validateToken(refreshToken)) {
-////                        Token token = tokenProvider.reissue(userId, refreshToken);
-//                        UserDetails userDetails = customUserDetailsService.loadUserById(userId);
-//                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//                        SecurityContextHolder.getContext().setAuthentication(authentication);
-////                        response.setHeader("Authorization", token.getAccessToken());
-//                    }
-//                }
-//            } catch (Exception ex) {
-//                log.error("Security Context에서 사용자 인증을 설정할 수 없습니다", ex);
-//            }
-//        }
-//        filterChain.doFilter(request, response);
-//    }
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
