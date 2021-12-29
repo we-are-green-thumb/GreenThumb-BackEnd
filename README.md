@@ -30,6 +30,8 @@
 
 <br><br>
 ## 📅 개발기간
+  
+![개발기간](https://user-images.githubusercontent.com/87889860/147710165-dd9d2ac5-b7ab-403d-adc3-68bc6cebfb30.png)
 
 <br><br>
 ## 💻 개발환경
